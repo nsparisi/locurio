@@ -1,0 +1,11 @@
+﻿using System;
+namespace Abyss
+{
+    public class Script
+    {
+        public void Run()
+        {
+            Console.Out.WriteLine("Hello World");
+        }
+    }
+}
