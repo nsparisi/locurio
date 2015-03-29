@@ -1,7 +1,6 @@
-﻿using Microsoft.CSharp;
-using System;
-using System.CodeDom.Compiler;
-using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using AbyssLibrary;
 
 namespace Abyss
 {
@@ -9,46 +8,32 @@ namespace Abyss
     {
         static void Main(string[] args)
         {
+            TestLightBulb testLightBulb1 = new TestLightBulb();
+            TestLightBulb testLightBulb2 = new TestLightBulb();
+            TestLightBulb testLightBulb3 = new TestLightBulb();
+            TestLightBulb testLightBulb4 = new TestLightBulb();
 
-            CSharpCodeProvider provider = new CSharpCodeProvider();
-            ICodeCompiler compiler = provider.CreateCompiler();
 
-            CompilerParameters parameters = new CompilerParameters()
+            SPLightBulb altarLights = new SPLightBulb
             {
-                GenerateExecutable = false,
-                GenerateInMemory = true
-            };
-            parameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
-
-
-            CompilerResults result = provider.CompileAssemblyFromFile(parameters, "MyScript.txt");
-
-            if (result.Errors.HasErrors)
-            {
-                Console.WriteLine("Has Errors");
-            }
-
-            if (result.Errors.HasWarnings)
-            {
-                Console.WriteLine("Has Warning");
-            }
-
-            Assembly compiledAssembly = result.CompiledAssembly;
-
-            foreach (Type type in compiledAssembly.GetExportedTypes())
-            {
-                ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
-                foreach(MethodInfo method in type.GetMethods())
+                Lights = new List<TestLightBulb>
                 {
-                    if(method.Name == "Run")
-                    {
-                        object instance = constructor.Invoke(null);
-                        method.Invoke(instance, null);
-                    }
+                    testLightBulb1,
+                    testLightBulb2,
+                    testLightBulb3,
+                    testLightBulb4,
                 }
-            }
+            };
 
-            Console.WriteLine("Done Execution");
+            SPDelay delayThenTurnOn = new SPDelay()
+            {
+                DurationMs = 1000,
+            };
+            delayThenTurnOn.Finished += altarLights.TurnOn;
+
+            // wait a second then turn on lights
+            delayThenTurnOn.Start();
+
         }
     }
 }

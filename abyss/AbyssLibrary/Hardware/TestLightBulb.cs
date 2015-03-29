@@ -4,9 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Abyss
+namespace AbyssLibrary
 {
-    class TestLightBulb
+    public class TestLightBulb
     {
+        public void TurnOn()
+        {
+            Debug.Log("Turning On");
+        }
+
+        public void TurnOff()
+        {
+            Debug.Log("{Turning Off");
+        }
     }
 }

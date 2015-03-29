@@ -4,10 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Abyss
+namespace AbyssLibrary
 {
-    abstract class AbstractSubProcessor
+    public abstract class AbstractSubProcessor
     {
         public delegate void OutputEvent();
+
+        public string Name { get; set; }
+
+        void AbstractSubProcess()
+        {
+            this.Name = "Default";
+        }
     }
 }

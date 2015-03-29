@@ -7,7 +7,7 @@
     <ProjectGuid>{B2652E68-B47B-4A48-B1F9-60B95ABA8335}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Abyss</RootNamespace>
+    <RootNamespace>AbyssLibrary</RootNamespace>
     <AssemblyName>Abyss</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ScriptRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

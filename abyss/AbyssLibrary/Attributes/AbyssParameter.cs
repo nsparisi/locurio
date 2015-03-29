@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Abyss
+namespace AbyssLibrary
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     class AbyssParameter : Attribute

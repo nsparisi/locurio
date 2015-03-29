@@ -43,10 +43,12 @@
     <Compile Include="Attributes\AbyssOutput.cs" />
     <Compile Include="Attributes\AbyssParameter.cs" />
     <Compile Include="Attributes\AbyssSubProcessor.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="Hardware\TestLightBulb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubProcessors\AbstractSubProcessor.cs" />
-    <Compile Include="SubProcessors\LightBulbSubProcessor.cs" />
+    <Compile Include="SubProcessors\SPDelay.cs" />
+    <Compile Include="SubProcessors\SPLightBulb.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
