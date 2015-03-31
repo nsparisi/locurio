@@ -10,4 +10,6 @@ namespace AbyssLibrary
     class AbyssOutput : Attribute
     {
     }
+
+    public delegate void AbyssEvent(object sender, EventArgs e);
 }

@@ -64,8 +64,6 @@ namespace AbyssMonitor
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
-
             long floor = stopwatch.ElapsedMilliseconds / Interval;
             if (lastCrossedInterval < floor)
             {

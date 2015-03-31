@@ -13,17 +13,29 @@ namespace AbyssLibrary
         public int DurationMs;
 
         [AbyssInput]
-        public void Start()
+        public void Start(object sender, EventArgs e)
         {
+            this.StartProcess();
+        }
+
+        protected override void Process()
+        {
+            Debug.Log("SPDelay Proc Start");
             Thread.Sleep(DurationMs);
 
+            ProcessEnded();
+        }
+
+        protected override void ProcessEnded()
+        {
+            Debug.Log("SPDelay Proc Ended");
             if (Finished != null)
             {
-                Finished();
+                Finished(this, EventArgs.Empty);
             }
         }
         
         [AbyssOutput]
-        public event OutputEvent Finished;
+        public event AbyssEvent Finished;
     }
 }

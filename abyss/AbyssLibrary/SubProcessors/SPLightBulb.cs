@@ -8,6 +8,8 @@ namespace AbyssLibrary
 {
     public class SPLightBulb : AbstractSubProcessor
     {
+        bool turnOn = false;
+
         [AbyssParameter]
         public List<TestLightBulb> Lights
         {
@@ -16,36 +18,53 @@ namespace AbyssLibrary
         }
 
         [AbyssInput]
-        public void TurnOn()
+        public void TurnOn(object sender, EventArgs e)
         {
-            foreach (TestLightBulb light in this.Lights)
-            {
-                light.TurnOn();
-            }
-
-            if (Out != null)
-            {
-                Out();
-            }
+            turnOn = true;
+            StartProcess();
         }
 
         [AbyssInput]
-        public void TurnOff()
+        public void TurnOff(object sender, EventArgs e)
         {
-            foreach (TestLightBulb light in this.Lights)
-            {
-                light.TurnOff();
-            }
-            
-            if(Out != null)
-            {
-                Out();
-            }
+            turnOn = false;
+            StartProcess();
         }
         
         [AbyssOutput]
-        public event OutputEvent Out;
+        public event AbyssEvent Out;
 
+        protected override void Process()
+        {
+            Debug.Log("SPLightBulb Proc Start");
+
+            if(turnOn)
+            {
+                foreach (TestLightBulb light in this.Lights)
+                {
+                    light.TurnOn();
+                }
+            } 
+            else
+            {
+                foreach (TestLightBulb light in this.Lights)
+                {
+                    light.TurnOff();
+                }
+            }
+
+            ProcessEnded();
+        }
+
+        protected override void ProcessEnded()
+        {
+            Debug.Log("SPLightBulb Proc Ended");
+
+            if (Out != null)
+            {
+                Out(this, EventArgs.Empty);
+            }
+        }
 
         public SPLightBulb()
         {

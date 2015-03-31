@@ -31,19 +31,19 @@ namespace AbyssMonitor
         private void SpawnWindow_Click(object sender, RoutedEventArgs e)
         {
             App app = (App)Application.Current;
-            app.SpawnClock();
+            app.Controller.SpawnClock();
         }
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
             App app = (App)Application.Current;
-            app.ExitProgram();
+            app.Controller.ExitProgram();
         }
 
         private void StartCountdown_Click(object sender, RoutedEventArgs e)
         {
             App app = (App)Application.Current;
-            app.StartCountDown();
+            app.Controller.StartCountDown();
         }
     }
 }
