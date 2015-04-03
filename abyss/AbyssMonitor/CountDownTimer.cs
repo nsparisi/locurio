@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 
-namespace AbyssMonitor
+namespace AbyssScreen
 {
     public class CountDownTimer
     {

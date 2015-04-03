@@ -31,12 +31,12 @@ namespace Abyss
                 }
             };
 
-            AbyssMonitorController monitorController = new AbyssMonitorController();
-            SPMonitor countdownMonitor = new SPMonitor
+            AbyssScreenController screenController = new AbyssScreenController();
+            SPScreen countdownScreen = new SPScreen
             {
-                Monitors = new List<AbyssMonitorController>
+                Screens = new List<AbyssScreenController>
                 {
-                    monitorController,
+                    screenController,
                 }
             };
 
@@ -46,11 +46,11 @@ namespace Abyss
             };
 
             delayThenTurnOn.Finished += altarLights.TurnOn;
-            delayThenTurnOn.Finished += countdownMonitor.Stop;
-            countdownMonitor.CountdownStarted += delayThenTurnOn.Start;
+            delayThenTurnOn.Finished += countdownScreen.Stop;
+            countdownScreen.CountdownStarted += delayThenTurnOn.Start;
 
             altarLights.Initialize();
-            countdownMonitor.Initialize();
+            countdownScreen.Initialize();
             delayThenTurnOn.Initialize();
         }
     }

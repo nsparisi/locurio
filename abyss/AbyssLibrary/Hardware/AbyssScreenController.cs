@@ -7,32 +7,32 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public class AbyssMonitorController
+    public class AbyssScreenController
     {
         public event AbyssEvent CountdownExpired;
         public event AbyssEvent CountdownStopped;
         public event AbyssEvent CountdownStarted;
 
-        Thread monitorThread;
-        AbyssMonitor.App app;
-        AbyssMonitor.AppController appController;
+        Thread screenThread;
+        AbyssScreen.App app;
+        AbyssScreen.AppController appController;
 
-        public AbyssMonitorController()
+        public AbyssScreenController()
         {
-            appController = new AbyssMonitor.AppController();
+            appController = new AbyssScreen.AppController();
             appController.CountdownExpired += this.OnCountDownExpired;
             appController.CountdownStarted += this.OnCountDownStarted;
             appController.CountdownStopped += this.OnCountDownStopped;
 
-            monitorThread = new Thread(MonitorThreadStart);
-            monitorThread.SetApartmentState(ApartmentState.STA);
-            monitorThread.Start();
+            screenThread = new Thread(ScreenThreadStart);
+            screenThread.SetApartmentState(ApartmentState.STA);
+            screenThread.Start();
         }
 
-        private void MonitorThreadStart()
+        private void ScreenThreadStart()
         {
-            app = new AbyssMonitor.App(appController);
-            app.Run(new AbyssMonitor.MainWindow());
+            app = new AbyssScreen.App(appController);
+            app.Run(new AbyssScreen.MainWindow());
         }
 
         public void Start()

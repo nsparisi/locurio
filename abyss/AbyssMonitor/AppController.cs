@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbyssMonitor
+namespace AbyssScreen
 {
     public class AppController
     {
         private List<ClockWindow> allClockWindows;
         CountDownTimer globalCountdown;
 
-        public delegate void AbyssMonitorEvent(object sender, EventArgs e);
-        public event AbyssMonitorEvent CountdownExpired;
-        public event AbyssMonitorEvent CountdownStarted;
-        public event AbyssMonitorEvent CountdownStopped;
+        public delegate void AbyssScreenEvent(object sender, EventArgs e);
+        public event AbyssScreenEvent CountdownExpired;
+        public event AbyssScreenEvent CountdownStarted;
+        public event AbyssScreenEvent CountdownStopped;
 
         public AppController()
         {

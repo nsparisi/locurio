@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace AbyssMonitor
+namespace AbyssScreen
 {
     /// <summary>
     /// Interaction logic for Clock.xaml

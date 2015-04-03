@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public class SPMonitor : AbstractSubProcessor
+    public class SPScreen : AbstractSubProcessor
     {
         bool startCountdown = false;
 
         [AbyssParameter]
-        public List<AbyssMonitorController> Monitors
+        public List<AbyssScreenController> Screens
         {
             get;
             set;
@@ -42,20 +42,20 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPMonitor Proc Start");
+            Debug.Log("SPScreen Proc Start");
 
             if (startCountdown)
             {
-                foreach (AbyssMonitorController monitor in this.Monitors)
+                foreach (AbyssScreenController screen in this.Screens)
                 {
-                    monitor.Start();
+                    screen.Start();
                 }
             }
             else
             {
-                foreach (AbyssMonitorController monitor in this.Monitors)
+                foreach (AbyssScreenController screen in this.Screens)
                 {
-                    monitor.Stop();
+                    screen.Stop();
                 }
             }
 
@@ -64,7 +64,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPMonitor Proc Ended");
+            Debug.Log("SPScreen Proc Ended");
         }
 
         private void OnCountDownExpired(object sender, EventArgs e)
@@ -91,18 +91,18 @@ namespace AbyssLibrary
             }
         }
 
-        public SPMonitor()
+        public SPScreen()
         {
-            this.Name = "SPMonitor";
+            this.Name = "SPScreen";
         }
 
         public override void Initialize()
         {
-            foreach (AbyssMonitorController monitor in this.Monitors)
+            foreach (AbyssScreenController screen in this.Screens)
             {
-                monitor.CountdownExpired += this.OnCountDownExpired;
-                monitor.CountdownStarted += this.OnCountDownStarted;
-                monitor.CountdownStopped += this.OnCountDownStopped;
+                screen.CountdownExpired += this.OnCountDownExpired;
+                screen.CountdownStarted += this.OnCountDownStarted;
+                screen.CountdownStopped += this.OnCountDownStopped;
             }
         }
     }
