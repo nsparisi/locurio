@@ -26,6 +26,12 @@ namespace AbyssLibrary
         [AbyssOutput]
         public event AbyssEvent CountdownStarted;
 
+        public SPScreen()
+            : base()
+        {
+            this.Name = "SPScreen";
+        }
+
         [AbyssInput]
         public void Start(object sender, EventArgs e)
         {
@@ -89,11 +95,6 @@ namespace AbyssLibrary
             {
                 CountdownStopped(sender, e);
             }
-        }
-
-        public SPScreen()
-        {
-            this.Name = "SPScreen";
         }
 
         public override void Initialize()

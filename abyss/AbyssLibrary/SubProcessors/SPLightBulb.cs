@@ -10,6 +10,12 @@ namespace AbyssLibrary
     {
         bool turnOn = false;
 
+        public SPLightBulb()
+            : base()
+        {
+            this.Name = "SPLightBulb";
+        }
+
         [AbyssParameter]
         public List<TestLightBulb> Lights
         {
@@ -64,11 +70,6 @@ namespace AbyssLibrary
             {
                 Out(this, EventArgs.Empty);
             }
-        }
-
-        public SPLightBulb()
-        {
-            this.Name = "SPLightBulb";
         }
     }
 }

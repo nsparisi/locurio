@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Abyss
 {
-    class AbyssRunner
+    public class AbyssRunner
     {
         public void Start()
         {
@@ -13,12 +13,17 @@ namespace Abyss
             t.Start();
         }
 
-        void Run()
+        public void Run()
         {
             TestLightBulb testLightBulb1 = new TestLightBulb();
             TestLightBulb testLightBulb2 = new TestLightBulb();
             TestLightBulb testLightBulb3 = new TestLightBulb();
             TestLightBulb testLightBulb4 = new TestLightBulb();
+
+            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb1);
+            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb2);
+            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb3);
+            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb4);
 
             SPLightBulb altarLights = new SPLightBulb
             {
@@ -30,8 +35,11 @@ namespace Abyss
                     testLightBulb4,
                 }
             };
+            AbyssSystem.Instance.RegisterSubProcessor(altarLights);
 
             AbyssScreenController screenController = new AbyssScreenController();
+            AbyssSystem.Instance.RegisterPhysicalObject(screenController);
+
             SPScreen countdownScreen = new SPScreen
             {
                 Screens = new List<AbyssScreenController>
@@ -39,11 +47,13 @@ namespace Abyss
                     screenController,
                 }
             };
+            AbyssSystem.Instance.RegisterSubProcessor(countdownScreen);
 
             SPDelay delayThenTurnOn = new SPDelay()
             {
                 DurationMs = 5000,
             };
+            AbyssSystem.Instance.RegisterSubProcessor(delayThenTurnOn);
 
             delayThenTurnOn.Finished += altarLights.TurnOn;
             delayThenTurnOn.Finished += countdownScreen.Stop;

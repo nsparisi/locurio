@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public class TestLightBulb
+    public class TestLightBulb : AbstractPhysicalObject
     {
         public void TurnOn()
         {

@@ -12,7 +12,9 @@ namespace Abyss
             AbyssRunner runner = new AbyssRunner();
             runner.Start();
 
-            Thread.Sleep(30000);
+            Console.WriteLine("Press <ENTER> to terminate program.");
+            Console.WriteLine();
+            Console.ReadLine();
 
             Console.Write("End Program");
             Environment.Exit(0);

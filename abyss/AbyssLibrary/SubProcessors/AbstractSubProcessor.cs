@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public abstract class AbstractSubProcessor
+    public abstract class AbstractSubProcessor : ISubProcessor
     {
+        public Guid ID { get; private set; }
         public string Name { get; set; }
 
-        void AbstractSubProcess()
+        protected AbstractSubProcessor()
         {
             this.Name = "Default";
+            this.ID = Guid.NewGuid();
         }
 
         public virtual void Initialize()
@@ -35,5 +37,6 @@ namespace AbyssLibrary
         protected virtual void ProcessEnded()
         {
         }
+
     }
 }

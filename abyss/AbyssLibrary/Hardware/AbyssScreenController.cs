@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public class AbyssScreenController
+    public class AbyssScreenController : AbstractPhysicalObject
     {
         public event AbyssEvent CountdownExpired;
         public event AbyssEvent CountdownStopped;
@@ -31,8 +31,8 @@ namespace AbyssLibrary
 
         private void ScreenThreadStart()
         {
-            app = new AbyssScreen.App(appController);
-            app.Run(new AbyssScreen.MainWindow());
+            //app = new AbyssScreen.App(appController);
+            //app.Run(new AbyssScreen.MainWindow());
         }
 
         public void Start()

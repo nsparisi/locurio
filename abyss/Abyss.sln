@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbyssLibrary", "AbyssLibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbyssScreen", "AbyssMonitor\AbyssScreen.csproj", "{477FE764-2428-4634-849E-58C42F3CA0C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbyssConsole", "AbyssConsole\AbyssConsole.csproj", "{B95520DF-8F93-4A3A-86E9-C349195F0FA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{477FE764-2428-4634-849E-58C42F3CA0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{477FE764-2428-4634-849E-58C42F3CA0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{477FE764-2428-4634-849E-58C42F3CA0C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B95520DF-8F93-4A3A-86E9-C349195F0FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B95520DF-8F93-4A3A-86E9-C349195F0FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B95520DF-8F93-4A3A-86E9-C349195F0FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B95520DF-8F93-4A3A-86E9-C349195F0FA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
