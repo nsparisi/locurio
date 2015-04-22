@@ -15,15 +15,19 @@ namespace Abyss
 
         public void Run()
         {
-            TestLightBulb testLightBulb1 = new TestLightBulb();
-            TestLightBulb testLightBulb2 = new TestLightBulb();
-            TestLightBulb testLightBulb3 = new TestLightBulb();
-            TestLightBulb testLightBulb4 = new TestLightBulb();
+            TestLightBulb testLightBulb1 = new TestLightBulb("TestLeft1");
+            TestLightBulb testLightBulb2 = new TestLightBulb("TestLeft2");
+            TestLightBulb testLightBulb3 = new TestLightBulb("TestRight1");
+            TestLightBulb testLightBulb4 = new TestLightBulb("TestRight2");
+            XBeeEndpoint alterXbee = new XBeeEndpoint("1", "XBee Endpoint 1");
+            AbyssScreenController screenController = new AbyssScreenController();
 
             AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb1);
             AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb2);
             AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb3);
             AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb4);
+            AbyssSystem.Instance.RegisterPhysicalObject(alterXbee);
+            AbyssSystem.Instance.RegisterPhysicalObject(screenController);
 
             SPLightBulb altarLights = new SPLightBulb
             {
@@ -35,10 +39,6 @@ namespace Abyss
                     testLightBulb4,
                 }
             };
-            AbyssSystem.Instance.RegisterSubProcessor(altarLights);
-
-            AbyssScreenController screenController = new AbyssScreenController();
-            AbyssSystem.Instance.RegisterPhysicalObject(screenController);
 
             SPScreen countdownScreen = new SPScreen
             {
@@ -47,21 +47,35 @@ namespace Abyss
                     screenController,
                 }
             };
-            AbyssSystem.Instance.RegisterSubProcessor(countdownScreen);
 
             SPDelay delayThenTurnOn = new SPDelay()
             {
                 DurationMs = 5000,
             };
-            AbyssSystem.Instance.RegisterSubProcessor(delayThenTurnOn);
 
+            SPXBeeEndpoint altarFinishedProcessor = new SPXBeeEndpoint()
+            {
+                SendMessage = "testmessage",
+                ExpectedMessage = "success",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    alterXbee
+                }
+            };
+
+            AbyssSystem.Instance.RegisterSubProcessor(altarLights);
+            AbyssSystem.Instance.RegisterSubProcessor(countdownScreen);
+            AbyssSystem.Instance.RegisterSubProcessor(delayThenTurnOn);
+            AbyssSystem.Instance.RegisterSubProcessor(altarFinishedProcessor);
+
+            altarFinishedProcessor.ExpectedMessageReceived += countdownScreen.Stop;
+            altarFinishedProcessor.ExpectedMessageReceived += delayThenTurnOn.Start;
             delayThenTurnOn.Finished += altarLights.TurnOn;
-            delayThenTurnOn.Finished += countdownScreen.Stop;
-            countdownScreen.CountdownStarted += delayThenTurnOn.Start;
 
             altarLights.Initialize();
             countdownScreen.Initialize();
             delayThenTurnOn.Initialize();
+            altarFinishedProcessor.Initialize();
         }
     }
 }

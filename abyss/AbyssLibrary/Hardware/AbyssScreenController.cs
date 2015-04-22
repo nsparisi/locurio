@@ -18,6 +18,12 @@ namespace AbyssLibrary
         AbyssScreen.AppController appController;
 
         public AbyssScreenController()
+            : this("Screen")
+        {
+        }
+
+        public AbyssScreenController(string name)
+            : base(name)
         {
             appController = new AbyssScreen.AppController();
             appController.CountdownExpired += this.OnCountDownExpired;

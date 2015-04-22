@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbyssLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,13 +17,18 @@ using System.Windows.Shapes;
 namespace AbyssConsole
 {
     /// <summary>
-    /// Interaction logic for PhysicalObjectUserControl.xaml
+    /// Interaction logic for RoomView.xaml
     /// </summary>
-    public partial class PhysicalObjectUserControl : UserControl
+    public partial class HomeSubPage : UserControl
     {
-        public PhysicalObjectUserControl()
+        public HomeSubPage()
         {
             InitializeComponent();
+        }
+
+        public void Refresh()
+        {
+
         }
     }
 }

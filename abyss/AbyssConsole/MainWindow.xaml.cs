@@ -22,40 +22,68 @@ namespace AbyssConsole
     /// </summary>
     public partial class MainWindow : Window
     {
+        public RoomSubPage RoomView { get; private set; }
+        public HomeSubPage HomeView { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
             this.Closing += OnWindowClosing;
+
+            this.HomeView = new HomeSubPage();
+            this.RoomView = new RoomSubPage();
+
+            SwapToHomeView();
         }
 
-        public void ClearScreen()
+        public void Refresh()
         {
             Application.Current.Dispatcher.Invoke((Action)delegate
             {
-
-                this.WrapPanel.Children.Clear();
-
+                RoomView.Refresh();
+                HomeView.Refresh();
             });
         }
 
-        public void AddPhysicalObject(IPhysicalObject physObject)
+        public void SwapToHomeView()
         {
-
-            Application.Current.Dispatcher.Invoke((Action)delegate
-            {
-
-                PhysicalObjectUserControl ui = new PhysicalObjectUserControl();
-                this.WrapPanel.Children.Add(ui);
-
-            });
-
+            this.SubViewGrid.Children.Clear();
+            this.SubViewGrid.Children.Add(HomeView);
         }
 
-        public void OnWindowClosing(object sender, CancelEventArgs e)
+        public void SwapToRoomView()
+        {
+            this.SubViewGrid.Children.Clear();
+            this.SubViewGrid.Children.Add(RoomView);
+        }
+
+        public void SwapToTimeView()
+        {
+            this.SubViewGrid.Children.Clear();
+            this.SubViewGrid.Children.Add(RoomView);
+        }
+
+        void OnWindowClosing(object sender, CancelEventArgs e)
         {
             App app = (App)Application.Current;
             app.Controller.ExitProgram();
         }
+
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            SwapToHomeView();
+        }
+
+        private void Room_Click(object sender, RoutedEventArgs e)
+        {
+            SwapToRoomView();
+        }
+
+        private void Time_Click(object sender, RoutedEventArgs e)
+        {
+            SwapToTimeView();
+        }
+        
     }
 }

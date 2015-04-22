@@ -8,30 +8,26 @@ using System.Windows;
 
 namespace AbyssConsole
 {
-    public class AbyssConsoleController
+    public class AbyssConsoleController : IClientConsole
     {
         MainWindow mainWindow;
 
         public void Start(MainWindow mainWindow)
         {
-            AbyssRunner runner = new AbyssRunner();
-            runner.Run();
-
             this.mainWindow = mainWindow;
+
+            AbyssSystem.Instance.RunConfiguration(new AbyssRunner());
+            AbyssSystem.Instance.RegisterClientConsole(this);
         }
 
         public void Refresh()
         {
-            this.mainWindow.ClearScreen();
-            foreach(var physicalObject in AbyssSystem.Instance.PhysicalObjects)
-            {
-                this.mainWindow.AddPhysicalObject(physicalObject);
-            }
+            this.mainWindow.Refresh();
         }
 
         public void ExitProgram()
         {
-
+            AbyssSystem.Instance.UnregisterClientConsole(this);
         }
     }
 }

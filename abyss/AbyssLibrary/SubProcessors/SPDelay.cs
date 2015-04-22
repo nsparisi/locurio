@@ -18,6 +18,9 @@ namespace AbyssLibrary
             this.StartProcess();
         }
 
+        [AbyssOutput]
+        public event AbyssEvent Finished;
+
         protected override void Process()
         {
             Debug.Log("SPDelay Proc Start");
@@ -34,8 +37,5 @@ namespace AbyssLibrary
                 Finished(this, EventArgs.Empty);
             }
         }
-        
-        [AbyssOutput]
-        public event AbyssEvent Finished;
     }
 }

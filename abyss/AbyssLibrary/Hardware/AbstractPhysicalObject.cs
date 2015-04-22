@@ -12,8 +12,13 @@ namespace AbyssLibrary
         public string Name { get; set; }
 
         protected AbstractPhysicalObject()
+            : this("Default")
         {
-            this.Name = "Default";
+        }
+
+        protected AbstractPhysicalObject(string name)
+        {
+            this.Name = name;
             this.ID = Guid.NewGuid();
         }
     }

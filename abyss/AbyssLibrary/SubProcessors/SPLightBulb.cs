@@ -14,6 +14,7 @@ namespace AbyssLibrary
             : base()
         {
             this.Name = "SPLightBulb";
+            this.Lights = new List<TestLightBulb>();
         }
 
         [AbyssParameter]
@@ -36,9 +37,12 @@ namespace AbyssLibrary
             turnOn = false;
             StartProcess();
         }
-        
+
         [AbyssOutput]
-        public event AbyssEvent Out;
+        public event AbyssEvent TurnedOff;
+
+        [AbyssOutput]
+        public event AbyssEvent TurnedOn;
 
         protected override void Process()
         {
@@ -65,10 +69,30 @@ namespace AbyssLibrary
         protected override void ProcessEnded()
         {
             Debug.Log("SPLightBulb Proc Ended");
+        }
 
-            if (Out != null)
+        public override void Initialize()
+        {
+            foreach (var light in this.Lights)
             {
-                Out(this, EventArgs.Empty);
+                light.TurnedOn += OnTurnedOn;
+                light.TurnedOff += OnTurnedOff;
+            }
+        }
+
+        private void OnTurnedOff(object sender, EventArgs e)
+        {
+            if (TurnedOff != null)
+            {
+                TurnedOff(sender, e);
+            }
+        }
+
+        private void OnTurnedOn(object sender, EventArgs e)
+        {
+            if (TurnedOn != null)
+            {
+                TurnedOn(sender, e);
             }
         }
     }

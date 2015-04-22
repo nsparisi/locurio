@@ -37,7 +37,7 @@ namespace AbyssConsole
             while(true)
             {
                 Controller.Refresh();
-                Thread.Sleep(20000);
+                Thread.Sleep(100);
             }
         }
     }

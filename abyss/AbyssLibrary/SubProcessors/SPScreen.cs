@@ -26,12 +26,6 @@ namespace AbyssLibrary
         [AbyssOutput]
         public event AbyssEvent CountdownStarted;
 
-        public SPScreen()
-            : base()
-        {
-            this.Name = "SPScreen";
-        }
-
         [AbyssInput]
         public void Start(object sender, EventArgs e)
         {
@@ -44,6 +38,23 @@ namespace AbyssLibrary
         {
             startCountdown = false;
             StartProcess();
+        }
+
+        public SPScreen()
+            : base()
+        {
+            this.Name = "SPScreen";
+            this.Screens = new List<AbyssScreenController>();
+        }
+
+        public override void Initialize()
+        {
+            foreach (AbyssScreenController screen in this.Screens)
+            {
+                screen.CountdownExpired += this.OnCountDownExpired;
+                screen.CountdownStarted += this.OnCountDownStarted;
+                screen.CountdownStopped += this.OnCountDownStopped;
+            }
         }
 
         protected override void Process()
@@ -94,16 +105,6 @@ namespace AbyssLibrary
             if (CountdownStopped != null)
             {
                 CountdownStopped(sender, e);
-            }
-        }
-
-        public override void Initialize()
-        {
-            foreach (AbyssScreenController screen in this.Screens)
-            {
-                screen.CountdownExpired += this.OnCountDownExpired;
-                screen.CountdownStarted += this.OnCountDownStarted;
-                screen.CountdownStopped += this.OnCountDownStopped;
             }
         }
     }

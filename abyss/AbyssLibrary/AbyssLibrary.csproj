@@ -52,11 +52,15 @@
     <Compile Include="Hardware\AbyssScreenController.cs" />
     <Compile Include="Hardware\IPhysicalObject.cs" />
     <Compile Include="Hardware\SMSSender.cs" />
+    <Compile Include="Hardware\XBeeEndpoint.cs" />
+    <Compile Include="Hardware\XBeeReceivedEvent.cs" />
+    <Compile Include="Hardware\XBeeExplorer.cs" />
     <Compile Include="Hardware\TestLightBulb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubProcessors\AbstractSubProcessor.cs" />
     <Compile Include="SubProcessors\ISubProcessor.cs" />
     <Compile Include="SubProcessors\SPDelay.cs" />
+    <Compile Include="SubProcessors\SPXBeeEndpoint.cs" />
     <Compile Include="SubProcessors\SPScreen.cs" />
     <Compile Include="SubProcessors\SPLightBulb.cs" />
   </ItemGroup>
