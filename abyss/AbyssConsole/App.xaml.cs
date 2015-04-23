@@ -14,7 +14,6 @@ namespace AbyssConsole
     /// </summary>
     public partial class App : Application
     {
-        Thread refresher;
         public AbyssConsoleController Controller { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -26,19 +25,6 @@ namespace AbyssConsole
 
             Controller = new AbyssConsoleController();
             Controller.Start(mainWindow);
-
-            refresher = new Thread(Refresh);
-            refresher.IsBackground = true;
-            refresher.Start();
-        }
-
-        void Refresh()
-        {
-            while(true)
-            {
-                Controller.Refresh();
-                Thread.Sleep(100);
-            }
         }
     }
 

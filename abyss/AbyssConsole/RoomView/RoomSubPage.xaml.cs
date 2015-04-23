@@ -32,14 +32,6 @@ namespace AbyssConsole
 
         public void Refresh()
         {
-            foreach (var physicalObject in AbyssSystem.Instance.PhysicalObjects)
-            {
-                if (!uiMappings.ContainsKey(physicalObject))
-                {
-                    this.AddPhysicalObject(physicalObject);
-                }
-            }
-
             foreach (var userControl in uiMappings.Values)
             {
                 userControl.Refresh();
@@ -54,21 +46,26 @@ namespace AbyssConsole
             });
         }
 
-        public void AddPhysicalObject(IPhysicalObject physObject)
+        public void AddPhysicalObject(IPhysicalObject physicalObject)
         {
+            if (uiMappings.ContainsKey(physicalObject))
+            {
+                return;
+            }
+
             AbstractPhysicalObjectUserControl uiItem = null;
 
-            if (physObject is TestLightBulb)
+            if (physicalObject is TestLightBulb)
             {
-                uiItem = new LightBulbUserControl((TestLightBulb)physObject);
+                uiItem = new LightBulbUserControl((TestLightBulb)physicalObject);
             }
             else
             {
-                uiItem = new PhysicalObjectUserControl(physObject);
+                uiItem = new PhysicalObjectUserControl(physicalObject);
 
             }
             this.WrapPanel.Children.Add(uiItem);
-            uiMappings.Add(physObject, uiItem);
+            uiMappings.Add(physicalObject, uiItem);
         }
     }
 }

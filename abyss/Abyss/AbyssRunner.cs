@@ -20,7 +20,7 @@ namespace Abyss
             TestLightBulb testLightBulb3 = new TestLightBulb("TestRight1");
             TestLightBulb testLightBulb4 = new TestLightBulb("TestRight2");
             XBeeEndpoint alterXbee = new XBeeEndpoint("1", "XBee Endpoint 1");
-            AbyssScreenController screenController = new AbyssScreenController();
+            AbyssScreenController screenController = new AbyssScreenController("Clock");
 
             AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb1);
             AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb2);
@@ -71,6 +71,9 @@ namespace Abyss
             altarFinishedProcessor.ExpectedMessageReceived += countdownScreen.Stop;
             altarFinishedProcessor.ExpectedMessageReceived += delayThenTurnOn.Start;
             delayThenTurnOn.Finished += altarLights.TurnOn;
+
+            // for fun
+            countdownScreen.CountdownExpired += altarLights.TurnOn;
 
             altarLights.Initialize();
             countdownScreen.Initialize();

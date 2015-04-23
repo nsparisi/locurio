@@ -64,6 +64,13 @@
     <Compile Include="RoomView\RoomSubPage.xaml.cs">
       <DependentUpon>RoomSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClockView\ClockController.cs" />
+    <Compile Include="ClockView\ClockWindow.xaml.cs">
+      <DependentUpon>ClockWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClockView\ClockSubPage.xaml.cs">
+      <DependentUpon>ClockSubPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="HomeView\HomeSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +99,14 @@
     <Page Include="RoomView\RoomSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClockView\ClockWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ClockView\ClockSubPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +143,10 @@
     <ProjectReference Include="..\AbyssLibrary\AbyssLibrary.csproj">
       <Project>{1264cb1e-e774-4211-9122-d720328a7af8}</Project>
       <Name>AbyssLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbyssMonitor\AbyssScreen.csproj">
+      <Project>{477fe764-2428-4634-849e-58c42f3ca0c3}</Project>
+      <Name>AbyssScreen</Name>
     </ProjectReference>
     <ProjectReference Include="..\Abyss\Abyss.csproj">
       <Project>{b2652e68-b47b-4a48-b1f9-60b95aba8335}</Project>

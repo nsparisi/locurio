@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="AbyssConsole.ClockSubPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="350" Width="525">
+    <Grid>
+        <TextBlock 
+            Margin="0,10,0,0" 
+            TextWrapping="Wrap" 
+            Text="Welcome to Abyss Screen" 
+            VerticalAlignment="Top" 
+            Height="20" 
+            TextAlignment="Center" />
+        <Button Content="Spawn Window" HorizontalAlignment="Left" Margin="161,128,0,0" VerticalAlignment="Top" Width="210" Height="55" Click="SpawnWindow_Click"/>
+        <Button Content="Start Countdown" HorizontalAlignment="Left" Margin="161,200,0,0" VerticalAlignment="Top" Width="210" Height="55" Click="StartCountdown_Click"/>
+
+    </Grid>
+</UserControl>

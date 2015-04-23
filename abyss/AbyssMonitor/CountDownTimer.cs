@@ -11,11 +11,10 @@ namespace AbyssScreen
 {
     public class CountDownTimer
     {
-        public delegate void CountDownEvent(long time);
-        public event CountDownEvent OnTimeChanged;
-
-        public delegate void CountDownExpiredEvent();
-        public event CountDownExpiredEvent OnCountDownExpired;
+        public delegate void CountDownEvent(object sender, CountDownEventArgs args);
+        public event CountDownEvent CountDownTicked;
+        public event CountDownEvent CountDownStarted;
+        public event CountDownEvent CountDownExpired;
 
         Timer timer;
         long resetTime;
@@ -45,6 +44,7 @@ namespace AbyssScreen
         {
             timer.Start();
             stopwatch.Start();
+            OnCountDownStarted();
             UpdateListeners();
         }
 
@@ -52,7 +52,6 @@ namespace AbyssScreen
         {
             timer.Stop();
             stopwatch.Stop();
-            UpdateListeners();
         }
 
         public void Reset()
@@ -80,20 +79,34 @@ namespace AbyssScreen
             timeLeft = Math.Max(0, timeLeft);
             if (timeLeft == 0)
             {
-                CountDownExpired();
+                Stop();
+                OnCountDownExpired();
             }
 
-            if(OnTimeChanged != null)
+            OnCountDownTicked(timeLeft);
+        }
+
+        private void OnCountDownExpired()
+        {
+            if (CountDownExpired != null)
             {
-                OnTimeChanged(timeLeft);
+                CountDownExpired(this, new CountDownEventArgs(0));
             }
         }
 
-        private void CountDownExpired()
+        private void OnCountDownStarted()
         {
-            if (OnCountDownExpired != null)
+            if (CountDownStarted != null)
             {
-                OnCountDownExpired();
+                CountDownStarted(this, new CountDownEventArgs(0));
+            }
+        }
+
+        private void OnCountDownTicked(long timeLeft)
+        {
+            if (CountDownTicked != null)
+            {
+                CountDownTicked(this, new CountDownEventArgs(timeLeft));
             }
         }
     }

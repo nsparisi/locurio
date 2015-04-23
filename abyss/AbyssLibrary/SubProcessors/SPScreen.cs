@@ -21,11 +21,11 @@ namespace AbyssLibrary
         public event AbyssEvent CountdownExpired;
 
         [AbyssOutput]
-        public event AbyssEvent CountdownStopped;
+        public event AbyssEvent CountdownTicked;
 
         [AbyssOutput]
         public event AbyssEvent CountdownStarted;
-
+        
         [AbyssInput]
         public void Start(object sender, EventArgs e)
         {
@@ -53,7 +53,7 @@ namespace AbyssLibrary
             {
                 screen.CountdownExpired += this.OnCountDownExpired;
                 screen.CountdownStarted += this.OnCountDownStarted;
-                screen.CountdownStopped += this.OnCountDownStopped;
+                screen.CountdownTicked += this.OnCountdownTicked;
             }
         }
 
@@ -100,11 +100,11 @@ namespace AbyssLibrary
             }
         }
 
-        private void OnCountDownStopped(object sender, EventArgs e)
+        private void OnCountdownTicked(object sender, EventArgs e)
         {
-            if (CountdownStopped != null)
+            if (CountdownTicked != null)
             {
-                CountdownStopped(sender, e);
+                CountdownTicked(sender, e);
             }
         }
     }

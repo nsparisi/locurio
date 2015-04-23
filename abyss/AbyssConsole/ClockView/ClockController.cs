@@ -1,22 +1,24 @@
-﻿using System;
+﻿using AbyssLibrary;
+using AbyssScreen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbyssScreen
+namespace AbyssConsole
 {
-    public class AppController
+    public class ClockController
     {
         private List<ClockWindow> allClockWindows;
-        public CountDownTimer GlobalCountdown { get; private set; }
+        private CountDownTimer countdownClock;
 
-        public AppController()
+        public ClockController(AbyssScreenController screenController)
         {
             allClockWindows = new List<ClockWindow>();
 
-            GlobalCountdown = new CountDownTimer();
-            GlobalCountdown.CountDownTicked += OnUpdateClock;
+            countdownClock = screenController.CountDownTimer;
+            countdownClock.CountDownTicked += OnCountDownTicked;
         }
 
         public void SpawnClock()
@@ -28,8 +30,9 @@ namespace AbyssScreen
             allClockWindows.Add(clock);
         }
 
-        public void ExitProgram()
+        public void CloseAllClockWindows()
         {
+            countdownClock.CountDownTicked -= OnCountDownTicked;
             foreach(ClockWindow clock in allClockWindows)
             {
                 clock.Close();
@@ -39,18 +42,18 @@ namespace AbyssScreen
         public void StartCountDown()
         {
             long startTime = 10000;
-            GlobalCountdown.SetTime(startTime);
 
-            GlobalCountdown.Reset();
-            GlobalCountdown.Start();
+            countdownClock.Reset();
+            countdownClock.SetTime(startTime);
+            countdownClock.Start();
         }
 
         public void StopCountDown()
         {
-            GlobalCountdown.Stop();
+            countdownClock.Stop();
         }
 
-        public void OnUpdateClock(object sender, CountDownEventArgs args)
+        public void OnCountDownTicked(object sender, CountDownEventArgs args)
         {
             foreach (ClockWindow clock in allClockWindows)
             {
