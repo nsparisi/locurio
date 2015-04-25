@@ -85,16 +85,5 @@ namespace AbyssConsole
         {
             SwapToHomeView();
         }
-
-        private void Room_Click(object sender, RoutedEventArgs e)
-        {
-            SwapToRoomView();
-        }
-
-        private void Time_Click(object sender, RoutedEventArgs e)
-        {
-            SwapToTimeView();
-        }
-        
     }
 }

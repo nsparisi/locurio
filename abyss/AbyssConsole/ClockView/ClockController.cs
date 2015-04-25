@@ -13,12 +13,15 @@ namespace AbyssConsole
         private List<ClockWindow> allClockWindows;
         private CountDownTimer countdownClock;
 
+        private const long OneHourMs = 60 * 60 * 1000;
+
         public ClockController(AbyssScreenController screenController)
         {
             allClockWindows = new List<ClockWindow>();
 
             countdownClock = screenController.CountDownTimer;
             countdownClock.CountDownTicked += OnCountDownTicked;
+            countdownClock.SetTime(OneHourMs);
         }
 
         public void SpawnClock()
@@ -41,10 +44,8 @@ namespace AbyssConsole
 
         public void StartCountDown()
         {
-            long startTime = 10000;
-
             countdownClock.Reset();
-            countdownClock.SetTime(startTime);
+            countdownClock.SetTime(OneHourMs);
             countdownClock.Start();
         }
 

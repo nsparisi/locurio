@@ -12,12 +12,12 @@ namespace AbyssConsole
 {
     public class AbyssConsoleController : IClientConsole
     {
-        MainWindow mainWindow;
+        App abyssConsoleApp;
         Thread refresher;
 
-        public void Start(MainWindow mainWindow)
+        public void Start(App abyssConsoleApp)
         {
-            this.mainWindow = mainWindow;
+            this.abyssConsoleApp = abyssConsoleApp;
 
             // for v1.0, AbyssConsole will create AbyssSystem.
             AbyssSystem.Instance.RunConfiguration(new AbyssRunner());
@@ -28,11 +28,11 @@ namespace AbyssConsole
             {
                 if (physicalObject is AbyssScreenController)
                 {
-                    mainWindow.TimeView.AddClockController(
-                        new ClockController((AbyssScreenController)physicalObject));
+                    abyssConsoleApp.RootWindow.TimeView.AddClock((AbyssScreenController)physicalObject);
+                    abyssConsoleApp.RootWindow.HomeView.AddClock(((AbyssScreenController)physicalObject).CountDownTimer);
                 }
 
-                mainWindow.RoomView.AddPhysicalObject(physicalObject);
+                abyssConsoleApp.RootWindow.RoomView.AddPhysicalObject(physicalObject);
             }
 
             // set up fast refresher
@@ -45,7 +45,7 @@ namespace AbyssConsole
         {
             while (true)
             {
-                this.mainWindow.Refresh();
+                abyssConsoleApp.RootWindow.Refresh();
                 Thread.Sleep(100);
             }
         }
@@ -54,7 +54,7 @@ namespace AbyssConsole
         {
             AbyssSystem.Instance.UnregisterClientConsole(this);
 
-            mainWindow.TimeView.CloseAllClockWindows();
+            abyssConsoleApp.RootWindow.TimeView.CloseAllClockWindows();
         }
     }
 }

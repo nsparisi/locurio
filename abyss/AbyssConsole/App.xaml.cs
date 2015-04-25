@@ -16,15 +16,17 @@ namespace AbyssConsole
     {
         public AbyssConsoleController Controller { get; private set; }
 
+        public MainWindow RootWindow { get; private set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            RootWindow = new MainWindow();
+            RootWindow.Show();
 
             Controller = new AbyssConsoleController();
-            Controller.Start(mainWindow);
+            Controller.Start(this);
         }
     }
 

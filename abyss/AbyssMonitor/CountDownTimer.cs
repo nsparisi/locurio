@@ -61,6 +61,11 @@ namespace AbyssScreen
             lastCrossedInterval = 0;
         }
 
+        public long GetTimeRemaining()
+        {
+            return Math.Max(0, resetTime - stopwatch.ElapsedMilliseconds);
+        }
+
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             long floor = stopwatch.ElapsedMilliseconds / Interval;
@@ -73,7 +78,7 @@ namespace AbyssScreen
 
         private void UpdateListeners()
         {
-            long timeLeft = resetTime - stopwatch.ElapsedMilliseconds;
+            long timeLeft = GetTimeRemaining();
 
             // time's up
             timeLeft = Math.Max(0, timeLeft);

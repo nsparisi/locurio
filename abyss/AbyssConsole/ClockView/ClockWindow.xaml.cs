@@ -45,19 +45,29 @@ namespace AbyssConsole
 
         public void SetTime(long milliseconds)
         {
-            long hours = milliseconds / (60 * 60 * 1000);
+            SetTimeText(GetPrettyTimeText(milliseconds));
+        }
+
+        public static string GetPrettyTimeText(long milliseconds)
+        {
+            TimeSpan t = TimeSpan.FromMilliseconds(milliseconds);
+            /*long hours = milliseconds / (60 * 60 * 1000);
             long minutes = milliseconds / (60 * 1000);
             long seconds = Ceiling(milliseconds, (1000));
             string prettyTime = string.Format(
                 "{0}:{1}:{2}",
                 hours.ToString("00"),
                 minutes.ToString("00"),
-                seconds.ToString("00"));
-
-            SetTimeText(prettyTime);
+                seconds.ToString("00"));*/
+            string prettyTime = string.Format(
+                "{0}:{1}:{2}",
+                t.Hours.ToString("00"),
+                t.Minutes.ToString("00"),
+                t.Seconds.ToString("00"));
+            return prettyTime;
         }
 
-        private long Ceiling(long dividend, long divisor)
+        private static long Ceiling(long dividend, long divisor)
         {
             long quotient = dividend / divisor;
             long remainder = dividend % divisor;

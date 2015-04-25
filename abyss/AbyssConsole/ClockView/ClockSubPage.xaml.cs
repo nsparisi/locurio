@@ -29,6 +29,11 @@ namespace AbyssConsole
             InitializeComponent();
         }
 
+        public void AddClock(AbyssScreenController screenController)
+        {
+            controller = new ClockController(screenController);
+        }
+
         public void AddClockController(ClockController controller)
         {
             this.controller = controller;

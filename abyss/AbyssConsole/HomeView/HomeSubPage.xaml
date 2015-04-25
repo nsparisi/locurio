@@ -6,6 +6,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
     <Grid>
-        <Label Content="Home Page" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <WrapPanel Name="WrapPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        </WrapPanel>
     </Grid>
 </UserControl>

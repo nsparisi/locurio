@@ -6,8 +6,6 @@
     <Grid x:Name="MainGrid">
         <Grid HorizontalAlignment="Left" Height="54" VerticalAlignment="Top" Width="1200">
             <Button Content="Home" Width="78" Height="39" Margin="100,0,0,0" HorizontalAlignment="Left" Click="Home_Click"/>
-            <Button Content="Room" Width="78" Height="39" Margin="200,0,0,0" HorizontalAlignment="Left" Click="Room_Click"/>
-            <Button Content="Time" Width="78" Height="39" Margin="300,0,0,0" HorizontalAlignment="Left" Click="Time_Click"/>
         </Grid>
 
         <Grid Name="SubViewGrid" Margin="0,54,0,0" >

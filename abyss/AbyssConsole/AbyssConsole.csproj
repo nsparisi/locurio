@@ -54,8 +54,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HomeView\AbstractThumbnailUserControl.cs" />
     <Compile Include="HomeView\HomeSubPage.xaml.cs">
       <DependentUpon>HomeSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HomeView\HintThumbUserControl.xaml.cs">
+      <DependentUpon>HintThumbUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HomeView\TimeThumbUserControl.xaml.cs">
+      <DependentUpon>TimeThumbUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HomeView\RoomThumbUserControl.xaml.cs">
+      <DependentUpon>RoomThumbUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RoomView\AbstractPhysicalObjectUserControl.cs" />
     <Compile Include="RoomView\LightBulbUserControl.xaml.cs">
@@ -72,6 +82,18 @@
       <DependentUpon>ClockSubPage.xaml</DependentUpon>
     </Compile>
     <Page Include="HomeView\HomeSubPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HomeView\HintThumbUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HomeView\TimeThumbUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HomeView\RoomThumbUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
