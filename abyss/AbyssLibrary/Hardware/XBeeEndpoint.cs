@@ -20,11 +20,6 @@ namespace AbyssLibrary
             XBeeExplorer.Instance.RegisterEndpoint(this);
         }
 
-        public void TestData()
-        {
-            XBeeExplorer.Instance.TestData();
-        }
-
         public void SendData(string message)
         {
             XBeeExplorer.Instance.SendData(this, message);

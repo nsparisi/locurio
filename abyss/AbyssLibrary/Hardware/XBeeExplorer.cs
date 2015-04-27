@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
     internal class XBeeExplorer
     {
-        const string ComPort = "COM3";
+        const string ComPort = "COM4";
         const string Delimiter = "::";
         private SerialPort port;
 
@@ -36,7 +37,10 @@ namespace AbyssLibrary
             try
             {
                 port = new SerialPort(ComPort, 9600, Parity.None, 8, StopBits.One);
-                port.Open();
+                if (!port.IsOpen)
+                {
+                    port.Open();
+                }
                 port.DataReceived += OnDataReceived;
             }
             catch(Exception e)
@@ -70,62 +74,45 @@ namespace AbyssLibrary
 
         private void OnDataReceived(object sender, SerialDataReceivedEventArgs args)
         {
+            // buffer may not be fully loaded -- wait for the message to fill up 
+            Thread.Sleep(100);
             SerialPort serialPort = (SerialPort)sender;
-            string data = string.Empty;
-            string endpointID = string.Empty;
-            string message = string.Empty;
+            char[] buffer = new char[serialPort.BytesToRead];
 
             try
             {
-                data = serialPort.ReadLine();
+                serialPort.Read(buffer, 0, serialPort.BytesToRead);
             }
             catch (Exception e)
             {
                 Debug.Log("Problem reading serial data: ", e.ToString());
             }
 
-            // data format will be
-            // "EndpointID::message"
-            if (data.Contains(Delimiter))
-            {
-                int delimiterIndex = data.IndexOf(Delimiter);
-                endpointID = data.Substring(0, delimiterIndex);
-                message = data.Substring(delimiterIndex + Delimiter.Length);
-            }
+            string[] allMessages = (new string(buffer)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (!string.IsNullOrEmpty(endpointID) && !string.IsNullOrEmpty(message))
+            foreach (string data in allMessages)
             {
+                string endpointID = string.Empty;
+                string message = string.Empty;
 
-                if(endpoints.ContainsKey(endpointID))
+                // data format will be
+                // "EndpointID::message"
+                if (data.Contains(Delimiter))
                 {
-                    endpoints[endpointID].ReceivedMessage(message);
+                    int delimiterIndex = data.IndexOf(Delimiter);
+                    endpointID = data.Substring(0, delimiterIndex);
+                    message = data.Substring(delimiterIndex + Delimiter.Length);
+                }
+
+                if (!string.IsNullOrEmpty(endpointID) && !string.IsNullOrEmpty(message))
+                {
+
+                    if (endpoints.ContainsKey(endpointID))
+                    {
+                        endpoints[endpointID].ReceivedMessage(message);
+                    }
                 }
             }
-        }
-
-        public void TestData()
-        {
-            port.DiscardInBuffer();
-            port.DiscardOutBuffer();
-
-            port.Write(new[] { 'a' }, 0, 1);
-            port.Write(new[] { 'b' }, 0, 1);
-            port.Write(new[] { 'a' }, 0, 1);
-            port.Write(new[] { 'b' }, 0, 1);
-            port.Write("b");
-            port.Write("a");
-            port.Write("test");
-
-            char[] buffer = new char[1000];
-            int line1 = port.Read(buffer, 0, 1);
-            string line2 = port.ReadLine();
-            string line3 = port.ReadLine();
-
-            port.DiscardInBuffer();
-            port.DiscardOutBuffer();
-
-            // port.DataReceived += OnDataReceived;
-            port.Close();
         }
     }
 }

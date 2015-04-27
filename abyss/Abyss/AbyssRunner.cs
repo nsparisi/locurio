@@ -79,6 +79,45 @@ namespace Abyss
             countdownScreen.Initialize();
             delayThenTurnOn.Initialize();
             altarFinishedProcessor.Initialize();
+
+
+
+            // testing arduino
+            SPDelay delay1 = new SPDelay()
+            {
+                DurationMs = 200,
+            };
+            SPDelay delay2 = new SPDelay()
+            {
+                DurationMs = 1000,
+            };
+
+            XBeeEndpoint nicksArduino = new XBeeEndpoint("NICK", "Nick's Arduino");
+            SPXBeeEndpoint turnOnArduino = new SPXBeeEndpoint()
+            {
+                SendMessage = "ON",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    nicksArduino
+                }
+            };
+
+            SPXBeeEndpoint turnOffArduino = new SPXBeeEndpoint()
+            {
+                SendMessage = "OFF",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    nicksArduino
+                }
+            };
+
+            delay1.Finished += turnOnArduino.SendData;
+            delay1.Finished += delay2.Start;
+
+            delay2.Finished += turnOffArduino.SendData;
+            delay2.Finished += delay1.Start;
+
+            delay1.Start(this, EventArgs.Empty);
         }
     }
 }
