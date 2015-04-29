@@ -118,6 +118,11 @@ namespace Abyss
             delay2.Finished += delay1.Start;
 
             delay1.Start(this, EventArgs.Empty);
+
+
+            AbyssSystem.Instance.RegisterPhysicalObject(nicksArduino);
+            AbyssSystem.Instance.RegisterSubProcessor(delay1);
+            AbyssSystem.Instance.RegisterSubProcessor(delay2);
         }
     }
 }

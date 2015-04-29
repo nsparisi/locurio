@@ -59,6 +59,10 @@ namespace AbyssConsole
             {
                 uiItem = new LightBulbUserControl((TestLightBulb)physicalObject);
             }
+            else if (physicalObject is XBeeEndpoint)
+            {
+                uiItem = new XBeeUserControl((XBeeEndpoint)physicalObject);
+            }
             else
             {
                 uiItem = new PhysicalObjectUserControl(physicalObject);
