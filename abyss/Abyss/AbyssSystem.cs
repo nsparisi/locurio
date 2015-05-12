@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AbyssLibrary;
+using System.IO;
 
 namespace Abyss
 {
@@ -32,6 +33,8 @@ namespace Abyss
             SubProcessors = new List<ISubProcessor>();
             PhysicalObjects = new List<IPhysicalObject>();
             Clients = new List<IClientConsole>();
+
+            Directory.CreateDirectory(AbyssUtils.AbyssSoundDirectory);
         }
 
         public void RegisterSubProcessor(ISubProcessor subProcessor)

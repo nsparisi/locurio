@@ -117,12 +117,30 @@ namespace Abyss
             delay2.Finished += turnOffArduino.SendData;
             delay2.Finished += delay1.Start;
 
-            delay1.Start(this, EventArgs.Empty);
+            // uncomment to blink light
+            //delay1.Start(this, EventArgs.Empty);
 
 
             AbyssSystem.Instance.RegisterPhysicalObject(nicksArduino);
             AbyssSystem.Instance.RegisterSubProcessor(delay1);
             AbyssSystem.Instance.RegisterSubProcessor(delay2);
+
+
+            // VLC
+            VLCServerControl vlcController = new VLCServerControl("Dressing Room Music");
+            AbyssSystem.Instance.RegisterPhysicalObject(vlcController);
+
+            SPSoundControl musicController = new SPSoundControl()
+            {
+                Name = "Dressing Room Music",
+                SongFileName = @"08 Breaking Out.mp3",
+                Volume = 0.5f,
+                VLCControllers = new List<VLCServerControl>() 
+                {
+                    vlcController
+                }
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(musicController);
         }
     }
 }

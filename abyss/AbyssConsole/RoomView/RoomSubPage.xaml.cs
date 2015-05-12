@@ -63,11 +63,15 @@ namespace AbyssConsole
             {
                 uiItem = new XBeeUserControl((XBeeEndpoint)physicalObject);
             }
+            else if (physicalObject is VLCServerControl)
+            {
+                uiItem = new SoundUserControl((VLCServerControl)physicalObject);
+            }
             else
             {
                 uiItem = new PhysicalObjectUserControl(physicalObject);
-
             }
+
             this.WrapPanel.Children.Add(uiItem);
             uiMappings.Add(physicalObject, uiItem);
         }
