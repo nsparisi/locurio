@@ -25,6 +25,7 @@ namespace AbyssConsole
         public RoomSubPage RoomView { get; private set; }
         public HomeSubPage HomeView { get; private set; }
         public ClockSubPage TimeView { get; private set; }
+        public HintSubPage HintView { get; private set; }
 
         bool isExiting;
 
@@ -37,6 +38,7 @@ namespace AbyssConsole
             this.HomeView = new HomeSubPage();
             this.RoomView = new RoomSubPage();
             this.TimeView = new ClockSubPage();
+            this.HintView = new HintSubPage();
 
             SwapToHomeView();
         }
@@ -71,6 +73,12 @@ namespace AbyssConsole
         {
             this.SubViewGrid.Children.Clear();
             this.SubViewGrid.Children.Add(TimeView);
+        }
+
+        public void SwapToHintView()
+        {
+            this.SubViewGrid.Children.Clear();
+            this.SubViewGrid.Children.Add(HintView);
         }
 
         void OnWindowClosing(object sender, CancelEventArgs e)

@@ -141,6 +141,12 @@ namespace Abyss
                 }
             };
             AbyssSystem.Instance.RegisterSubProcessor(musicController);
+
+            // Text Messages
+            TextingController textingHtc = new TextingController("192.168.1.7", "HTC One");
+            AbyssSystem.Instance.RegisterPhysicalObject(textingHtc);
+            TextingController textingMotorola = new TextingController("192.168.1.12", "Motorola Droid 2");
+            AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
         }
     }
 }

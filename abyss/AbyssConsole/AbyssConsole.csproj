@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HintView\HintSubPage.xaml.cs">
+      <DependentUpon>HintSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HomeView\AbstractThumbnailUserControl.cs" />
     <Compile Include="HomeView\HomeSubPage.xaml.cs">
       <DependentUpon>HomeSubPage.xaml</DependentUpon>
@@ -87,6 +90,10 @@
     <Compile Include="ClockView\ClockSubPage.xaml.cs">
       <DependentUpon>ClockSubPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="HintView\HintSubPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="HomeView\HomeSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

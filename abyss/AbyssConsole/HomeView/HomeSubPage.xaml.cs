@@ -39,6 +39,7 @@ namespace AbyssConsole
             this.WrapPanel.Children.Add(timeThumb);
 
             hintThumb = new HintThumbUserControl();
+            hintThumb.MouseDown += Hint_Click;
             this.WrapPanel.Children.Add(hintThumb);
         }
 
@@ -64,6 +65,12 @@ namespace AbyssConsole
         {
             App app = (App)Application.Current;
             app.RootWindow.SwapToRoomView();
+        }
+
+        private void Hint_Click(object sender, RoutedEventArgs e)
+        {
+            App app = (App)Application.Current;
+            app.RootWindow.SwapToHintView();
         }
     }
 }

@@ -32,6 +32,11 @@ namespace AbyssConsole
                     abyssConsoleApp.RootWindow.HomeView.AddClock(((AbyssScreenController)physicalObject).CountDownTimer);
                 }
 
+                if(physicalObject is TextingController)
+                {
+                    abyssConsoleApp.RootWindow.HintView.AddTextingController((TextingController)physicalObject);
+                }
+
                 abyssConsoleApp.RootWindow.RoomView.AddPhysicalObject(physicalObject);
             }
 
