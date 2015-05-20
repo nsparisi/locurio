@@ -2,6 +2,8 @@ package com.locurio.abysstexting;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Trace;
@@ -20,27 +22,40 @@ import java.util.ArrayList;
  */
 public class MessageService extends Service
 {
-    MessageServiceInterface serviceInterface = new MessageServiceInterface();
+    public static MessageService instance;
+
+    public static final int SERVER_PORT = 6000;
+    private static final String CLEAR_MESSAGE_HISTORY = "CLEAR_MESSAGE_HISTORY";
+
     MainActivity.MessageListener messageListener;
     ArrayList<MessageData> allMessages;
 
     ServerSocket serverSocket;
     Thread serverThread;
-    public static final int SERVER_PORT = 6000;
-
-    // todo probably dont need broadcaster
-    //LocalBroadcastManager broadcaster;
-    //Intent broadcastIntent = new Intent("com.locurio.abysstexting.MainActivity");
 
     @Override
     public void onDestroy()
     {
+        Debug.log("********MessageService onDestroy");
         super.onDestroy();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
     public void onCreate()
     {
+        Debug.log("********MessageService onCreate");
+        if(instance != null)
+        {
+            Debug.log("********MessageService WARNING instance already exists");
+        }
+
+        instance = this;
+
         allMessages = new ArrayList<MessageData>();
         serverThread = new Thread(new ServerThread());
         serverThread.start();
@@ -49,27 +64,76 @@ public class MessageService extends Service
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
-        return serviceInterface;
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    public class MessageServiceInterface extends Binder
+    public void registerMessageListener(MainActivity.MessageListener listener)
     {
-        public void addMessageListener(MainActivity.MessageListener listener)
+        Debug.log("********MessageService registerMessageListener");
+        if(messageListener != null)
         {
-            messageListener = listener;
-
-            // populate the list with any existing messages
-            for(int i = 0; i < allMessages.size(); i++)
-            {
-                messageListener.onIncomingMessage(allMessages.get(i));
-            }
+            Debug.log("********MessageService WARNING messageListener already exists");
         }
 
-        public void removeMessageListener(MainActivity.MessageListener messageListener)
+        messageListener = listener;
+
+        // populate the list with any existing messages
+        for(int i = 0; i < allMessages.size(); i++)
         {
-            messageListener = null;
+            messageListener.onIncomingMessage(allMessages.get(i));
+        }
+    }
+
+    public void unregisterMessageListener(MainActivity.MessageListener listener)
+    {
+        Debug.log("********MessageService unregisterMessageListener");
+        messageListener = null;
+    }
+
+    private void clearMessageHistory()
+    {
+        allMessages.clear();
+        if(messageListener != null)
+        {
+            messageListener.clearMessageHistory();
+        }
+    }
+
+
+    public class ServerThread implements Runnable
+    {
+        @Override
+        public void run() {
+            Socket socket = null;
+            try
+            {
+                Debug.log("********ServerThread started");
+                serverSocket = new ServerSocket(SERVER_PORT);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                return;
+            }
+
+            while(!Thread.currentThread().isInterrupted())
+            {
+                try
+                {
+                    // wait forever until a connection is requested
+                    Debug.log("********ServerThread accept");
+                    socket = serverSocket.accept();
+
+                    // make a new thread to receive the data
+                    Thread t = new Thread(new CommunicationThread(socket));
+                    t.run();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -87,12 +151,17 @@ public class MessageService extends Service
             try
             {
                 // this thread will only receive one line of data, then end
+                Debug.log("********CommunicationThread getInputStream");
                 BufferedReader input = input = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()));
 
                 String line = input.readLine();
 
-                if(line != null)
+                if(line != null && line.equals(CLEAR_MESSAGE_HISTORY))
+                {
+                    clearMessageHistory();
+                }
+                else if(line != null)
                 {
                     // todo, split message into parts
                     MessageData data = new MessageData();
@@ -104,48 +173,26 @@ public class MessageService extends Service
                     {
                         messageListener.onIncomingMessage(data);
                     }
+
+                    // play a sound
+                    try
+                    {
+                        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        RingtoneManager.getRingtone(getApplicationContext(), notificationUri).play();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
 
+                Debug.log("********CommunicationThread closing");
                 input.close();
                 socket.close();
             }
             catch (IOException e)
             {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    public class ServerThread implements Runnable
-    {
-        @Override
-        public void run() {
-            Socket socket = null;
-            try
-            {
-                Log.v("MainActivity", "********Service started");
-                serverSocket = new ServerSocket(SERVER_PORT);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-            while(!Thread.currentThread().isInterrupted())
-            {
-                try
-                {
-                    // wait forever until a connection is requested
-                    socket = serverSocket.accept();
-
-                    // make a new thread to receive the data
-                    Thread t = new Thread(new CommunicationThread(socket));
-                    t.run();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
             }
         }
     }

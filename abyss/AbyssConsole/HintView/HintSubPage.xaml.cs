@@ -41,7 +41,7 @@ namespace AbyssConsole
                 "This is a valuable hint.",
                 "Help me obi-wan",
                 "Another really good one",
-                "Noxamillion always likes to use a live rabbit in his act. But sometimes the rabbit eats the keys to the lox!"
+                "Noxamillion always likes to use a live rabbit in his act. But sometimes the rabbit eats the keys to the locks!"
             };
 
             this.SuggestionList.ItemsSource = hints;
@@ -87,6 +87,17 @@ namespace AbyssConsole
                 this.TextBox.Clear();
                 UpdateHistory();
             }
+        }
+
+        private void ClearMessageHistory_Click(object sender, RoutedEventArgs e)
+        {
+            if (controllerSubProcessor != null)
+            {
+                controllerSubProcessor.ClearHistory(this, EventArgs.Empty);
+            }
+
+            messageHistory.Clear();
+            UpdateHistory();
         }
 
         private void UpdateHistory()

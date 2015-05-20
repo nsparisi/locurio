@@ -13,6 +13,8 @@ namespace AbyssLibrary
     public class TextingController : AbstractPhysicalObject
     {
         public string IpAddress { get; private set; }
+
+        private const string Clear_Message_History = "CLEAR_MESSAGE_HISTORY";
         
         public TextingController(string ipAddress)
             : base()
@@ -24,6 +26,11 @@ namespace AbyssLibrary
             : base(name)
         {
             this.IpAddress = ipAddress;
+        }
+
+        public void ClearHistory()
+        {
+            SendTextMessage(Clear_Message_History);
         }
 
         public void SendTextMessage(string toSend)

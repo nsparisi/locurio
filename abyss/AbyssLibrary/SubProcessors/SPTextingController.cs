@@ -24,6 +24,15 @@ namespace AbyssLibrary
             StartProcess();
         }
 
+        [AbyssInput]
+        public void ClearHistory(object sender, EventArgs e)
+        {
+            clearHistory = true;
+            StartProcess();
+        }
+
+        private bool clearHistory;
+
         public SPTextingController()
             : base()
         {
@@ -47,7 +56,14 @@ namespace AbyssLibrary
                     continue;
                 }
 
-                controller.SendTextMessage(TextMessage);
+                if (clearHistory)
+                {
+                    controller.ClearHistory();
+                }
+                else
+                {
+                    controller.SendTextMessage(TextMessage);
+                }
             }
 
             ProcessEnded();
@@ -56,6 +72,7 @@ namespace AbyssLibrary
         protected override void ProcessEnded()
         {
             Debug.Log("SPTextingController Proc Ended");
+            clearHistory = false;
         }
     }
 }

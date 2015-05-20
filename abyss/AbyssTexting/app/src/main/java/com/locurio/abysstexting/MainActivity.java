@@ -22,82 +22,98 @@ import java.net.Socket;
 
 public class MainActivity extends Activity {
 
-    private MessageService.MessageServiceInterface messageService;
     private ListView messagesList;
     private MessageAdapter messageAdapter;
     MessageListener messageListener = new MessageListener();
-    MyServiceConnection serviceConnection = new MyServiceConnection();
-
-    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.v(TAG, "********App started");
+        Debug.log("********App started");
 
-        bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
-
+        // populate UI components
         messagesList = (ListView) findViewById(R.id.listMessages);
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
-        populateMessageHistory();
-    }
 
-    private void populateMessageHistory()
-    {
-        //todo
-        //AddMessage("Test 123");
-        //AddMessage("Test 333");
-        //AddMessage("Test 666");
-    }
+        // create MessageService which runs in background
+        startService(new Intent(this, MessageService.class));
 
-    private void AddMessage(String message)
-    {
-        MessageData data = new MessageData();
-        data.message = message;
-        data.time = "12:44 PM";
-        AddMessage(data);
-    }
-
-    private void AddMessage(final MessageData message)
-    {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                messageAdapter.addMessage(message);
-            }
-        });
+        // wait for MessageService
+        Thread waitForService = new Thread(new WaitForService());
+        waitForService.start();
     }
 
     @Override
-    protected void onDestroy()
-    {
-        messageService.removeMessageListener(messageListener);
-        unbindService(serviceConnection);
+    protected void onPause() {
+        Debug.log("********onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Debug.log("********onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Debug.log("********onDestroy");
+        unregisterListener();
         super.onDestroy();
     }
 
-    private class MyServiceConnection implements ServiceConnection
+    private void unregisterListener()
     {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service)
-        {
-            messageService = (MessageService.MessageServiceInterface)service;
-            messageService.addMessageListener(messageListener);
+        if(MessageService.instance != null) {
+            MessageService.instance.unregisterMessageListener(messageListener);
         }
+    }
 
-        @Override
-        public void onServiceDisconnected(ComponentName name)
-        {
-            messageService = null;
+    private void registerListener()
+    {
+        if(MessageService.instance != null) {
+            MessageService.instance.registerMessageListener(messageListener);
         }
     }
 
     public class MessageListener {
-        public void onIncomingMessage(MessageData message)
+        public void onIncomingMessage(final MessageData message)
         {
-            AddMessage(message);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    messageAdapter.addMessage(message);
+                }
+            });
+        }
+
+        public void clearMessageHistory()
+        {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    messageAdapter.clearMessages();
+                }
+            });
+        }
+    }
+
+    public class WaitForService implements Runnable
+    {
+        @Override
+        public void run() {
+            while(MessageService.instance == null)
+            {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            registerListener();
         }
     }
 }
