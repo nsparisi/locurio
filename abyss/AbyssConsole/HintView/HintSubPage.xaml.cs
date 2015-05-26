@@ -44,8 +44,7 @@ namespace AbyssConsole
                 "Noxamillion always likes to use a live rabbit in his act. But sometimes the rabbit eats the keys to the locks!"
             };
 
-            this.SuggestionList.ItemsSource = hints;
-            this.SuggestionList.SelectionChanged += Suggestion_Selected;
+            this.SuggestionList.SelectedItemChanged += Suggestion_Selected;
         }
 
         public void AddTextingController(TextingController textingController)
@@ -73,7 +72,11 @@ namespace AbyssConsole
         {
             if (this.SuggestionList.SelectedItem != null)
             {
-                this.TextBox.Text = this.SuggestionList.SelectedItem.ToString();
+                TreeViewItem selection = (TreeViewItem)this.SuggestionList.SelectedItem;
+                if (selection != null)
+                {
+                    this.TextBox.Text = selection.Header.ToString();
+                }
             }
         }
 
