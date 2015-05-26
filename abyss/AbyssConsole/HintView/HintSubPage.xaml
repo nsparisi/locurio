@@ -12,15 +12,17 @@
         <ListBox Name="SentHistory" HorizontalAlignment="Left" Margin="287,211,0,26" Width="230"/>
         <Label Content="Sent History" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="287,324,0,0" VerticalAlignment="Top" Width="228"/>
         <TreeView Name="SuggestionList" HorizontalAlignment="Left" Height="277" Margin="10,47,0,0" VerticalAlignment="Top" Width="251">
-            <TreeViewItem Header="1: Wall 3 Posters">
-                <TreeViewItem Header="Use the posters." />
-                <TreeViewItem Header="Don't use the posters." />
-                <TreeViewItem Header="Poster the posters." />
-            </TreeViewItem>
-            <TreeViewItem Header="2: Hankerchief">
-                <TreeViewItem Header="Use the Hankerchief." />
-                <TreeViewItem Header="Don't use the Hankerchief." />
-                <TreeViewItem Header="Hankerchief the Hankerchief." />
+            <TreeViewItem Header="The Vanishing Act">
+                <TreeViewItem Header="1: Wall 3 Posters">
+                    <TreeViewItem Header="Use the posters." />
+                    <TreeViewItem Header="Don't use the posters." />
+                    <TreeViewItem Header="Poster the posters." />
+                </TreeViewItem>
+                <TreeViewItem Header="2: Hankerchief">
+                    <TreeViewItem Header="Use the Hankerchief." />
+                    <TreeViewItem Header="Don't use the Hankerchief." />
+                    <TreeViewItem Header="Hankerchief the Hankerchief." />
+                </TreeViewItem>
             </TreeViewItem>
         </TreeView>
         <Label Content="Suggested Hints" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="10,324,0,0" VerticalAlignment="Top" Width="251"/>
