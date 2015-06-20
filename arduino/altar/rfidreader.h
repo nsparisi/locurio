@@ -6,6 +6,14 @@
 #define MAX_TAG_LEN 255
 #define MAX_FAIL 2
 
+// Set to 1 to obtain debug output
+#define RfidDebugOutput 0
+
+// Timing parameters
+#define ResetDelay 50
+#define SerialTimeout 175
+
+
 class RfidReader
 {
   private:

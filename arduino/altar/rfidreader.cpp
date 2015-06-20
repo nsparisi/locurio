@@ -19,7 +19,7 @@ RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName)
   if (!RfidReader::serialInitialized)
   {
     Serial2.begin(9600);
-    Serial2.setTimeout(175);
+    Serial2.setTimeout(SerialTimeout);
   }
     
 }
@@ -39,7 +39,7 @@ bool RfidReader::PollForTag()
   }
   
   // Wait 50 ms.
-  delay(50);
+  delay(ResetDelay);
   
   // Get started again
   digitalWrite(ResetPin, HIGH);
@@ -50,14 +50,18 @@ bool RfidReader::PollForTag()
   
   if (countRead > 0)
   {
-  Serial.print(friendlyName);
-  Serial.print(": Read ");
-  Serial.print((int)countRead);
-  Serial.print(" bytes: ");
-  Serial.println(buf);
+    
+    if (DebugOutput)
+    {
+      Serial.print(friendlyName);
+      Serial.print(": Read ");
+      Serial.print((int)countRead);
+      Serial.print(" bytes: ");
+      Serial.println(buf);
+    }
   
     // Check if tag is valid
-    if (countRead == 13)  // exact length of RFID tag + 'T' prefix
+    if (countRead == 13)  // exact length of RFID tag + 0x02 prefix
     {
       // TODO:  validate checksum
       
