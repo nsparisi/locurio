@@ -2,9 +2,6 @@
 #define RfidReader_h
 
 #include <inttypes.h>
-#include "OldSoftwareSerial.h"
-
-#define NotConnectedPin 41
 
 #define MAX_TAG_LEN 255
 #define MAX_FAIL 2
@@ -12,20 +9,19 @@
 class RfidReader
 {
   private:
-	int DataPin;
+        static bool serialInitialized;
+	int MultiplexerChannel;
 	int ResetPin;
 
 	char* currentTag = new char[MAX_TAG_LEN];
 	bool tagPresent = false;
 	int failCount = 0;
         char* buf = new char[MAX_TAG_LEN];
-
-	SoftwareSerial* softwareSerialPort;
+        const char* friendlyName;
 	
   public:
-	RfidReader(int dataPin, int resetPin);
+	RfidReader(int muxChannel, int resetPin, const char* readerName);
 	
-        void Setup();
 	bool PollForTag();
 
 	bool GetIsTagPresent();

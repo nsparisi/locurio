@@ -1,7 +1,7 @@
 #include "lightgroup.h"
 #include "Arduino.h"
 
-LedControl LightGroup::ledController = LedControl(22,24,23,1);  
+LedControl LightGroup::ledController = LedControl(22,26,24,1);  //din clk load 1
 
 LightGroup::LightGroup(int row, int column)
 {

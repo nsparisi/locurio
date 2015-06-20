@@ -1,65 +1,63 @@
 #include "rfidreader.h"
+#include "multiplexer.h"
+
 #include "Arduino.h"
 
-RfidReader::RfidReader(int dataPin, int resetPin)
+bool RfidReader::serialInitialized = false;
+
+RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName)
 {
-  DataPin = dataPin; 
+  MultiplexerChannel = muxChannel;
   ResetPin = resetPin;
   
-  // setup the software serial pins
-  pinMode(DataPin, INPUT);
-  pinMode(ResetPin, OUTPUT);
-  pinMode(NotConnectedPin, OUTPUT);
+  friendlyName = readerName;
   
+  // setup the software serial pins
+  pinMode(ResetPin, OUTPUT);
   digitalWrite(ResetPin, HIGH);
-}
-
-void RfidReader::Setup()
-{
-  softwareSerialPort = new SoftwareSerial(DataPin, NotConnectedPin);
-  softwareSerialPort->begin(9600);
+  
+  if (!RfidReader::serialInitialized)
+  {
+    Serial2.begin(9600);
+    Serial2.setTimeout(175);
+  }
+    
 }
 
 bool RfidReader::PollForTag()
 {
-
+  // Set the multiplexer pin
+  Multiplexer::Instance.Select(MultiplexerChannel);
+  
   // First, reset the reader so it will redetect any existing tags.
   digitalWrite(ResetPin, LOW);
-  delay(50);
-  digitalWrite(ResetPin, HIGH);
   
-  // Pull bytes out of the software serial channel
-  char currentByte = -1;
+  // While all the readers are turned off, flush the serial buffer.
+  while (Serial2.available())
+  {
+    Serial2.read();
+  }
+  
+  // Wait 50 ms.
+  delay(50);
+  
+  // Get started again
+  digitalWrite(ResetPin, HIGH);
   
   // Create a buffer and a pointer to walk through it.
   char* ptr = buf;
+  byte countRead = Serial2.readBytes(buf, 13);
   
-  // Don't wait longer than 160ms for a tag to appear.
-  // (value determined by experimentation with ID-20)
-  unsigned long start = millis();
-  // 160 was original value here
-  while ((int)currentByte != 2 && ((millis() - start) < 160))
+  if (countRead > 0)
   {
-     currentByte = softwareSerialPort->read();  
-  }
+  Serial.print(friendlyName);
+  Serial.print(": Read ");
+  Serial.print((int)countRead);
+  Serial.print(" bytes: ");
+  Serial.println(buf);
   
-  if (currentByte == 2) //start character of sequence
-  {
-    *ptr = 'T';
-    
-    // only accept letters or numbers;  terminate sequence on anything else.
-    while ((*ptr >= 'A' && *ptr <= 'Z') || (*ptr >= '0' && *ptr <= '9'))
-    {
-      ptr++;
-      *ptr = softwareSerialPort->read();
-      Serial.println((int)(*ptr));
-    }  
-    
-    // null terminate our string, since we only save letters and numbers.
-    *ptr = '\0';
-    
     // Check if tag is valid
-    if (ptr-buf == 13)  // exact length of RFID tag + 'T' prefix
+    if (countRead == 13)  // exact length of RFID tag + 'T' prefix
     {
       // TODO:  validate checksum
       
@@ -88,19 +86,7 @@ bool RfidReader::PollForTag()
       tagPresent = false;
     }   
   }
-  
-/*  Serial.print(DataPin);
-  Serial.print(" : ");
-if (tagPresent)
-{
-  Serial.print(currentTag);
-}
-else
-{
-  Serial.print("NO");
-}
-Serial.println("");
-*/
+ 
   return tagPresent;
 }
 
