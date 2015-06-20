@@ -11,7 +11,7 @@
 
 // Timing parameters
 #define ResetDelay 50
-#define SerialTimeout 175
+#define SerialTimeout 150
 
 
 class RfidReader
@@ -34,6 +34,7 @@ class RfidReader
 
 	bool GetIsTagPresent();
 	const char* GetCurrentTag();
+        const char* GetFriendlyName();
 };
 
 #endif

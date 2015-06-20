@@ -48,10 +48,12 @@ bool RfidReader::PollForTag()
   char* ptr = buf;
   byte countRead = Serial2.readBytes(buf, 13);
   
-  if (countRead > 0)
+  if (countRead > 0 && countRead < MAX_TAG_LEN-1)
   {
+    // Null terminate the string
+    buf[countRead] = '\0';
     
-    if (DebugOutput)
+    if (RfidDebugOutput)
     {
       Serial.print(friendlyName);
       Serial.print(": Read ");
@@ -109,4 +111,9 @@ const char* RfidReader::GetCurrentTag()
 	{
 		return 0;
 	}
+}
+
+const char* RfidReader::GetFriendlyName()
+{
+  return friendlyName;
 }

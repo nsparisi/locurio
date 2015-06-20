@@ -49,6 +49,12 @@ void setup(void) {
   leds[2] = new LightGroup(2,0,1);
   leds[3] = new LightGroup(3,0,1);
   leds[4] = new LightGroup(4,0,1);
+  
+for (int i=0; i<5; i++)
+{
+        CenterLights.SetLight(i, 128,0,0);
+}
+
 }
 
 
@@ -57,31 +63,33 @@ void loop(void)
 {
   
   for (int i=0; i<readerCount; i++)
-  {
-    Serial.print(i);
+  { 
+    bool oldState = readers[i]->GetIsTagPresent();
+    bool newState = readers[i]->PollForTag();
     
-    leds[i]->SetState(readers[i]->PollForTag());
-    
-    Serial.print(readers[i]->GetIsTagPresent() ? "+" : "-");
-    
-    if (readers[i]->GetIsTagPresent())
+   
+   if (newState != oldState)
+    {   
+      leds[i]->SetState(newState);
+   
+    if (newState)
     {
-      CenterLights.SetLight(i, 255,255,255);
+      Serial.print("Tag arrived:  ");
+      Serial.print(readers[i]->GetFriendlyName());
+      Serial.print(" [");
+      Serial.print(readers[i]->GetCurrentTag());
+      Serial.println("]");
+      
+      CenterLights.SetLight(i, 0,128,0);
     }
     else
     {
-      CenterLights.SetLight(i,0,0,0);
+      Serial.print("Tag departed:  ");
+      Serial.print(readers[i]->GetFriendlyName());
+      Serial.println(" []");
+      CenterLights.SetLight(i,128,0,0);
+    }
     }
   }
-  
-  for (int i=0; i<1; i++)
-  {
-    leds[i]->SetState(true);
-    delay(50);
-    leds[i]->SetState(false);
-    delay(50);
-  }
-  
-  Serial.println();
 
 }
