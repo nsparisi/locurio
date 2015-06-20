@@ -11,7 +11,7 @@
 
 // Timing parameters
 #define ResetDelay 50
-#define SerialTimeout 150
+#define SerialTimeout 175
 
 
 class RfidReader

@@ -33,10 +33,10 @@ bool RfidReader::PollForTag()
   digitalWrite(ResetPin, LOW);
   
   // While all the readers are turned off, flush the serial buffer.
-  while (Serial2.available())
+ /* while (Serial2.available())
   {
     Serial2.read();
-  }
+  }*/
   
   // Wait 50 ms.
   delay(ResetDelay);
@@ -71,8 +71,8 @@ bool RfidReader::PollForTag()
       failCount = MAX_FAIL;
       tagPresent = true;
 	  
-      // Save the buffer to the currentTag field.
-      strcpy(currentTag, buf);
+      // Save the buffer to the currentTag field, without the 0x02 prefix
+      strcpy(currentTag, buf+1);
     }
     else
     {
