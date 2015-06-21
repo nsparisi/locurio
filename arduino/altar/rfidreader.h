@@ -4,7 +4,7 @@
 #include <inttypes.h>
 
 #define MAX_TAG_LEN 255
-#define MAX_FAIL 2
+#define MAX_FAIL 1
 
 // Set to 1 to obtain debug output
 #define RfidDebugOutput 1

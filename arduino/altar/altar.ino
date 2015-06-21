@@ -38,10 +38,10 @@ void setup(void)
   readers[13] = new RfidReader(2, 44, "Top 2");
   readers[14] = new RfidReader(14, 44, "Top 3");
   readers[15] = new RfidReader(15, 44, "Top 4");
-
-  sideLights[0] = 4;
-  sideLights[1] = 4;
-  sideLights[2] = 4;
+  
+  sideLights[0] = 1;
+  sideLights[1] = 1;
+  sideLights[2] = 1;
   sideLights[3] = 0;
   sideLights[4] = 0;
   sideLights[5] = 0;
@@ -50,11 +50,11 @@ void setup(void)
   sideLights[8] = 3;
   sideLights[9] = 2;
   sideLights[10] = 2;
-  sideLights[11] = 5;
-  sideLights[12] = 5;
-  sideLights[13] = 5;
-  sideLights[14] = 5;
-  sideLights[15] = 5;
+  sideLights[11] = 4;
+  sideLights[12] = 4;
+  sideLights[13] = 4;
+  sideLights[14] = 4;
+  sideLights[15] = 4;
   
 
   leds[0] = new LightGroup(0,  0, 1);
