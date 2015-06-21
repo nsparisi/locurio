@@ -8,20 +8,20 @@ MegaBrite::MegaBrite()
 }
 
 // Set pins to outputs and initial states
-void MegaBrite::Setup() 
+void MegaBrite::Setup()
 {
   pinMode(datapin, OUTPUT);
   pinMode(latchpin, OUTPUT);
   pinMode(enablepin, OUTPUT);
   pinMode(clockpin, OUTPUT);
-  
+
   digitalWrite(latchpin, LOW);
   digitalWrite(enablepin, LOW);
 }
 
-void MegaBrite::SendPacket() 
+void MegaBrite::SendPacket()
 {
-  if (SB_CommandMode == B01) 
+  if (SB_CommandMode == B01)
   {
     SB_RedCommand = 127;
     SB_GreenCommand = 110;
@@ -33,22 +33,22 @@ void MegaBrite::SendPacket()
   SB_CommandPacket = (SB_CommandPacket << 10)  | (SB_RedCommand & 1023);
   SB_CommandPacket = (SB_CommandPacket << 10)  | (SB_GreenCommand & 1023);
 
-  for (int j = 0; j < 32; j++) 
+  for (int j = 0; j < 32; j++)
   {
-    if ((SB_CommandPacket >> (31 - j)) & 1) 
-	{
+    if ((SB_CommandPacket >> (31 - j)) & 1)
+    {
       DATPORT |= (1 << DATPIN);
-    } 
-    else 
-	{
+    }
+    else
+    {
       DATPORT &= ~(1 << DATPIN);
     }
     CLKPORT |= (1 << CLKPIN);
-    CLKPORT &= ~(1 << CLKPIN); 
-  } 
+    CLKPORT &= ~(1 << CLKPIN);
+  }
 }
 
-void MegaBrite::Latch() 
+void MegaBrite::Latch()
 {
   delayMicroseconds(1);
   LATPORT |= (1 << LATPIN);
@@ -58,7 +58,7 @@ void MegaBrite::Latch()
   LATPORT &= ~(1 << LATPIN);
 }
 
-void MegaBrite::WriteLEDArray() 
+void MegaBrite::WriteLEDArray()
 {
   SB_CommandMode = B00; // Write to PWM control registers
 
@@ -68,22 +68,22 @@ void MegaBrite::WriteLEDArray()
     SB_BlueCommand = LEDChannels[i][2];
     SendPacket();
   }
-  
+
   Latch();
-  
+
   SB_CommandMode = B01; // Write to current control registers
 
   for (int z = 0; z < NumLEDs; z++)
   {
-	SendPacket();   
+    SendPacket();
   }
 
   Latch();
 }
 
-void MegaBrite::AllOff() 
+void MegaBrite::AllOff()
 {
-  for (int i=0; i<NumLEDs; i++)
+  for (int i = 0; i < NumLEDs; i++)
   {
     LEDChannels[i][0] = 0;
     LEDChannels[i][1] = 0;
@@ -97,6 +97,6 @@ void MegaBrite::SetLight(int channel, int red, int green, int blue)
   LEDChannels[channel][0] = red;
   LEDChannels[channel][1] = green;
   LEDChannels[channel][2] = blue;
-  
+
   WriteLEDArray();
 }

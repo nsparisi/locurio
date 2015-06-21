@@ -24,10 +24,10 @@
 
 
 /* Ports and Pins
- 
+
  Direct port access is much faster than digitalWrite.
  You must match the correct port and pin as shown in the table below.
- 
+
  Arduino Mega Pin   Port        Pin
  13.................PORTB.......7
  12.................PORTB.......6
@@ -51,7 +51,7 @@
  A2 (Analog)........PORTF.......2
  A1 (Analog)........PORTF.......1
  A0 (Analog)........PORTF.......0
- 
+
 */
 // Defines for use with Arduino functions
 #define clockpin   7 // CI
@@ -74,26 +74,26 @@
 class MegaBrite
 {
   private:
-	// Variables for communication
-	unsigned long SB_CommandPacket;
-	int SB_CommandMode;
-	int SB_BlueCommand;
-	int SB_RedCommand;
-	int SB_GreenCommand;
+    // Variables for communication
+    unsigned long SB_CommandPacket;
+    int SB_CommandMode;
+    int SB_BlueCommand;
+    int SB_RedCommand;
+    int SB_GreenCommand;
 
-	// Create LED value storage array
-	int LEDChannels[NumLEDs][5];
-	
-	void SendPacket();
-	void Latch();
+    // Create LED value storage array
+    int LEDChannels[NumLEDs][5];
+
+    void SendPacket();
+    void Latch();
 
   public:
-	MegaBrite();
-	void Setup();
+    MegaBrite();
+    void Setup();
 
-	void WriteLEDArray();
-	void AllOff();
-	void SetLight(int channel, int red, int green, int blue);
+    void WriteLEDArray();
+    void AllOff();
+    void SetLight(int channel, int red, int green, int blue);
 };
 
 #endif
