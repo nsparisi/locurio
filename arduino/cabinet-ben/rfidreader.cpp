@@ -1,58 +1,31 @@
 #include "rfidreader.h"
-#include "multiplexer.h"
 
+#include <SoftwareSerial.h>
 #include "Arduino.h"
 
 bool RfidReader::serialInitialized = false;
 
-RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName)
+#define FAKE_TX_PIN 12
+
+RfidReader::RfidReader(int serialPin, const char* readerName)
 {
-  MultiplexerChannel = muxChannel;
-  ResetPin = resetPin;
+  SerialPin=serialPin;
 
   friendlyName = readerName;
-
+  
   // setup the software serial pins
-  pinMode(ResetPin, OUTPUT);
-  digitalWrite(ResetPin, HIGH);
+  pinMode(serialPin, OUTPUT);
 
-  if (!RfidReader::serialInitialized)
-  {
-    Serial2.begin(9600);
-    Serial2.setTimeout(SerialTimeout);
-  }
+  swserial = new SoftwareSerial(serialPin, FAKE_TX_PIN);
+  swserial->begin(9600);
+  swserial->setTimeout(SerialTimeout);
+  
 
 }
 
-void RfidReader::SetMultiplexer()
+bool RfidReader::WaitForTag()
 {
-    // Set the multiplexer pin
-  Multiplexer::Instance.Select(MultiplexerChannel);
-  
-  while (Serial2.available())
-  {
-    Serial2.read();
-  }
-  
-}
-
-bool RfidReader::PollForTag()
-{
-  SetMultiplexer();
-
-  // First, reset the reader so it will redetect any existing tags.
-  digitalWrite(ResetPin, LOW);
-
-  while (Serial2.available())
-  {
-    Serial2.read();
-  }
-
-  // Wait 50 ms.
-  delay(ResetDelay);
-
-  // Get started again
-  digitalWrite(ResetPin, HIGH);
+  swserial->listen();
 
   delay(50);
 
@@ -61,13 +34,13 @@ bool RfidReader::PollForTag()
 
   byte countRead = 0;
 
-  if (Serial2.find("\x02"))
+  if (swserial->find("\x02"))
   {
     if (RfidDebugOutput)
     {
-      Serial.println("Found start byte 0x02");
+      swserial->println("Found start byte 0x02");
     }
-    countRead = Serial2.readBytes(buf, 13);
+    countRead = swserial->readBytes(buf, 13);
   }
 
   if (countRead > 0 && countRead < MAX_TAG_LEN - 1)

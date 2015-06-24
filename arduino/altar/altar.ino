@@ -94,9 +94,12 @@ void setup(void)
 
   for (int i = 0; i < 5; i++)
   {
-    CenterLights.SetLight(i, 128, 128, 128);
+    CenterLights.SetLight(i, 1023, 1023, 1023);
   }
 }
+
+
+void(*resetFunc) (void) = 0;
 
 void loop(void)
 {
@@ -106,6 +109,12 @@ void loop(void)
     {
       delay(5);
     }
+    
+    if (i < (wordCount-1))
+    {
+      wordPuzzle[i+1]->SetMultiplexer();
+    }
+    
     for (int i = 0; i < 6; i++)
     {
       for (int j = 0; j < 5; j++)
@@ -124,41 +133,47 @@ void loop(void)
         CenterLights.SetLight(j, 128 * i, 128 * 6, 128 * i);
       }
     }
+    
+    for (int i=0; i<5; i++)
+    {
+      CenterLights.SetLight(i, 1023, 1023, 1023);
+    }
   }
 
   for (int i = 0; i < 25; i++)
   {
     for (int j = 0; j < 5; j++)
     {
-      CenterLights.SetLight(j, 768, 0, 0);
+      CenterLights.SetLight(j, 1023, 0, 0);
     }
     delay(150);
     for (int j = 0; j < 5; j++)
     {
-      CenterLights.SetLight(j, 0, 768, 0);
+      CenterLights.SetLight(j, 0, 1023, 0);
     }
     delay(150);
     for (int j = 0; j < 5; j++)
     {
-      CenterLights.SetLight(j, 0, 0, 768);
+      CenterLights.SetLight(j, 0, 0, 1023);
     }
     delay(150);
     for (int j = 0; j < 5; j++)
     {
-      CenterLights.SetLight(j, 768, 0, 768);
+      CenterLights.SetLight(j, 1023, 0, 1023);
     }
     delay(150);
     for (int j = 0; j < 5; j++)
     {
-      CenterLights.SetLight(j, 768, 768, 0);
+      CenterLights.SetLight(j, 1023, 1023, 0);
     }
     delay(150);
     for (int j = 0; j < 5; j++)
     {
-      CenterLights.SetLight(j, 0, 768, 768);
+      CenterLights.SetLight(j, 0, 1023, 1023);
     }
     delay(150);
   }
+  resetFunc();
 }
 
 

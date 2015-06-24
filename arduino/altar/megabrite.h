@@ -21,7 +21,7 @@
 #define MegaBrite_h
 
 #include <inttypes.h>
-
+#include <Arduino.h>
 
 /* Ports and Pins
 
