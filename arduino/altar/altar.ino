@@ -6,6 +6,8 @@
 #include "rfidreader.h"
 #include "lightgroup.h"
 
+#define MAX_BRIGHTNESS 1023
+
 RfidReader** readers;
 RfidReader** wordPuzzle;
 LightGroup** leds;
@@ -15,6 +17,83 @@ int readerCount = 16;
 int wordCount = 11;
 
 MegaBrite CenterLights = MegaBrite();
+
+void(*resetFunc) (void) = 0;
+
+void allLightsOff()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    CenterLights.SetLight(i, 0, 0, 0);
+  }
+}
+
+void allLightsOn()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    CenterLights.SetLight(i, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+  }
+}
+
+void topLightOnly()
+{
+  allLightsOff();
+  CenterLights.SetLight(4, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+}
+
+void allLightsGreen()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    CenterLights.SetLight(i, 0, MAX_BRIGHTNESS, 0);
+  }
+}
+
+void allLightsRed()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    CenterLights.SetLight(i, 0, MAX_BRIGHTNESS, 0);
+  }
+}
+
+void rave()
+{
+  for (int i = 0; i < 25; i++)
+  {
+    for (int j = 0; j < 5; j++)
+    {
+      CenterLights.SetLight(j, MAX_BRIGHTNESS, 0, 0);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      CenterLights.SetLight(j, 0, MAX_BRIGHTNESS, 0);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      CenterLights.SetLight(j, 0, 0, MAX_BRIGHTNESS);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      CenterLights.SetLight(j, MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      CenterLights.SetLight(j, MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      CenterLights.SetLight(j, 0, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+    }
+    delay(150);
+  }
+}
 
 void setup(void)
 {
@@ -41,7 +120,6 @@ void setup(void)
   readers[14] = new RfidReader(14, 44, "Top 3");
   readers[15] = new RfidReader(15, 44, "Top 4");
 
-
   wordPuzzle[0] = readers[6];	// reader: Back 0
   wordPuzzle[1] = readers[2];	// reader: Front 2
   wordPuzzle[2] = readers[5];	// reader: Right 2
@@ -53,10 +131,7 @@ void setup(void)
   wordPuzzle[8] = readers[8];	// reader: Back 2
   wordPuzzle[9] = readers[4];	// reader: Right 1
   wordPuzzle[10] = readers[1];	// reader: Front 1
-
-
-
-
+  
   sideLights[0] = 1;
   sideLights[1] = 1;
   sideLights[2] = 1;
@@ -74,7 +149,6 @@ void setup(void)
   sideLights[14] = 4;
   sideLights[15] = 4;
 
-
   leds[0] = new LightGroup(0,  0, 1);
   leds[1] = new LightGroup(0,  2, 3);
   leds[2] = new LightGroup(0,  4, 5);
@@ -91,19 +165,13 @@ void setup(void)
   leds[13] = new LightGroup(4,  2);
   leds[14] = new LightGroup(4,  3);
   leds[15] = new LightGroup(4,  4);
-
-  for (int i = 0; i < 5; i++)
-  {
-    CenterLights.SetLight(i, 1023, 1023, 1023);
-  }
+  
+  allLightsOff();
 }
 
-
-void(*resetFunc) (void) = 0;
-
-void loop(void)
+void solveWordPuzzle()
 {
-  for (int i = 0; i < wordCount; i++)
+   for (int i = 0; i < wordCount; i++)
   {
     while (!wordPuzzle[i]->PollForTag())
     {
@@ -123,7 +191,6 @@ void loop(void)
       }
     }
 
-
     delay(1000);
 
     for (int i = 0; i < 6; i++)
@@ -139,74 +206,12 @@ void loop(void)
       CenterLights.SetLight(i, 1023, 1023, 1023);
     }
   }
-
-  for (int i = 0; i < 25; i++)
-  {
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 1023, 0, 0);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 0, 1023, 0);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 0, 0, 1023);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 1023, 0, 1023);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 1023, 1023, 0);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 0, 1023, 1023);
-    }
-    delay(150);
-  }
-  resetFunc();
 }
 
 
-void Testloop(void)
+void loop(void)
 {
-  for (int i = 0; i < readerCount; i++)
-  {
-    //Serial.println(i);
-    bool oldState = readers[i]->GetIsTagPresent();
-    bool newState = readers[i]->PollForTag();
-
-
-    if (newState != oldState)
-    {
-      leds[i]->SetState(newState);
-
-      if (newState)
-      {
-        Serial.print("Tag arrived:  ");
-        Serial.print(readers[i]->GetFriendlyName());
-        Serial.print(" [");
-        Serial.print(readers[i]->GetCurrentTag());
-        Serial.println("]");
-
-        CenterLights.SetLight(sideLights[i], 0, 128, 0);
-      }
-      else
-      {
-        Serial.print("Tag departed:  ");
-        Serial.print(readers[i]->GetFriendlyName());
-        Serial.println(" []");
-        CenterLights.SetLight(sideLights[i], 128, 128, 128);
-      }
-    }
-  }
+  solveWordPuzzle();
+  rave();
+  resetFunc();
 }
