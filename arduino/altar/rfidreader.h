@@ -7,11 +7,13 @@
 #define MAX_FAIL 1
 
 // Set to 1 to obtain debug output
-#define RfidDebugOutput 1
+#define RfidDebugOutput 0
 
 // Timing parameters
 #define ResetDelay 50
 #define SerialTimeout 150
+
+#define TimesUntilEachReset 20
 
 
 class RfidReader
@@ -27,14 +29,18 @@ class RfidReader
     char* buf = new char[MAX_TAG_LEN];
     const char* friendlyName;
 
+    static int ResetCounter;
   public:
     RfidReader(int muxChannel, int resetPin, const char* readerName);
 
     bool PollForTag();
+    bool PollForTag(bool shouldReset);
 
     bool GetIsTagPresent();
     const char* GetCurrentTag();
     const char* GetFriendlyName();
+    
+    void Reset();
     
     void SetMultiplexer();
 };

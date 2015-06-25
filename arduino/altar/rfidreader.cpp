@@ -4,6 +4,7 @@
 #include "Arduino.h"
 
 bool RfidReader::serialInitialized = false;
+int RfidReader::ResetCounter = 0;
 
 RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName)
 {
@@ -34,13 +35,12 @@ void RfidReader::SetMultiplexer()
     Serial2.read();
   }
   
+  Reset();
 }
 
-bool RfidReader::PollForTag()
+void RfidReader::Reset()
 {
-  SetMultiplexer();
-
-  // First, reset the reader so it will redetect any existing tags.
+    // First, reset the reader so it will redetect any existing tags.
   digitalWrite(ResetPin, LOW);
 
   while (Serial2.available())
@@ -55,6 +55,30 @@ bool RfidReader::PollForTag()
   digitalWrite(ResetPin, HIGH);
 
   delay(50);
+}
+
+bool RfidReader::PollForTag()
+{
+  if (RfidReader::ResetCounter == 0)
+  {
+    RfidReader::ResetCounter = TimesUntilEachReset;
+    Reset();
+  }
+  else
+  {
+    RfidReader::ResetCounter--;
+  }
+  
+  return PollForTag(false);
+}
+
+bool RfidReader::PollForTag(bool shouldReset)
+{
+  SetMultiplexer();
+  if (shouldReset)
+  {
+    Reset();
+  }
 
   // Create a buffer and a pointer to walk through it.
   char* ptr = buf;
