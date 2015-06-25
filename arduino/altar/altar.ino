@@ -10,11 +10,16 @@
 
 RfidReader** readers;
 RfidReader** wordPuzzle;
+RfidReader** topPuzzle;
+
 LightGroup** leds;
+LightGroup** topLightSegments;
+
 int sideLights[16];
 
 int readerCount = 16;
 int wordCount = 11;
+int topCount = 5;
 
 MegaBrite CenterLights = MegaBrite();
 
@@ -101,7 +106,10 @@ void setup(void)
 
   readers = new RfidReader*[readerCount];
   wordPuzzle = new RfidReader*[wordCount];
+  topPuzzle = new RfidReader*[topCount];
+  
   leds = new LightGroup*[readerCount];
+  topLightSegments = new LightGroup*[topCount];
 
   readers[0] = new RfidReader(7, 36, "Front 0");
   readers[1] = new RfidReader(3, 36, "Front 1");
@@ -131,6 +139,12 @@ void setup(void)
   wordPuzzle[8] = readers[8];	// reader: Back 2
   wordPuzzle[9] = readers[4];	// reader: Right 1
   wordPuzzle[10] = readers[1];	// reader: Front 1
+  
+  topPuzzle[0] = readers[11];
+  topPuzzle[1] = readers[12];
+  topPuzzle[2] = readers[13];
+  topPuzzle[3] = readers[14];
+  topPuzzle[4] = readers[15];
   
   sideLights[0] = 1;
   sideLights[1] = 1;
@@ -166,7 +180,42 @@ void setup(void)
   leds[14] = new LightGroup(4,  3);
   leds[15] = new LightGroup(4,  4);
   
+  topLightSegments[0] = leds[11];
+  topLightSegments[1] = leds[12];
+  topLightSegments[2] = leds[13];
+  topLightSegments[3] = leds[14];
+  topLightSegments[4] = leds[15];
+  
   allLightsOff();
+}
+
+void solveTopPuzzle()
+{
+  int currentBestReader = -1;
+
+  while (currentBestReader < topCount-1)
+  {
+    currentBestReader = -1;
+    
+    for (int i=0; i<topCount; i++)
+    {
+      if (wordPuzzle[1]->PollForTag())
+      {
+        currentBestReader++;
+      }  
+      else
+      {
+        break;
+      }
+    }
+    
+    for (int j=0; j<topCount; j++)
+    {
+      topLightSegments[j]->SetState(j <= currentBestReader);
+    }
+
+    Serial.print(currentBestReader);    
+  }
 }
 
 void solveWordPuzzle()
@@ -208,9 +257,9 @@ void solveWordPuzzle()
   }
 }
 
-
 void loop(void)
 {
+  solveTopPuzzle();
   solveWordPuzzle();
   rave();
   resetFunc();
