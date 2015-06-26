@@ -69,6 +69,8 @@
 #define LATPIN  3
 #define DATPIN  5
 
+#define MAX_BRIGHTNESS 1023
+
 #define NumLEDs 5
 
 class MegaBrite
@@ -88,12 +90,23 @@ class MegaBrite
     void Latch();
 
   public:
+    static MegaBrite Instance;
+    
     MegaBrite();
     void Setup();
 
     void WriteLEDArray();
     void AllOff();
     void SetLight(int channel, int red, int green, int blue);
+    
+    void AllLightsOff();
+    void AllLightsOn();
+    void TopLightOnly();
+    void AllLightsGreen();
+    void AllLightsRed();
+    void AllLightsBlue();
+    void Rave();
+
 };
 
 #endif

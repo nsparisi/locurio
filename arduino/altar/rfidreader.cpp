@@ -84,9 +84,6 @@ bool RfidReader::PollForTag(bool shouldReset)
     Reset();
   }
 
-  // Create a buffer and a pointer to walk through it.
-  char* ptr = buf;
-
   byte countRead = 0;
 
   if (Serial2.find("\x02"))
@@ -173,13 +170,57 @@ bool RfidReader::PollForTag(bool shouldReset)
     }
   }
 
-
+  if (tagPresent)
+  {
+    currentTagType = TagDatabase::Instance.getTagType(currentTag);
+    if (currentTagType == MASTER)
+    {
+      TagDatabase::Instance.enterEnrollMode(this);
+    }
+  }
+  else
+  {
+    currentTagType = NO_TAG;
+  }
+  
+  
   return tagPresent;
 }
 
 bool RfidReader::GetIsTagPresent()
 {
   return tagPresent;
+}
+
+void RfidReader::WaitForValidTag()
+{
+  bool validTagFound = false;
+  while (!validTagFound)
+  {
+    while (!PollForTag(true))
+    {
+      delay(10);
+    }
+    if (currentTagType != NO_TAG && currentTagType != INVALID && currentTagType != UNKNOWN_VALID)
+    {
+      if (RfidDebugOutput)
+      {
+        Serial.println("Invalid tag detected;  remaining in WaitForValidTag()");
+      }
+    }
+    else
+    {
+      validTagFound=true;
+    }
+  }
+}
+
+void RfidReader::WaitForNoTag()
+{
+  while (PollForTag(true))
+  {
+    delay(10);
+  }
 }
 
 const char* RfidReader::GetCurrentTag()

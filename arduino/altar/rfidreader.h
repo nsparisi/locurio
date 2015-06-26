@@ -2,12 +2,15 @@
 #define RfidReader_h
 
 #include <inttypes.h>
+#include "tagtypes.h"
+
+#include "tagdatabase.h"
 
 #define MAX_TAG_LEN 32
 #define MAX_FAIL 1
 
 // Set to 1 to obtain debug output
-#define RfidDebugOutput 0
+#define RfidDebugOutput 1
 
 // Timing parameters
 #define ResetDelay 100
@@ -24,6 +27,8 @@ class RfidReader
     int ResetPin;
 
     char currentTag[MAX_TAG_LEN];
+    TagType currentTagType = NO_TAG;
+    
     bool tagPresent = false;
     int failCount = 0;
     char buf[MAX_TAG_LEN];
@@ -41,6 +46,9 @@ class RfidReader
     bool GetIsTagPresent();
     const char* GetCurrentTag();
     const char* GetFriendlyName();
+    
+    void WaitForValidTag();
+    void WaitForNoTag();
     
     void Reset();
     

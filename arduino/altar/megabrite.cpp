@@ -1,6 +1,8 @@
 #include "megabrite.h"
 #include "Arduino.h"
 
+MegaBrite MegaBrite::Instance = MegaBrite();
+
 MegaBrite::MegaBrite()
 {
   Setup();
@@ -99,4 +101,88 @@ void MegaBrite::SetLight(int channel, int red, int green, int blue)
   LEDChannels[channel][2] = blue;
 
   WriteLEDArray();
+}
+
+
+void MegaBrite::AllLightsOff()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    MegaBrite::Instance.SetLight(i, 0, 0, 0);
+  }
+}
+
+void MegaBrite::AllLightsOn()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    SetLight(i, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+  }
+}
+
+void MegaBrite::TopLightOnly()
+{
+  AllLightsOff();
+  SetLight(4, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+}
+
+void MegaBrite::AllLightsGreen()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    SetLight(i, 0, MAX_BRIGHTNESS, 0);
+  }
+}
+
+void MegaBrite::AllLightsRed()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    SetLight(i, 0, MAX_BRIGHTNESS, 0);
+  }
+}
+
+void MegaBrite::AllLightsBlue()
+{
+  for (int i = 0; i < 5; i++)
+  {
+    SetLight(i, 0, 0, MAX_BRIGHTNESS);
+  }
+}
+
+void MegaBrite::Rave()
+{
+  for (int i = 0; i < 25; i++)
+  {
+    for (int j = 0; j < 5; j++)
+    {
+      SetLight(j, MAX_BRIGHTNESS, 0, 0);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      SetLight(j, 0, MAX_BRIGHTNESS, 0);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      SetLight(j, 0, 0, MAX_BRIGHTNESS);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      SetLight(j, MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      SetLight(j, MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0);
+    }
+    delay(150);
+    for (int j = 0; j < 5; j++)
+    {
+      SetLight(j, 0, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+    }
+    delay(150);
+  }
 }

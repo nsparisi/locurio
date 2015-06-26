@@ -5,12 +5,9 @@
 #include "megabrite.h"
 #include "rfidreader.h"
 #include "lightgroup.h"
+#include "reset.h"
 
-#define MAX_BRIGHTNESS 1023
-
-
-
-
+#define PuzzleDebug 0
 
 #define readerCount 16
 #define wordCount 11
@@ -18,91 +15,11 @@
 
 int sideLights[16];
 
-RfidReader* readers[readerCount];
 RfidReader* wordPuzzle[wordCount];
 RfidReader* topPuzzle[topCount];
 
 LightGroup* leds[readerCount];
 LightGroup* topLightSegments[topCount];
-
-MegaBrite CenterLights = MegaBrite();
-
-void(*resetFunc) (void) = 0;
-
-void allLightsOff()
-{
-  for (int i = 0; i < 5; i++)
-  {
-    CenterLights.SetLight(i, 0, 0, 0);
-  }
-}
-
-void allLightsOn()
-{
-  for (int i = 0; i < 5; i++)
-  {
-    CenterLights.SetLight(i, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
-  }
-}
-
-void topLightOnly()
-{
-  allLightsOff();
-  CenterLights.SetLight(4, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
-}
-
-void allLightsGreen()
-{
-  for (int i = 0; i < 5; i++)
-  {
-    CenterLights.SetLight(i, 0, MAX_BRIGHTNESS, 0);
-  }
-}
-
-void allLightsRed()
-{
-  for (int i = 0; i < 5; i++)
-  {
-    CenterLights.SetLight(i, 0, MAX_BRIGHTNESS, 0);
-  }
-}
-
-void rave()
-{
-  for (int i = 0; i < 25; i++)
-  {
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, MAX_BRIGHTNESS, 0, 0);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 0, MAX_BRIGHTNESS, 0);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 0, 0, MAX_BRIGHTNESS);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0);
-    }
-    delay(150);
-    for (int j = 0; j < 5; j++)
-    {
-      CenterLights.SetLight(j, 0, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
-    }
-    delay(150);
-  }
-}
 
 RfidReader reader0 = RfidReader(7, 36, "Front 0");
 RfidReader reader1 = RfidReader(3, 36, "Front 1");
@@ -183,13 +100,13 @@ void setup(void)
   topLightSegments[3] = &led13;
   topLightSegments[4] = &led14;
   
-  allLightsOff();
+  MegaBrite::Instance.AllLightsOff();
 }
-
-#define PuzzleDebug 0
 
 void solveTopPuzzle()
 {
+  MegaBrite::Instance.TopLightOnly();
+  
   int currentBestReader = -1;
 
   while (currentBestReader < (topCount - 1))
@@ -240,28 +157,11 @@ void solveWordPuzzle()
       wordPuzzle[i+1]->SetMultiplexer();
     }
     
-    for (int i = 0; i < 6; i++)
-    {
-      for (int j = 0; j < 5; j++)
-      {
-        CenterLights.SetLight(j, 0, 128 * i, 0);
-      }
-    }
+    MegaBrite::Instance.AllLightsGreen();
 
     delay(1000);
-
-    for (int i = 0; i < 6; i++)
-    {
-      for (int j = 0; j < 5; j++)
-      {
-        CenterLights.SetLight(j, 128 * i, 128 * 6, 128 * i);
-      }
-    }
     
-    for (int i=0; i<5; i++)
-    {
-      CenterLights.SetLight(i, 1023, 1023, 1023);
-    }
+    MegaBrite::Instance.AllLightsOn();
   }
 }
 
@@ -269,6 +169,8 @@ void loop(void)
 {
   solveTopPuzzle();
   solveWordPuzzle();
-  rave();
-  resetFunc();
+  
+  MegaBrite::Instance.Rave();
+  
+  Reset::resetFunc();
 }
