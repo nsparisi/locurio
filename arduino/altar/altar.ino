@@ -7,6 +7,8 @@
 #include "lightgroup.h"
 #include "reset.h"
 
+#include "tagdatabase.h"
+
 #define PuzzleDebug 0
 
 #define readerCount 16
@@ -101,6 +103,9 @@ void setup(void)
   topLightSegments[4] = &led14;
   
   MegaBrite::Instance.AllLightsOff();
+  TagDatabase::Instance.dumpTagDatabase();
+  TagDatabase::Instance.createDatabase();
+  TagDatabase::Instance.dumpTagDatabase();
 }
 
 void solveTopPuzzle()

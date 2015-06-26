@@ -173,7 +173,9 @@ bool RfidReader::PollForTag(bool shouldReset)
   if (tagPresent)
   {
     currentTagType = TagDatabase::Instance.getTagType(currentTag);
-    if (currentTagType == MASTER)
+    Serial.print(currentTagType);
+    Serial.println(" was detected tag type.");
+    if (currentTagType == MASTER && !TagDatabase::Instance.isInEnrollmentMode)
     {
       TagDatabase::Instance.enterEnrollMode(this);
     }
@@ -201,7 +203,7 @@ void RfidReader::WaitForValidTag()
     {
       delay(10);
     }
-    if (currentTagType != NO_TAG && currentTagType != INVALID && currentTagType != UNKNOWN_VALID)
+    if (currentTagType == NO_TAG || currentTagType == INVALID || currentTagType == UNKNOWN_VALID)
     {
       if (RfidDebugOutput)
       {
