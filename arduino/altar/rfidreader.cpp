@@ -6,17 +6,18 @@
 bool RfidReader::serialInitialized = false;
 int RfidReader::ResetCounter = 0;
 
-RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName)
+RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted)
 {
-  MultiplexerChannel = muxChannel;
-  ResetPin = resetPin;
+  IsResetPinInverted = isResetPinInverted;
+  this->MultiplexerChannel = muxChannel;
+  this->ResetPin = resetPin;
 
   friendlyName = readerName;
 
   // setup the software serial pins
   pinMode(ResetPin, OUTPUT);
-  digitalWrite(ResetPin, HIGH);
-
+  digitalWrite(ResetPin, isResetPinInverted ? LOW : HIGH);
+  
   if (!RfidReader::serialInitialized)
   {
     Serial2.begin(9600);
@@ -34,15 +35,18 @@ void RfidReader::SetMultiplexer()
   {
     Serial2.read();
   }
-  
-  Reset();
 }
 
 void RfidReader::Reset()
 {
     // First, reset the reader so it will redetect any existing tags.
-  digitalWrite(ResetPin, LOW);
-
+  digitalWrite(ResetPin, IsResetPinInverted ? HIGH : LOW);
+  
+  if (RfidDebugOutput)
+  {
+    Serial.println("Reset!");
+  }
+  
   while (Serial2.available())
   {
     Serial2.read();
@@ -52,7 +56,7 @@ void RfidReader::Reset()
   delay(ResetDelay);
 
   // Get started again
-  digitalWrite(ResetPin, HIGH);
+  digitalWrite(ResetPin, IsResetPinInverted ? LOW : HIGH);
 
   delay(50);
 }
@@ -86,14 +90,15 @@ bool RfidReader::PollForTag(bool shouldReset)
   byte countRead = 0;
 
   if (Serial2.find("\x02"))
-  {
+  { 
     if (RfidDebugOutput)
     {
       Serial.println("Found start byte 0x02");
     }
+   
     countRead = Serial2.readBytes(buf, 13);
   }
-
+  
   if (countRead > 0 && countRead < MAX_TAG_LEN - 1)
   {
     // Null terminate the string

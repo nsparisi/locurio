@@ -8,18 +8,22 @@
 
 #define MAX_BRIGHTNESS 1023
 
-RfidReader** readers;
-RfidReader** wordPuzzle;
-RfidReader** topPuzzle;
 
-LightGroup** leds;
-LightGroup** topLightSegments;
+
+
+
+#define readerCount 16
+#define wordCount 11
+#define topCount 5
 
 int sideLights[16];
 
-int readerCount = 16;
-int wordCount = 11;
-int topCount = 5;
+RfidReader* readers[readerCount];
+RfidReader* wordPuzzle[wordCount];
+RfidReader* topPuzzle[topCount];
+
+LightGroup* leds[readerCount];
+LightGroup* topLightSegments[topCount];
 
 MegaBrite CenterLights = MegaBrite();
 
@@ -100,52 +104,62 @@ void rave()
   }
 }
 
+RfidReader reader0 = RfidReader(7, 36, "Front 0");
+RfidReader reader1 = RfidReader(3, 36, "Front 1");
+RfidReader reader2 = RfidReader(8, 36, "Front 2");
+RfidReader reader3 = RfidReader(4, 38, "Right 0");
+RfidReader reader4 = RfidReader(5, 38, "Right 1");
+RfidReader reader5 = RfidReader(6, 38, "Right 2");
+RfidReader reader6 = RfidReader(11, 40, "Back 0");
+RfidReader reader7 = RfidReader(12, 40, "Back 1");
+RfidReader reader8 = RfidReader(13, 40, "Back 2");
+RfidReader reader9 = RfidReader(9, 42, "Left 0");
+RfidReader reader10 = RfidReader(10, 42, "Left 1");
+RfidReader reader11 = RfidReader(0, 44, "Top (Top Center)", true);
+RfidReader reader12 = RfidReader(1, 44, "Top (Bottom Right)", true);
+RfidReader reader13 = RfidReader(2, 44, "Top (Bottom Left)", true);
+RfidReader reader14 = RfidReader(14, 44, "Top (Middle Left)", true);
+RfidReader reader15 = RfidReader(15, 44, "Top (Middle Right)", true);
+
+  LightGroup led0 = LightGroup(0,  0, 1);
+  LightGroup led1 = LightGroup(0,  2, 3);
+LightGroup   led2 = LightGroup(0,  4, 5);
+LightGroup   led3 = LightGroup(1,  0, 1);
+LightGroup   led4 = LightGroup(1,  2, 3);
+LightGroup   led5 = LightGroup(1,  4, 5);
+LightGroup   led6 = LightGroup(2,  0, 1);
+LightGroup   led7 = LightGroup(2,  2, 3);
+LightGroup   led8 = LightGroup(2,  4, 5);
+LightGroup   led9 = LightGroup(3,  0, 1);
+LightGroup   led10 = LightGroup(3,  2, 3);
+LightGroup   led11 = LightGroup(4,  0);
+LightGroup   led12 = LightGroup(4,  1);
+LightGroup   led13 = LightGroup(4,  2);
+LightGroup   led14 = LightGroup(4,  3);
+LightGroup   led15 = LightGroup(4,  4);
+
 void setup(void)
 {
   Serial.begin(9600);
 
-  readers = new RfidReader*[readerCount];
-  wordPuzzle = new RfidReader*[wordCount];
-  topPuzzle = new RfidReader*[topCount];
+  wordPuzzle[0] = &reader6;	// reader: Back 0
+  wordPuzzle[1] = &reader2;	// reader: Front 2
+  wordPuzzle[2] = &reader5;	// reader: Right 2
+  wordPuzzle[3] = &reader10;	// reader: Left 1
+  wordPuzzle[4] = &reader7;	// reader: Back 1
+  wordPuzzle[5] = &reader9;	// reader: Left 0
+  wordPuzzle[6] = &reader0;	// reader: Front 0
+  wordPuzzle[7] = &reader3;	// reader: Right 0
+  wordPuzzle[8] = &reader8;	// reader: Back 2
+  wordPuzzle[9] = &reader4;	// reader: Right 1
+  wordPuzzle[10] = &reader1;	// reader: Front 1
   
-  leds = new LightGroup*[readerCount];
-  topLightSegments = new LightGroup*[topCount];
+  topPuzzle[0] = &reader11;
+  topPuzzle[1] = &reader15;
+  topPuzzle[2] = &reader12;
+  topPuzzle[3] = &reader13;
+  topPuzzle[4] = &reader14;
 
-  readers[0] = new RfidReader(7, 36, "Front 0");
-  readers[1] = new RfidReader(3, 36, "Front 1");
-  readers[2] = new RfidReader(8, 36, "Front 2");
-  readers[3] = new RfidReader(4, 38, "Right 0");
-  readers[4] = new RfidReader(5, 38, "Right 1");
-  readers[5] = new RfidReader(6, 38, "Right 2");
-  readers[6] = new RfidReader(11, 40, "Back 0");
-  readers[7] = new RfidReader(12, 40, "Back 1");
-  readers[8] = new RfidReader(13, 40, "Back 2");
-  readers[9] = new RfidReader(9, 42, "Left 0");
-  readers[10] = new RfidReader(10, 42, "Left 1");
-  readers[11] = new RfidReader(0, 44, "Top 0");
-  readers[12] = new RfidReader(1, 44, "Top 1");
-  readers[13] = new RfidReader(2, 44, "Top 2");
-  readers[14] = new RfidReader(14, 44, "Top 3");
-  readers[15] = new RfidReader(15, 44, "Top 4");
-
-  wordPuzzle[0] = readers[6];	// reader: Back 0
-  wordPuzzle[1] = readers[2];	// reader: Front 2
-  wordPuzzle[2] = readers[5];	// reader: Right 2
-  wordPuzzle[3] = readers[10];	// reader: Left 1
-  wordPuzzle[4] = readers[7];	// reader: Back 1
-  wordPuzzle[5] = readers[9];	// reader: Left 0
-  wordPuzzle[6] = readers[0];	// reader: Front 0
-  wordPuzzle[7] = readers[3];	// reader: Right 0
-  wordPuzzle[8] = readers[8];	// reader: Back 2
-  wordPuzzle[9] = readers[4];	// reader: Right 1
-  wordPuzzle[10] = readers[1];	// reader: Front 1
-  
-  topPuzzle[0] = readers[11];
-  topPuzzle[1] = readers[12];
-  topPuzzle[2] = readers[13];
-  topPuzzle[3] = readers[14];
-  topPuzzle[4] = readers[15];
-  
   sideLights[0] = 1;
   sideLights[1] = 1;
   sideLights[2] = 1;
@@ -163,49 +177,42 @@ void setup(void)
   sideLights[14] = 4;
   sideLights[15] = 4;
 
-  leds[0] = new LightGroup(0,  0, 1);
-  leds[1] = new LightGroup(0,  2, 3);
-  leds[2] = new LightGroup(0,  4, 5);
-  leds[3] = new LightGroup(1,  0, 1);
-  leds[4] = new LightGroup(1,  2, 3);
-  leds[5] = new LightGroup(1,  4, 5);
-  leds[6] = new LightGroup(2,  0, 1);
-  leds[7] = new LightGroup(2,  2, 3);
-  leds[8] = new LightGroup(2,  4, 5);
-  leds[9] = new LightGroup(3,  0, 1);
-  leds[10] = new LightGroup(3,  2, 3);
-  leds[11] = new LightGroup(4,  0);
-  leds[12] = new LightGroup(4,  1);
-  leds[13] = new LightGroup(4,  2);
-  leds[14] = new LightGroup(4,  3);
-  leds[15] = new LightGroup(4,  4);
-  
-  topLightSegments[0] = leds[11];
-  topLightSegments[1] = leds[12];
-  topLightSegments[2] = leds[13];
-  topLightSegments[3] = leds[14];
-  topLightSegments[4] = leds[15];
+  topLightSegments[0] = &led11;
+  topLightSegments[1] = &led15;
+  topLightSegments[2] = &led12;
+  topLightSegments[3] = &led13;
+  topLightSegments[4] = &led14;
   
   allLightsOff();
 }
+
+#define PuzzleDebug 0
 
 void solveTopPuzzle()
 {
   int currentBestReader = -1;
 
-  while (currentBestReader < topCount-1)
+  while (currentBestReader < (topCount - 1))
   {
     currentBestReader = -1;
-    
+
     for (int i=0; i<topCount; i++)
     {
-      if (wordPuzzle[1]->PollForTag())
+      if (PuzzleDebug)
+      {
+        Serial.println("Start with top count:");
+        Serial.println(topCount);
+        Serial.print("Checking reader #");
+        Serial.println(i);
+      }
+      
+      if (topPuzzle[i]->PollForTag(true))
       {
         currentBestReader++;
       }  
       else
       {
-        break;
+       break;
       }
     }
     
@@ -214,7 +221,8 @@ void solveTopPuzzle()
       topLightSegments[j]->SetState(j <= currentBestReader);
     }
 
-    Serial.print(currentBestReader);    
+    Serial.print("Current best reader:  ");
+    Serial.println(currentBestReader);    
   }
 }
 
