@@ -6,8 +6,9 @@
 bool RfidReader::serialInitialized = false;
 int RfidReader::ResetCounter = 0;
 
-RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted)
+RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted, HardwareSerial* targetSerialPort)
 {
+  this->serialPort = targetSerialPort;
   IsResetPinInverted = isResetPinInverted;
   this->MultiplexerChannel = muxChannel;
   this->ResetPin = resetPin;
@@ -20,8 +21,8 @@ RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, boo
   
   if (!RfidReader::serialInitialized)
   {
-    Serial2.begin(9600);
-    Serial2.setTimeout(SerialTimeout);
+    serialPort->begin(9600);
+    serialPort->setTimeout(SerialTimeout);
   }
 
 }
@@ -31,9 +32,9 @@ void RfidReader::SetMultiplexer()
     // Set the multiplexer pin
   Multiplexer::Instance.Select(MultiplexerChannel);
   
-  while (Serial2.available())
+  while (serialPort->available())
   {
-    Serial2.read();
+    serialPort->read();
   }
 }
 
@@ -47,9 +48,9 @@ void RfidReader::Reset()
     Serial.println("Reset!");
   }
   
-  while (Serial2.available())
+  while (serialPort->available())
   {
-    Serial2.read();
+    serialPort->read();
   }
 
   // Wait 50 ms.
@@ -86,14 +87,14 @@ bool RfidReader::PollForTag(bool shouldReset)
 
   byte countRead = 0;
 
-  if (Serial2.find("\x02"))
+  if (serialPort->find("\x02"))
   { 
     if (RfidDebugOutput)
     {
       Serial.println("Found start byte 0x02");
     }
    
-    countRead = Serial2.readBytes(buf, 13);
+    countRead = serialPort->readBytes(buf, 13);
   }
   
   if (countRead > 0 && countRead < MAX_TAG_LEN - 1)

@@ -25,6 +25,7 @@ class RfidReader
     static bool serialInitialized;
     int MultiplexerChannel;
     int ResetPin;
+    HardwareSerial* serialPort;
 
     char currentTag[MAX_TAG_LEN];
     TagType currentTagType = NO_TAG;
@@ -38,7 +39,7 @@ class RfidReader
 
     static int ResetCounter;
   public:
-    RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted = false);
+    RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted = false, HardwareSerial* targetSerialPort = &Serial2);
 
     bool PollForTag();
     bool PollForTag(bool shouldReset);
