@@ -194,6 +194,11 @@ bool RfidReader::GetIsTagPresent()
   return tagPresent;
 }
 
+TagType RfidReader::GetCurrentTagType()
+{
+  return currentTagType;
+}
+
 void RfidReader::WaitForValidTag()
 {
   bool validTagFound = false;

@@ -6,6 +6,7 @@
 #include "rfidreader.h"
 #include "lightgroup.h"
 #include "reset.h"
+#include "tagtypes.h"
 
 #include "tagdatabase.h"
 
@@ -16,6 +17,8 @@
 #define topCount 5
 
 int sideLights[16];
+
+TagType topExpectedTypes[topCount];
 
 RfidReader* wordPuzzle[wordCount];
 RfidReader* topPuzzle[topCount];
@@ -78,6 +81,12 @@ void setup(void)
   topPuzzle[2] = &reader12;
   topPuzzle[3] = &reader13;
   topPuzzle[4] = &reader14;
+  
+  topExpectedTypes[0] = TOP1;
+  topExpectedTypes[1] = TOP2;
+  topExpectedTypes[2] = TOP3;
+  topExpectedTypes[3] = TOP4;
+  topExpectedTypes[4] = TOP5;
 
   sideLights[0] = 1;
   sideLights[1] = 1;
@@ -103,8 +112,7 @@ void setup(void)
   topLightSegments[4] = &led14;
   
   MegaBrite::Instance.AllLightsOff();
-  TagDatabase::Instance.dumpTagDatabase();
-  TagDatabase::Instance.createDatabase();
+  
   TagDatabase::Instance.dumpTagDatabase();
 }
 
@@ -128,7 +136,7 @@ void solveTopPuzzle()
         Serial.println(i);
       }
       
-      if (topPuzzle[i]->PollForTag(true))
+      if (topPuzzle[i]->PollForTag(true) && topPuzzle[i]->GetCurrentTagType() == topExpectedTypes[i])
       {
         currentBestReader++;
       }  
@@ -149,10 +157,12 @@ void solveTopPuzzle()
 }
 
 void solveWordPuzzle()
-{
-   for (int i = 0; i < wordCount; i++)
+{ 
+  for (int i = 0; i < wordCount; i++)
   {
-    while (!wordPuzzle[i]->PollForTag())
+    MegaBrite::Instance.AllLightsOn();
+      
+    while (!wordPuzzle[i]->PollForTag() || wordPuzzle[i]->GetCurrentTagType() != WAND)
     {
       delay(5);
     }
@@ -163,10 +173,7 @@ void solveWordPuzzle()
     }
     
     MegaBrite::Instance.AllLightsGreen();
-
     delay(1000);
-    
-    MegaBrite::Instance.AllLightsOn();
   }
 }
 

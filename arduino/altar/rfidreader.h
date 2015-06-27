@@ -45,6 +45,7 @@ class RfidReader
 
     bool GetIsTagPresent();
     const char* GetCurrentTag();
+    TagType GetCurrentTagType();
     const char* GetFriendlyName();
     
     void WaitForValidTag();
