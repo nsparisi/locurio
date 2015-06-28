@@ -69,9 +69,9 @@ void readTags()
   if (ok > 0) // if we had a match
   {
     Serial.println("Accepted");
-    digitalWrite(yes, HIGH);
+    digitalWrite(no, HIGH);
     delay(1000);
-    digitalWrite(yes, LOW);
+    digitalWrite(no, LOW);
     ok = -1;
   }
   else if (ok == 0) // if we didn't have a match

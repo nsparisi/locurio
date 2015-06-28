@@ -24,6 +24,7 @@ namespace AbyssLibrary
         private bool calledPlay;
         private bool calledPause;
         private bool calledSetVolume;
+        private bool calledStop;
 
         [AbyssInput]
         public void Play(object sender, EventArgs e)
@@ -43,6 +44,13 @@ namespace AbyssLibrary
         public void SetVolume(object sender, EventArgs e)
         {
             calledSetVolume = true;
+            StartProcess();
+        }
+
+        [AbyssInput]
+        public void Stop(object sender, EventArgs e)
+        {
+            calledStop = true;
             StartProcess();
         }
 
@@ -81,6 +89,10 @@ namespace AbyssLibrary
                 {
                     controller.SetVolume(Volume);
                 }
+                else if (calledStop)
+                {
+                    controller.Stop();
+                }
             }
 
             ProcessEnded();
@@ -97,6 +109,7 @@ namespace AbyssLibrary
             calledPlay = false;
             calledPause = false;
             calledSetVolume = false;
+            calledStop = false;
         }
     }
 }

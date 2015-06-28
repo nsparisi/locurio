@@ -11,38 +11,56 @@ namespace AbyssLibrary
 {
     public class VLCServerControl : AbstractPhysicalObject
     {
-        
+        public OSType DeviceOS;
+        public string DeviceIPAddress;
+        public string DevicePort;
 
-        const string urlBase = "http://localhost:8080/requests/status.xml";
+        public enum OSType { Linux, Windows }
+
+        const string BaseURLFormat = "http://{0}:{1}/requests/status.xml";
         const string soundfile = @"08 Breaking Out.mp3";
-        
-        public VLCServerControl()
+
+        string AudioDirectory
+        {
+            get
+            {
+                string directory = "";
+                if(this.DeviceOS == OSType.Linux)
+                {
+                    directory = "/home/pi/";
+                }
+                else if(this.DeviceOS == OSType.Windows)
+                {
+                    directory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                }
+
+                return this.PathCombineOSSpecific(directory, "Abyss", "Sounds");
+            }
+        }
+
+        public VLCServerControl(OSType deviceOS, string deviceIPAddress, string devicePort)
             : base()
         {
-            //Test();
+            this.DeviceOS = deviceOS;
+            this.DeviceIPAddress = deviceIPAddress;
+            this.DevicePort = devicePort;
         }
 
-        public VLCServerControl(string name)
+        public VLCServerControl(string name, OSType deviceOS, string deviceIPAddress, string devicePort)
             : base(name)
         {
-            //Test();
-        }
-
-        void Test()
-        {
-            Play(soundfile);
-            Pause();
-            Pause();
-            SetVolume(50);
+            this.DeviceOS = deviceOS;
+            this.DeviceIPAddress = deviceIPAddress;
+            this.DevicePort = devicePort;
         }
 
         public void Play(string fileName)
         {
-            const string clearPlaylist = "?command=pl_empty";
+            string clearPlaylist = "?command=pl_empty";
             ExecuteWebRequest(clearPlaylist);
 
             const string playSong = "?command=in_play&input=";
-            string songPath = Path.Combine(AbyssUtils.AbyssSoundDirectory, fileName);
+            string songPath = this.PathCombineOSSpecific(AudioDirectory, fileName);
             ExecuteWebRequest(playSong + songPath);
         }
 
@@ -58,12 +76,19 @@ namespace AbyssLibrary
             ExecuteWebRequest(setVolume);
         }
 
+        public void Stop()
+        {
+            string clearPlaylist = "?command=pl_empty";
+            ExecuteWebRequest(clearPlaylist);
+        }
+
         void ExecuteWebRequest(string command)
         {
             HttpWebResponse response = null;
             Stream receiveStream = null;
             try
             {
+                string urlBase = string.Format(BaseURLFormat, this.DeviceIPAddress, this.DevicePort);
                 HttpWebRequest request = WebRequest.CreateHttp(urlBase + command);
                 request.Proxy = WebRequest.DefaultWebProxy;
                 response = (HttpWebResponse)request.GetResponse();
@@ -92,6 +117,18 @@ namespace AbyssLibrary
                     receiveStream.Close();
                 }
             }
+        }
+
+        string PathCombineOSSpecific(params string[] paths)
+        {
+            string combinedPath = Path.Combine(paths);
+
+            if (this.DeviceOS == OSType.Linux)
+            {
+                combinedPath = combinedPath.Replace('\\', '/');
+            }
+
+            return combinedPath;
         }
     }
 }
