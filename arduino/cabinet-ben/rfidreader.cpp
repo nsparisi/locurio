@@ -1,48 +1,127 @@
 #include "rfidreader.h"
+#include "multiplexer.h"
 
-#include <SoftwareSerial.h>
 #include "Arduino.h"
 
 bool RfidReader::serialInitialized = false;
+int RfidReader::ResetCounter = 0;
 
-#define FAKE_TX_PIN 12
-
-RfidReader::RfidReader(int serialPin, const char* readerName)
+RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted, HardwareSerial* targetSerialPort)
 {
-  SerialPin=serialPin;
+  this->usesMultiplexer = true;
+  this->usesResetPin = true;
+  this->serialPort = targetSerialPort;
+  this->IsResetPinInverted = isResetPinInverted;
+  this->MultiplexerChannel = muxChannel;
+  this->ResetPin = resetPin;
+  this->friendlyName = readerName;
 
-  friendlyName = readerName;
-  
   // setup the software serial pins
-  pinMode(serialPin, OUTPUT);
-
-  swserial = new SoftwareSerial(serialPin, FAKE_TX_PIN);
-  swserial->begin(9600);
-  swserial->setTimeout(SerialTimeout);
+  pinMode(ResetPin, OUTPUT);
+  digitalWrite(ResetPin, isResetPinInverted ? LOW : HIGH);
   
-
+  serialPort->begin(9600);
+  serialPort->setTimeout(SerialTimeout);
 }
 
-bool RfidReader::WaitForTag()
+RfidReader::RfidReader(const char* readerName, HardwareSerial* targetSerialPort)
 {
-  swserial->listen();
+  this->usesMultiplexer = false;
+  this->usesResetPin = false;
+  this->IsResetPinInverted = false;
+  this->MultiplexerChannel = 0;
+  this->ResetPin = 0;
+  
+  this->serialPort = targetSerialPort;
 
-  delay(50);
+  this->friendlyName = readerName;
+  
+  serialPort->begin(9600);
+  serialPort->setTimeout(SerialTimeout);
+}
 
-  // Create a buffer and a pointer to walk through it.
-  char* ptr = buf;
+ void Initialize()
+{
+} 
 
+void RfidReader::SetMultiplexer()
+{
+  if (usesMultiplexer)
+  {
+    #ifndef NO_MULTIPLEXER
+    // Set the multiplexer pin
+    Multiplexer::Instance.Select(MultiplexerChannel);
+    #endif
+    
+    while (serialPort->available())
+    {
+      serialPort->read();
+    }
+  }
+}
+
+void RfidReader::Reset()
+{
+  if (usesResetPin)
+  {
+    // First, reset the reader so it will redetect any existing tags.
+    digitalWrite(ResetPin, IsResetPinInverted ? HIGH : LOW);
+    
+    if (RfidDebugOutput)
+    {
+      Serial.println("Reset!");
+    }
+    
+    while (serialPort->available())
+    {
+      serialPort->read();
+    }
+  
+    // Wait 50 ms.
+    delay(ResetDelay);
+  
+    // Get started again
+    digitalWrite(ResetPin, IsResetPinInverted ? LOW : HIGH);
+  
+    delay(50);
+  }
+}
+
+bool RfidReader::PollForTag()
+{
+  if (RfidReader::ResetCounter == 0)
+  {
+    RfidReader::ResetCounter = TimesUntilEachReset;
+    Reset();
+  }
+  else
+  {
+    RfidReader::ResetCounter--;
+  }
+  
+  return PollForTag(false);
+}
+
+bool RfidReader::PollForTag(bool shouldReset)
+{
+  SetMultiplexer();
+  if (shouldReset)
+  {
+    Reset();
+  }
+  
   byte countRead = 0;
 
-  if (swserial->find("\x02"))
+  if (serialPort->find("\x02"))
   {
     if (RfidDebugOutput)
     {
-      swserial->println("Found start byte 0x02");
+      Serial.println("Found start byte 0x02");
     }
-    countRead = swserial->readBytes(buf, 13);
+   
+    countRead = serialPort->readBytes(buf, 13);
   }
-
+  
   if (countRead > 0 && countRead < MAX_TAG_LEN - 1)
   {
     // Null terminate the string
@@ -117,13 +196,64 @@ bool RfidReader::WaitForTag()
     }
   }
 
-
+  if (tagPresent)
+  {
+    currentTagType = TagDatabase::Instance.getTagType(currentTag);
+    Serial.print(currentTagType);
+    Serial.println(" was detected tag type.");
+    if (currentTagType == MASTER && !TagDatabase::Instance.isInEnrollmentMode)
+    {
+      TagDatabase::Instance.enterEnrollMode(this);
+    }
+  }
+  else
+  {
+    currentTagType = NO_TAG;
+  }
+  
+  
   return tagPresent;
 }
 
 bool RfidReader::GetIsTagPresent()
 {
   return tagPresent;
+}
+
+TagType RfidReader::GetCurrentTagType()
+{
+  return currentTagType;
+}
+
+void RfidReader::WaitForValidTag()
+{
+  bool validTagFound = false;
+  while (!validTagFound)
+  {
+    while (!PollForTag(true))
+    {
+      delay(10);
+    }
+    if (currentTagType == NO_TAG || currentTagType == INVALID || currentTagType == UNKNOWN_VALID)
+    {
+      if (RfidDebugOutput)
+      {
+        Serial.println("Invalid tag detected;  remaining in WaitForValidTag()");
+      }
+    }
+    else
+    {
+      validTagFound=true;
+    }
+  }
+}
+
+void RfidReader::WaitForNoTag()
+{
+  while (PollForTag(true))
+  {
+    delay(10);
+  }
 }
 
 const char* RfidReader::GetCurrentTag()

@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 #include "RfidReader.h"
 
 #define PIN_DOOR_MAGNETS 4
@@ -10,25 +9,27 @@
 
 RfidReader* readers[3];
 
+#include "tagdatabase.h"
+
 void setup() 
 {
+  Serial.begin(9600);
+  Serial.println("borp");
+  
+  TagDatabase::Instance.dumpTagDatabase();
+  
   pinMode(PIN_BLACKLIGHT, OUTPUT );
   pinMode(PIN_REED_SWITCHES, INPUT_PULLUP );
   pinMode(PIN_DOOR_MAGNETS, OUTPUT );
-  pinMode(PIN_RFID_1, INPUT);
-  pinMode(PIN_RFID_2, INPUT);
-  pinMode(PIN_RFID_3, INPUT);
   
-  readers[0] = new RfidReader(PIN_RFID_1, "Reader 1");
-  readers[1] = new RfidReader(PIN_RFID_2, "Reader 2");
-  readers[2] = new RfidReader(PIN_RFID_3, "Reader 3");
+  readers[0] = new RfidReader("Reader 1", &Serial1);
+  readers[1] = new RfidReader("Reader 2", &Serial2);
+  readers[2] = new RfidReader("Reader 3", &Serial3);
       
-  Serial.begin(9600);
-  
   pinMode(12, OUTPUT);
   noTone(12);
   
- // digitalWrite(PIN_DOOR_MAGNETS, HIGH);
+  digitalWrite(PIN_DOOR_MAGNETS, HIGH);
 }
 
 bool oldState = false;
@@ -50,14 +51,18 @@ void loop()
           digitalWrite(PIN_BLACKLIGHT, isDoorOpen ? LOW : HIGH);
         }
     
-    /*if (currentRfidReader < 3)
+    if (currentRfidReader < 3)
     {
-      if (readers[currentRfidReader]->WaitForTag())
+      Serial.println("Starting loop");
+      if (readers[currentRfidReader]->PollForTag(false))
       {
+        Serial.println("oij");
+        if (readers[currentRfidReader]->GetCurrentTagType() == WAND)
+        {
             tone(12, 131, 500);
 
         currentRfidReader++;
-        if (currentRfidReader < 2)
+        if (currentRfidReader < 3)
         {
           Serial.print("TAG DETECTED");
         }
@@ -68,14 +73,19 @@ void loop()
           
           for (int i=0; i<10; i++)
           {
-                        tone(12, 131, 100);
-                        delay(500);
-                        noTone(12);
-                        delay(500);
+            tone(12, 131, 100);
+            delay(500);
+            noTone(12);
+            delay(500);
           }
         }
+        }
+        else
+        {
+          tone(12, 262, 300);
+        }
       }
-    }*/
+    }
     
 
   
