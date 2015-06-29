@@ -1,12 +1,14 @@
 #include <Arduino.h>
 
 #include <LedControl.h>
+#include <SoftwareSerial.h>
 
 #include "megabrite.h"
 #include "rfidreader.h"
 #include "lightgroup.h"
 #include "reset.h"
 #include "tagtypes.h"
+#include "abysshandler.h"
 
 #include "tagdatabase.h"
 
@@ -121,7 +123,8 @@ void solveTopPuzzle()
   MegaBrite::Instance.TopLightOnly();
   
   int currentBestReader = -1;
-
+  bool topPuzzleStarted = false;
+  
   while (currentBestReader < (topCount - 1))
   {
     currentBestReader = -1;
@@ -139,6 +142,11 @@ void solveTopPuzzle()
       if (topPuzzle[i]->PollForTag(true) && topPuzzle[i]->GetCurrentTagType() == topExpectedTypes[i])
       {
         currentBestReader++;
+        if (!topPuzzleStarted)
+        {
+          topPuzzleStarted=true;
+          abyss->send_message("TOPSTART");
+        }
       }  
       else
       {
@@ -167,6 +175,14 @@ void solveWordPuzzle()
       delay(5);
     }
     
+    if (i == 0)
+    {
+      // first word solved;  notify abyss
+      abyss->send_message("WORDBEGIN");
+    }
+
+    abyss->send_message("WORDTAGPRESENT");
+    
     if (i < (wordCount-1))
     {
       wordPuzzle[i+1]->SetMultiplexer();
@@ -179,9 +195,11 @@ void solveWordPuzzle()
 
 void loop(void)
 {
+  abyss->send_message("POWERON");
   solveTopPuzzle();
+  abyss->send_message("TOPSOLVED");
   solveWordPuzzle();
-  
+  abyss->send_message("WORDSOLVED"); 
   MegaBrite::Instance.Rave();
   
   Reset::resetFunc();

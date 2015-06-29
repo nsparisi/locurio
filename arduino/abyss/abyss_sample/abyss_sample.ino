@@ -1,8 +1,8 @@
 // ***********************************
 // Setup the XBEE as normal.
 // ***********************************
-#define XBEE_RX 3
-#define XBEE_TX 2
+#define XBEE_RX 2
+#define XBEE_TX 3
 #include <SoftwareSerial.h>
 SoftwareSerial XBee(XBEE_RX, XBEE_TX); // RX, TX
 
