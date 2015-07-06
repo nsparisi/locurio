@@ -15,138 +15,239 @@ namespace Abyss
 
         public void Run()
         {
-            TestLightBulb testLightBulb1 = new TestLightBulb("TestLeft1");
-            TestLightBulb testLightBulb2 = new TestLightBulb("TestLeft2");
-            TestLightBulb testLightBulb3 = new TestLightBulb("TestRight1");
-            TestLightBulb testLightBulb4 = new TestLightBulb("TestRight2");
-            XBeeEndpoint alterXbee = new XBeeEndpoint("1", "XBee Endpoint 1");
+            // ***********************
+            // Countdown Clock
+            // ***********************
             AbyssScreenController screenController = new AbyssScreenController("Clock");
-
-            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb1);
-            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb2);
-            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb3);
-            AbyssSystem.Instance.RegisterPhysicalObject(testLightBulb4);
-            AbyssSystem.Instance.RegisterPhysicalObject(alterXbee);
-            AbyssSystem.Instance.RegisterPhysicalObject(screenController);
-
-            SPLightBulb altarLights = new SPLightBulb
-            {
-                Lights = new List<TestLightBulb>
-                {
-                    testLightBulb1,
-                    testLightBulb2,
-                    testLightBulb3,
-                    testLightBulb4,
-                }
-            };
-
-            SPScreen countdownScreen = new SPScreen
+            SPScreen sp_countdownScreen = new SPScreen
             {
                 Screens = new List<AbyssScreenController>
                 {
-                    screenController,
+                    screenController
                 }
             };
 
-            SPDelay delayThenTurnOn = new SPDelay()
+            AbyssSystem.Instance.RegisterPhysicalObject(screenController);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_countdownScreen);
+            sp_countdownScreen.Initialize();
+
+            // ***********************
+            // VLC Servers on Raspberry PIs
+            // ***********************
+            VLCServerControl vlc01 = new VLCServerControl(
+                "RPi 105:50000", 
+                VLCServerControl.OSType.Linux, 
+                "192.168.0.105", 
+                "50000");
+
+            VLCServerControl vlc02 = new VLCServerControl(
+                "RPi 100:50000",
+                VLCServerControl.OSType.Linux,
+                "192.168.0.100",
+                "50000");
+
+            SPSoundControl sp_soundDressingRoomBGM = new SPSoundControl()
             {
-                DurationMs = 5000,
-            };
-
-            SPXBeeEndpoint altarFinishedProcessor = new SPXBeeEndpoint()
-            {
-                SendMessage = "testmessage",
-                ExpectedMessage = "success",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    alterXbee
-                }
-            };
-
-            AbyssSystem.Instance.RegisterSubProcessor(altarLights);
-            AbyssSystem.Instance.RegisterSubProcessor(countdownScreen);
-            AbyssSystem.Instance.RegisterSubProcessor(delayThenTurnOn);
-            AbyssSystem.Instance.RegisterSubProcessor(altarFinishedProcessor);
-
-            altarFinishedProcessor.ExpectedMessageReceived += countdownScreen.Stop;
-            altarFinishedProcessor.ExpectedMessageReceived += delayThenTurnOn.Start;
-            delayThenTurnOn.Finished += altarLights.TurnOn;
-
-            // for fun
-            countdownScreen.CountdownExpired += altarLights.TurnOn;
-
-            altarLights.Initialize();
-            countdownScreen.Initialize();
-            delayThenTurnOn.Initialize();
-            altarFinishedProcessor.Initialize();
-
-
-
-            // testing arduino
-            SPDelay delay1 = new SPDelay()
-            {
-                DurationMs = 200,
-            };
-            SPDelay delay2 = new SPDelay()
-            {
-                DurationMs = 1000,
-            };
-
-            XBeeEndpoint nicksArduino = new XBeeEndpoint("NICK", "Nick's Arduino");
-            SPXBeeEndpoint turnOnArduino = new SPXBeeEndpoint()
-            {
-                SendMessage = "ON",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    nicksArduino
-                }
-            };
-
-            SPXBeeEndpoint turnOffArduino = new SPXBeeEndpoint()
-            {
-                SendMessage = "OFF",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    nicksArduino
-                }
-            };
-
-            delay1.Finished += turnOnArduino.SendData;
-            delay1.Finished += delay2.Start;
-
-            delay2.Finished += turnOffArduino.SendData;
-            delay2.Finished += delay1.Start;
-
-            // uncomment to blink light
-            //delay1.Start(this, EventArgs.Empty);
-
-
-            AbyssSystem.Instance.RegisterPhysicalObject(nicksArduino);
-            AbyssSystem.Instance.RegisterSubProcessor(delay1);
-            AbyssSystem.Instance.RegisterSubProcessor(delay2);
-
-
-            // VLC
-            VLCServerControl vlcController = new VLCServerControl("Dressing Room Music");
-            AbyssSystem.Instance.RegisterPhysicalObject(vlcController);
-
-            SPSoundControl musicController = new SPSoundControl()
-            {
-                Name = "Dressing Room Music",
-                SongFileName = @"08 Breaking Out.mp3",
-                Volume = 0.5f,
+                Name = "Dressing Room BGM",
+                SongFileName = @"MagicShow-NoSFX.mp3",
+                Volume = 300f,
                 VLCControllers = new List<VLCServerControl>() 
                 {
-                    vlcController
+                    vlc01
                 }
             };
-            AbyssSystem.Instance.RegisterSubProcessor(musicController);
 
-            // Text Messages
-            TextingController textingHtc = new TextingController("192.168.1.7", "HTC One");
-            AbyssSystem.Instance.RegisterPhysicalObject(textingHtc);
+            SPSoundControl sp_soundSecretRoomBGM = new SPSoundControl()
+            {
+                Name = "Secret Room BGM",
+                SongFileName = @"MagicShow-NoSFX.mp3",
+                Volume = 300f,
+                VLCControllers = new List<VLCServerControl>() 
+                {
+                    vlc02
+                }
+            };
+
+            SPSoundControl sp_soundAltarWhispers = new SPSoundControl()
+            {
+                Name = "Altar Whispers",
+                SongFileName = @"MagicShow-NoSFX.mp3",
+                Volume = 300f,
+                VLCControllers = new List<VLCServerControl>() 
+                {
+                    vlc02
+                }
+            };
+
+            SPSoundControl sp_soundNoxSuccessNarration = new SPSoundControl()
+            {
+                Name = "Nox Success Narration",
+                SongFileName = @"MagicShow-NoSFX.mp3",
+                Volume = 300f,
+                VLCControllers = new List<VLCServerControl>() 
+                {
+                    vlc02
+                }
+            };
+
+            SPSoundControl sp_soundNoxFailureNarration = new SPSoundControl()
+            {
+                Name = "Nox Fail Narration",
+                SongFileName = @"MagicShow-NoSFX.mp3",
+                Volume = 300f,
+                VLCControllers = new List<VLCServerControl>() 
+                {
+                    vlc02
+                }
+            };
+
+            AbyssSystem.Instance.RegisterPhysicalObject(vlc01);
+            AbyssSystem.Instance.RegisterPhysicalObject(vlc02);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundDressingRoomBGM);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundSecretRoomBGM);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundAltarWhispers);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxSuccessNarration);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxFailureNarration);
+            sp_soundDressingRoomBGM.Initialize();
+            sp_soundSecretRoomBGM.Initialize();
+            sp_soundAltarWhispers.Initialize();
+            sp_soundNoxSuccessNarration.Initialize();
+            sp_soundNoxFailureNarration.Initialize();
+
+            // ***********************
+            // Hint Text Messages
+            // ***********************
             TextingController textingMotorola = new TextingController("192.168.1.12", "Motorola Droid 2");
             AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
+
+            // ***********************
+            // ALTAR
+            // ***********************
+            XBeeEndpoint altarArduino = new XBeeEndpoint("ALTAR", "Altar");
+
+            SPXBeeEndpoint sp_altarPowerOn = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "POWERON",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            SPXBeeEndpoint sp_altarTopStart = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "TOPSTART",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            SPXBeeEndpoint sp_altarTopSolved = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "TOPSOLVED",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            SPXBeeEndpoint sp_altarWordBegin = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "WORDBEGIN",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            SPXBeeEndpoint sp_altarTagPresent = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "WORDTAGPRESENT",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            SPXBeeEndpoint sp_altarWordSolved = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "WORDSOLVED",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            SPXBeeEndpoint sp_altarWordFailed = new SPXBeeEndpoint()
+            {
+                ExpectedMessage = "WORDFAILED",
+                Endpoints = new List<XBeeEndpoint>
+                {
+                    altarArduino
+                }
+            };
+
+            AbyssSystem.Instance.RegisterPhysicalObject(altarArduino);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarPowerOn);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarTopStart);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarTopSolved);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarWordBegin);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarTagPresent);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarWordSolved);
+            sp_altarPowerOn.Initialize();
+            sp_altarTopStart.Initialize();
+            sp_altarTopSolved.Initialize();
+            sp_altarWordBegin.Initialize();
+            sp_altarTagPresent.Initialize();
+            sp_altarWordSolved.Initialize();
+
+            // ***********************
+            // Script Event Logic
+            // ***********************
+
+            // countdown clock START -> start dressing room music
+            // countdown clock START -> start secret room music
+
+            // countdown clock EXPIRED -> stop dressing room music
+            // countdown clock EXPIRED -> stop secret room music
+            // countdown clock EXPIRED -> stop secret room whispers
+            // countdown clock EXPIRED -> lose game music
+
+            // altar WORDTAGPRESENT (first time only) -> start whispers
+            // altar WORDFAILED (not present) -> stop whispers
+
+            // altar WORDSOLVED -> pause clock
+            // altar WORDSOLVED -> stop dressing room music
+            // altar WORDSOLVED -> stop secret room music
+            // altar WORDSOLVED -> stop secret room whispers
+            // altar WORDSOLVED -> start success game music
+
+            // emergency stop PRESSED -> pause dressing room music
+            // emergency stop PRESSED -> pause secret room music
+            // emergency stop PRESSED -> pause countdown clock 
+
+            sp_countdownScreen.CountdownStarted += sp_soundDressingRoomBGM.Play;
+            sp_countdownScreen.CountdownStarted += sp_soundSecretRoomBGM.Play;
+
+            sp_countdownScreen.CountdownExpired += sp_soundDressingRoomBGM.Stop;
+            sp_countdownScreen.CountdownExpired += sp_soundSecretRoomBGM.Stop;
+            sp_countdownScreen.CountdownExpired += sp_soundAltarWhispers.Stop;
+            sp_countdownScreen.CountdownExpired += sp_soundNoxFailureNarration.Play;
+
+            // not yet implemented
+            //sp_altarTagPresent.ExpectedMessageReceived += sp_soundAltarWhispers.Play;
+            //sp_altarWordFailed.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
+
+            sp_altarWordSolved.ExpectedMessageReceived += sp_countdownScreen.Stop;
+            sp_altarWordSolved.ExpectedMessageReceived += sp_soundDressingRoomBGM.Stop;
+            sp_altarWordSolved.ExpectedMessageReceived += sp_soundSecretRoomBGM.Stop;
+            sp_altarWordSolved.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
+            sp_altarWordSolved.ExpectedMessageReceived += sp_soundNoxFailureNarration.Stop;
+            sp_altarWordSolved.ExpectedMessageReceived += sp_soundNoxSuccessNarration.Play;
+
+            // not yet implemented
+            // emergency stop pressed
         }
     }
 }

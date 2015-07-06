@@ -27,6 +27,7 @@ namespace AbyssLibrary
 
         internal void ReceivedMessage(string message)
         {
+            Debug.Log("Received: " + message);
             if (DataReceived != null)
             {
                 DataReceived(this, new XBeeReceivedEvent(EndpointID, message));
