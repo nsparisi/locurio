@@ -33,8 +33,8 @@ struct Tag {
 
 struct Database {
   int tagCount;
-  unsigned long databaseCreatedFlag;
   Tag tagStorage[MAX_TAGS];
+  unsigned long databaseCreatedFlag;
 };
 
 class RfidReader;
