@@ -26,6 +26,7 @@ RfidReader* wordPuzzle[wordCount];
 RfidReader* topPuzzle[topCount];
 
 LightGroup* leds[readerCount];
+LightGroup* wordLeds[wordCount];
 LightGroup* topLightSegments[topCount];
 
 RfidReader reader0 = RfidReader(7, 36, "Front 0");
@@ -47,20 +48,20 @@ RfidReader reader15 = RfidReader(15, 44, "Top (Middle Right)", true);
 
 LightGroup led0 = LightGroup(0,  0, 1);
 LightGroup led1 = LightGroup(0,  2, 3);
-LightGroup   led2 = LightGroup(0,  4, 5);
-LightGroup   led3 = LightGroup(1,  0, 1);
-LightGroup   led4 = LightGroup(1,  2, 3);
-LightGroup   led5 = LightGroup(1,  4, 5);
-LightGroup   led6 = LightGroup(2,  0, 1);
-LightGroup   led7 = LightGroup(2,  2, 3);
-LightGroup   led8 = LightGroup(2,  4, 5);
-LightGroup   led9 = LightGroup(3,  0, 1);
-LightGroup   led10 = LightGroup(3,  2, 3);
-LightGroup   led11 = LightGroup(4,  0);
-LightGroup   led12 = LightGroup(4,  1);
-LightGroup   led13 = LightGroup(4,  2);
-LightGroup   led14 = LightGroup(4,  3);
-LightGroup   led15 = LightGroup(4,  4);
+LightGroup led2 = LightGroup(0,  4, 5);
+LightGroup led3 = LightGroup(1,  0, 1);
+LightGroup led4 = LightGroup(1,  2, 3);
+LightGroup led5 = LightGroup(1,  4, 5);
+LightGroup led6 = LightGroup(2,  0, 1);
+LightGroup led7 = LightGroup(2,  2, 3);
+LightGroup led8 = LightGroup(2,  4, 5);
+LightGroup led9 = LightGroup(3,  0, 1);
+LightGroup led10 = LightGroup(3,  2, 3);
+LightGroup led11 = LightGroup(4,  0);
+LightGroup led12 = LightGroup(4,  1);
+LightGroup led13 = LightGroup(4,  2);
+LightGroup led14 = LightGroup(4,  3);
+LightGroup led15 = LightGroup(4,  4);
 
 void setup(void)
 {
@@ -77,6 +78,19 @@ void setup(void)
   wordPuzzle[8] = &reader8;	// reader: Back 2
   wordPuzzle[9] = &reader4;	// reader: Right 1
   wordPuzzle[10] = &reader1;	// reader: Front 1
+  
+  wordLeds[0] = &led6;	        // led: Back 0
+  wordLeds[1] = &led2;	        // led: Front 2
+  wordLeds[2] = &led5;	        // led: Right 2
+  wordLeds[3] = &led10;	        // led: Left 1
+  wordLeds[4] = &led7;	        // led: Back 1
+  wordLeds[5] = &led9;	        // led: Left 0
+  wordLeds[6] = &led0;	        // led: Front 0
+  wordLeds[7] = &led3;	        // led: Right 0
+  wordLeds[8] = &led8;	        // led: Back 2
+  wordLeds[9] = &led4;	        // led: Right 1
+  wordLeds[10] = &led1;	        // led: Front 1
+
 
   topPuzzle[0] = &reader11;
   topPuzzle[1] = &reader15;
@@ -182,6 +196,8 @@ void solveWordPuzzle()
     }
 
     abyss->send_message("WORDTAGPRESENT");
+    
+    wordLeds[i]->On();
 
     if (i < (wordCount - 1))
     {
