@@ -1,3 +1,3 @@
 #include "reset.h"
 
-  void(* Reset::resetFunc) (void) = 0;
+void(* Reset::resetFunc) (void) = 0;

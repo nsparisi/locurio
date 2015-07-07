@@ -11,47 +11,47 @@ SoftwareSerial XBee(XBEE_RX, XBEE_TX); // RX, TX
 class AbyssHandler : public IAbyssHandler
 {
   private:
-  
+
     bool isInitialized = false;
-    public:        
-    
-        // send a message over the desired serial 
-        // connection ending with a newline
-        virtual void xbee_println(char* message)
-        {
-          if (!isInitialized)
-          {
-            XBee.begin(9600);
-          }
-            XBee.println(message);
-        }
-        
-        // tests if any unread data is available 
-        // from the serial receive
-        virtual bool xbee_available()
-        {
-          if (!isInitialized)
-          {
-            XBee.begin(9600);
-          }
-            return XBee.available();
-        }
-        
-        // reads one byte of data from the serial connection
-        virtual char xbee_read()
-        {
-          if (!isInitialized)
-          {
-            XBee.begin(9600);
-          }
-            return XBee.read();
-        }
-        
-        // this is called when a message is sent 
-        // from Abyss to this unique arduino.
-        virtual void received_message(char* message)
-        {
-        }
+  public:
+
+    // send a message over the desired serial
+    // connection ending with a newline
+    virtual void xbee_println(char* message)
+    {
+      if (!isInitialized)
+      {
+        XBee.begin(9600);
+      }
+      XBee.println(message);
+    }
+
+    // tests if any unread data is available
+    // from the serial receive
+    virtual bool xbee_available()
+    {
+      if (!isInitialized)
+      {
+        XBee.begin(9600);
+      }
+      return XBee.available();
+    }
+
+    // reads one byte of data from the serial connection
+    virtual char xbee_read()
+    {
+      if (!isInitialized)
+      {
+        XBee.begin(9600);
+      }
+      return XBee.read();
+    }
+
+    // this is called when a message is sent
+    // from Abyss to this unique arduino.
+    virtual void received_message(char* message)
+    {
+    }
 };
 
 // ***********************************

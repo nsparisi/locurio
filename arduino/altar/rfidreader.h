@@ -29,7 +29,7 @@ class RfidReader
 
     char currentTag[MAX_TAG_LEN];
     TagType currentTagType = NO_TAG;
-    
+
     bool tagPresent = false;
     int failCount = 0;
     char buf[MAX_TAG_LEN];
@@ -48,12 +48,12 @@ class RfidReader
     const char* GetCurrentTag();
     TagType GetCurrentTagType();
     const char* GetFriendlyName();
-    
+
     void WaitForValidTag();
     void WaitForNoTag();
-    
+
     void Reset();
-    
+
     void SetMultiplexer();
 };
 

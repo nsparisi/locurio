@@ -5,9 +5,9 @@
 
 class Reset
 {
-  // Pointer to the beginning of program memory;  this has the same effect as a reset.
+    // Pointer to the beginning of program memory;  this has the same effect as a reset.
   public:
-  static void(*resetFunc) (void);
+    static void(*resetFunc) (void);
 };
 #endif
 

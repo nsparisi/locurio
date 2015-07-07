@@ -45,8 +45,8 @@ RfidReader reader13 = RfidReader(2, 44, "Top (Bottom Left)", true);
 RfidReader reader14 = RfidReader(14, 44, "Top (Middle Left)", true);
 RfidReader reader15 = RfidReader(15, 44, "Top (Middle Right)", true);
 
-  LightGroup led0 = LightGroup(0,  0, 1);
-  LightGroup led1 = LightGroup(0,  2, 3);
+LightGroup led0 = LightGroup(0,  0, 1);
+LightGroup led1 = LightGroup(0,  2, 3);
 LightGroup   led2 = LightGroup(0,  4, 5);
 LightGroup   led3 = LightGroup(1,  0, 1);
 LightGroup   led4 = LightGroup(1,  2, 3);
@@ -77,13 +77,13 @@ void setup(void)
   wordPuzzle[8] = &reader8;	// reader: Back 2
   wordPuzzle[9] = &reader4;	// reader: Right 1
   wordPuzzle[10] = &reader1;	// reader: Front 1
-  
+
   topPuzzle[0] = &reader11;
   topPuzzle[1] = &reader15;
   topPuzzle[2] = &reader12;
   topPuzzle[3] = &reader13;
   topPuzzle[4] = &reader14;
-  
+
   topExpectedTypes[0] = TOP1;
   topExpectedTypes[1] = TOP2;
   topExpectedTypes[2] = TOP3;
@@ -112,24 +112,24 @@ void setup(void)
   topLightSegments[2] = &led12;
   topLightSegments[3] = &led13;
   topLightSegments[4] = &led14;
-  
+
   MegaBrite::Instance.AllLightsOff();
-  
+
   TagDatabase::Instance.dumpTagDatabase();
 }
 
 void solveTopPuzzle()
 {
   MegaBrite::Instance.TopLightOnly();
-  
+
   int currentBestReader = -1;
   bool topPuzzleStarted = false;
-  
+
   while (currentBestReader < (topCount - 1))
   {
     currentBestReader = -1;
 
-    for (int i=0; i<topCount; i++)
+    for (int i = 0; i < topCount; i++)
     {
       if (PuzzleDebug)
       {
@@ -138,43 +138,43 @@ void solveTopPuzzle()
         Serial.print("Checking reader #");
         Serial.println(i);
       }
-      
+
       if (topPuzzle[i]->PollForTag(true) && topPuzzle[i]->GetCurrentTagType() == topExpectedTypes[i])
       {
         currentBestReader++;
         if (!topPuzzleStarted)
         {
-          topPuzzleStarted=true;
+          topPuzzleStarted = true;
           abyss->send_message("TOPSTART");
         }
-      }  
+      }
       else
       {
-       break;
+        break;
       }
     }
-    
-    for (int j=0; j<topCount; j++)
+
+    for (int j = 0; j < topCount; j++)
     {
       topLightSegments[j]->SetState(j <= currentBestReader);
     }
 
     Serial.print("Current best reader:  ");
-    Serial.println(currentBestReader);    
+    Serial.println(currentBestReader);
   }
 }
 
 void solveWordPuzzle()
-{ 
+{
   for (int i = 0; i < wordCount; i++)
   {
     MegaBrite::Instance.AllLightsOn();
-      
+
     while (!wordPuzzle[i]->PollForTag() || wordPuzzle[i]->GetCurrentTagType() != WAND)
     {
       delay(5);
     }
-    
+
     if (i == 0)
     {
       // first word solved;  notify abyss
@@ -182,12 +182,12 @@ void solveWordPuzzle()
     }
 
     abyss->send_message("WORDTAGPRESENT");
-    
-    if (i < (wordCount-1))
+
+    if (i < (wordCount - 1))
     {
-      wordPuzzle[i+1]->SetMultiplexer();
+      wordPuzzle[i + 1]->SetMultiplexer();
     }
-    
+
     MegaBrite::Instance.AllLightsGreen();
     delay(1000);
   }
@@ -199,8 +199,8 @@ void loop(void)
   solveTopPuzzle();
   abyss->send_message("TOPSOLVED");
   solveWordPuzzle();
-  abyss->send_message("WORDSOLVED"); 
+  abyss->send_message("WORDSOLVED");
   MegaBrite::Instance.Rave();
-  
+
   Reset::resetFunc();
 }

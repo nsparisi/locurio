@@ -34,7 +34,7 @@ void feedback_none()
 
 void permanent_error()
 {
-  while(true)
+  while (true)
   {
     feedback_error();
     feedback_none();

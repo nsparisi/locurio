@@ -91,14 +91,14 @@ class MegaBrite
 
   public:
     static MegaBrite Instance;
-    
+
     MegaBrite();
     void Setup();
 
     void WriteLEDArray();
     void AllOff();
     void SetLight(int channel, int red, int green, int blue);
-    
+
     void AllLightsOff();
     void AllLightsOn();
     void TopLightOnly();

@@ -40,7 +40,7 @@ Multiplexer::Multiplexer(int s0, int s1, int s2, int s3)
 }
 
 void Multiplexer::Select(int channel)
-{ 
+{
   if (channel < 0 || channel > 16)
   {
     channel = 0;
