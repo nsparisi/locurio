@@ -29,13 +29,13 @@ RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, boo
 
 void RfidReader::SetMultiplexer()
 {
-  // Set the multiplexer pin
-  Multiplexer::Instance.Select(MultiplexerChannel);
-
   while (serialPort->available())
   {
-    serialPort->read();
+    Serial.println((int)(serialPort->read()));
   }
+  
+  // Set the multiplexer pin
+  Multiplexer::Instance.Select(MultiplexerChannel);
 }
 
 void RfidReader::Reset()
@@ -50,6 +50,7 @@ void RfidReader::Reset()
 
   while (serialPort->available())
   {
+    Serial.print("nom");
     serialPort->read();
   }
 
@@ -59,7 +60,7 @@ void RfidReader::Reset()
   // Get started again
   digitalWrite(ResetPin, IsResetPinInverted ? LOW : HIGH);
 
-  delay(50);
+  delay(100);
 }
 
 bool RfidReader::PollForTag()
@@ -80,6 +81,7 @@ bool RfidReader::PollForTag()
 bool RfidReader::PollForTag(bool shouldReset)
 {
   SetMultiplexer();
+  
   if (shouldReset)
   {
     Reset();
@@ -87,6 +89,7 @@ bool RfidReader::PollForTag(bool shouldReset)
 
   byte countRead = 0;
 
+  Serial.print("Looking for 0x02");
   if (serialPort->find("\x02"))
   {
     if (RfidDebugOutput)
@@ -97,6 +100,8 @@ bool RfidReader::PollForTag(bool shouldReset)
     countRead = serialPort->readBytes(buf, 13);
   }
 
+  Serial.println(countRead);
+  
   if (countRead > 0 && countRead < MAX_TAG_LEN - 1)
   {
     // Null terminate the string

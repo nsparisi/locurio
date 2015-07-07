@@ -37,7 +37,7 @@
 // Boards with ATmega168, Lilypad, old Nano, Diecimila  – 512 bytes
 // By default we choose conservative settings
 EEPROMClassEx::EEPROMClassEx()
-  :  _allowedWrites(256)
+  :  _allowedWrites(4096)
 {
 }
 

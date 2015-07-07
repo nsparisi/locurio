@@ -106,7 +106,7 @@ void MegaBrite::SetLight(int channel, int red, int green, int blue)
 
 void MegaBrite::AllLightsOff()
 {
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < NumLEDs; i++)
   {
     MegaBrite::Instance.SetLight(i, 0, 0, 0);
   }
@@ -114,7 +114,7 @@ void MegaBrite::AllLightsOff()
 
 void MegaBrite::AllLightsOn()
 {
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < NumLEDs; i++)
   {
     SetLight(i, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
   }
@@ -123,12 +123,13 @@ void MegaBrite::AllLightsOn()
 void MegaBrite::TopLightOnly()
 {
   AllLightsOff();
-  SetLight(4, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
+  //Currently, the top light is disconnected.
+  //SetLight(4, MAX_BRIGHTNESS, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
 }
 
 void MegaBrite::AllLightsGreen()
 {
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < NumLEDs; i++)
   {
     SetLight(i, 0, MAX_BRIGHTNESS, 0);
   }
@@ -136,7 +137,7 @@ void MegaBrite::AllLightsGreen()
 
 void MegaBrite::AllLightsRed()
 {
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < NumLEDs; i++)
   {
     SetLight(i, 0, MAX_BRIGHTNESS, 0);
   }
@@ -154,32 +155,32 @@ void MegaBrite::Rave()
 {
   for (int i = 0; i < 25; i++)
   {
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < NumLEDs; j++)
     {
       SetLight(j, MAX_BRIGHTNESS, 0, 0);
     }
     delay(150);
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < NumLEDs; j++)
     {
       SetLight(j, 0, MAX_BRIGHTNESS, 0);
     }
     delay(150);
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < NumLEDs; j++)
     {
       SetLight(j, 0, 0, MAX_BRIGHTNESS);
     }
     delay(150);
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < NumLEDs; j++)
     {
       SetLight(j, MAX_BRIGHTNESS, 0, MAX_BRIGHTNESS);
     }
     delay(150);
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < NumLEDs; j++)
     {
       SetLight(j, MAX_BRIGHTNESS, MAX_BRIGHTNESS, 0);
     }
     delay(150);
-    for (int j = 0; j < 5; j++)
+    for (int j = 0; j < NumLEDs; j++)
     {
       SetLight(j, 0, MAX_BRIGHTNESS, MAX_BRIGHTNESS);
     }

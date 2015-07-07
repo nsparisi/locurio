@@ -71,7 +71,7 @@
 
 #define MAX_BRIGHTNESS 1023
 
-#define NumLEDs 5
+#define NumLEDs 4
 
 class MegaBrite
 {

@@ -12,7 +12,7 @@
 
 #include "tagdatabase.h"
 
-#define PuzzleDebug 0
+#define PuzzleDebug 1
 
 #define readerCount 16
 #define wordCount 11
@@ -127,6 +127,11 @@ void setup(void)
   topLightSegments[3] = &led13;
   topLightSegments[4] = &led14;
 
+Serial.print("Light check");
+  MegaBrite::Instance.AllLightsBlue();
+  delay(1000);
+  MegaBrite::Instance.AllLightsGreen();
+  delay(1000);
   MegaBrite::Instance.AllLightsOff();
 
   if (PuzzleDebug)
@@ -158,19 +163,21 @@ void solveTopPuzzle()
 
       if (topPuzzle[i]->PollForTag(true) && topPuzzle[i]->GetCurrentTagType() == topExpectedTypes[i])
       {
+        Serial.print("Tag found");
         currentBestReader++;
         if (!topPuzzleStarted)
         {
           topPuzzleStarted = true;
-          abyss->send_message("TOPSTART");
+          //abyss->send_message("TOPSTART");
         }
       }
       else
       {
-        break;
+        Serial.print("No tag found");
+        //break;
       }
     }
-
+    
     for (int j = 0; j < topCount; j++)
     {
       topLightSegments[j]->SetState(j <= currentBestReader);
