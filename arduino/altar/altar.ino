@@ -129,7 +129,10 @@ void setup(void)
 
   MegaBrite::Instance.AllLightsOff();
 
-  TagDatabase::Instance.dumpTagDatabase();
+  if (PuzzleDebug)
+  {
+    TagDatabase::Instance.dumpTagDatabase();
+  }
 }
 
 void solveTopPuzzle()
@@ -173,8 +176,11 @@ void solveTopPuzzle()
       topLightSegments[j]->SetState(j <= currentBestReader);
     }
 
-    Serial.print("Current best reader:  ");
-    Serial.println(currentBestReader);
+    if (PuzzleDebug)
+    {
+      Serial.print("Current best reader:  ");
+      Serial.println(currentBestReader);
+    }
   }
 }
 
