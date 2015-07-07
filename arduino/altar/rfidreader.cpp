@@ -134,7 +134,9 @@ bool RfidReader::PollForTag(bool shouldReset)
         {
           Serial.println("All valid tag characters!");
         }
-        // TODO:  validate checksum
+        
+        // No need to validate the checksum, since we store the entire tag ID including
+        // checksum in the tag database.
 
         // Reset failure counter to 7 tries.
         failCount = MAX_FAIL;
