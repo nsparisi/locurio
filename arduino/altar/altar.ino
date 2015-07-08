@@ -25,26 +25,25 @@ TagType topExpectedTypes[topCount];
 RfidReader* wordPuzzle[wordCount];
 RfidReader* topPuzzle[topCount];
 
-LightGroup* leds[readerCount];
 LightGroup* wordLeds[wordCount];
 LightGroup* topLightSegments[topCount];
 
-RfidReader reader0 = RfidReader(7, 36, "Front 0");
-RfidReader reader1 = RfidReader(3, 36, "Front 1");
-RfidReader reader2 = RfidReader(8, 36, "Front 2");
-RfidReader reader3 = RfidReader(4, 38, "Right 0");
-RfidReader reader4 = RfidReader(5, 38, "Right 1");
-RfidReader reader5 = RfidReader(6, 38, "Right 2");
-RfidReader reader6 = RfidReader(11, 40, "Back 0");
-RfidReader reader7 = RfidReader(12, 40, "Back 1");
-RfidReader reader8 = RfidReader(13, 40, "Back 2");
-RfidReader reader9 = RfidReader(9, 42, "Left 0");
-RfidReader reader10 = RfidReader(10, 42, "Left 1");
-RfidReader reader11 = RfidReader(0, 44, "Top (Top Center)", true);
-RfidReader reader12 = RfidReader(1, 44, "Top (Bottom Right)", true);
-RfidReader reader13 = RfidReader(2, 44, "Top (Bottom Left)", true);
-RfidReader reader14 = RfidReader(14, 44, "Top (Middle Left)", true);
-RfidReader reader15 = RfidReader(15, 44, "Top (Middle Right)", true);
+RfidReader reader0 = RfidReader(7, 36, "F0");
+RfidReader reader1 = RfidReader(3, 36, "F1");
+RfidReader reader2 = RfidReader(8, 36, "F2");
+RfidReader reader3 = RfidReader(4, 38, "R0");
+RfidReader reader4 = RfidReader(5, 38, "R1");
+RfidReader reader5 = RfidReader(6, 38, "R2");
+RfidReader reader6 = RfidReader(11, 40, "B0");
+RfidReader reader7 = RfidReader(12, 40, "B1");
+RfidReader reader8 = RfidReader(13, 40, "B2");
+RfidReader reader9 = RfidReader(9, 42, "L0");
+RfidReader reader10 = RfidReader(10, 42, "L1");
+RfidReader reader11 = RfidReader(0, 44, "T1(TC)", true);
+RfidReader reader12 = RfidReader(1, 44, "T2(BR)", true);
+RfidReader reader13 = RfidReader(2, 44, "T3(BL)", true);
+RfidReader reader14 = RfidReader(14, 44, "T4(ML)", true);
+RfidReader reader15 = RfidReader(15, 44, "T5(MR)", true);
 
 LightGroup led0 = LightGroup(0,  0, 1);
 LightGroup led1 = LightGroup(0,  2, 3);
@@ -78,7 +77,7 @@ void setup(void)
   wordPuzzle[8] = &reader8;	// reader: Back 2
   wordPuzzle[9] = &reader4;	// reader: Right 1
   wordPuzzle[10] = &reader1;	// reader: Front 1
-  
+
   wordLeds[0] = &led6;	        // led: Back 0
   wordLeds[1] = &led2;	        // led: Front 2
   wordLeds[2] = &led5;	        // led: Right 2
@@ -90,7 +89,6 @@ void setup(void)
   wordLeds[8] = &led8;	        // led: Back 2
   wordLeds[9] = &led4;	        // led: Right 1
   wordLeds[10] = &led1;	        // led: Front 1
-
 
   topPuzzle[0] = &reader11;
   topPuzzle[1] = &reader15;
@@ -127,7 +125,7 @@ void setup(void)
   topLightSegments[3] = &led13;
   topLightSegments[4] = &led14;
 
-Serial.print("Light check");
+  Serial.print("Light check");
   MegaBrite::Instance.AllLightsBlue();
   delay(1000);
   MegaBrite::Instance.AllLightsGreen();
@@ -140,6 +138,82 @@ Serial.print("Light check");
   }
 }
 
+void debugReaders()
+{
+
+  while (true)
+  {
+
+    for (int i = 0; i < 3; i++)
+    {
+      MegaBrite::Instance.AllLightsBlue();
+      delay(500);
+      MegaBrite::Instance.AllLightsOff();
+      delay(100);
+    }
+
+    for (int i = 0; i < topCount; i++)
+    {
+      while (!(topPuzzle[i]->PollForTag(true)))
+      {
+        for (int j = 0; j <= i; j++)
+        {
+          MegaBrite::Instance.AllLightsRed();
+          delay(250);
+          MegaBrite::Instance.AllLightsOff();
+          delay(250);
+        }
+        delay(300);
+      }
+
+      for (int j = 0; j <= i; j++)
+      {
+        MegaBrite::Instance.AllLightsGreen();
+        delay(250);
+        MegaBrite::Instance.AllLightsOff();
+        delay(250);
+      }
+
+      delay(250);
+      MegaBrite::Instance.AllLightsOn();
+      delay(100);
+      MegaBrite::Instance.AllLightsOff();
+      delay(250);
+    }
+
+
+    for (int i = 0; i < wordCount; i++)
+    {
+      while (!(wordPuzzle[i]->PollForTag(true)))
+      {
+        for (int j = 0; j <= i; j++)
+        {
+          MegaBrite::Instance.AllLightsRed();
+          delay(250);
+          MegaBrite::Instance.AllLightsOff();
+          delay(250);
+        }
+        delay(300);
+      }
+
+      for (int j = 0; j <= i; j++)
+      {
+        MegaBrite::Instance.AllLightsGreen();
+        delay(250);
+        MegaBrite::Instance.AllLightsOff();
+        delay(250);
+      }
+
+      delay(250);
+      MegaBrite::Instance.AllLightsOn();
+      delay(100);
+      MegaBrite::Instance.AllLightsOff();
+      delay(250);
+    }
+  }
+}
+
+
 void solveTopPuzzle()
 {
   MegaBrite::Instance.TopLightOnly();
@@ -151,33 +225,45 @@ void solveTopPuzzle()
   {
     currentBestReader = -1;
 
-    for (int i = 0; i < topCount; i++)
+    bool failure = false;
+    for (int i = 0; i < topCount && !failure; i++)
     {
+      
       if (PuzzleDebug)
       {
-        Serial.println("Start with top count:");
+        Serial.println(F("Start with top count:"));
         Serial.println(topCount);
-        Serial.print("Checking reader #");
+        Serial.print(F("Checking reader #"));
         Serial.println(i);
       }
 
-      if (topPuzzle[i]->PollForTag(true) && topPuzzle[i]->GetCurrentTagType() == topExpectedTypes[i])
+      if (topPuzzle[i]->PollForTag(true))
       {
-        Serial.print("Tag found");
-        currentBestReader++;
-        if (!topPuzzleStarted)
+        if (topPuzzle[i]->GetCurrentTagType() == DEBUG)
         {
-          topPuzzleStarted = true;
-          //abyss->send_message("TOPSTART");
+          debugReaders();
+        }
+        
+        if (topPuzzle[i]->GetCurrentTagType() == topExpectedTypes[i])
+        {
+          currentBestReader++;
+          if (!topPuzzleStarted)
+          {
+            topPuzzleStarted = true;
+            abyss->send_message("TOPSTART");
+          }
+        }
+        else
+        {
+          failure = true;
         }
       }
       else
       {
-        Serial.print("No tag found");
-        //break;
+        failure=true;
       }
     }
-    
+
     for (int j = 0; j < topCount; j++)
     {
       topLightSegments[j]->SetState(j <= currentBestReader);
@@ -209,7 +295,7 @@ void solveWordPuzzle()
     }
 
     abyss->send_message("WORDTAGPRESENT");
-    
+
     wordLeds[i]->On();
 
     if (i < (wordCount - 1))

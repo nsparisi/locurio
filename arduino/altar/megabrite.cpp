@@ -139,7 +139,7 @@ void MegaBrite::AllLightsRed()
 {
   for (int i = 0; i < NumLEDs; i++)
   {
-    SetLight(i, 0, MAX_BRIGHTNESS, 0);
+    SetLight(i, MAX_BRIGHTNESS, 0, 0);
   }
 }
 

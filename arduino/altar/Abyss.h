@@ -37,9 +37,9 @@ class Abyss
     const char* my_id;
     IAbyssHandler* my_handler;
     char head[32];
-    char body[256];
-    char receive_buffer[256];
-    char send_buffer[256];
+    char body[64];
+    char receive_buffer[64];
+    char send_buffer[64];
     int buffer_index = 0;
     bool check_message;
 

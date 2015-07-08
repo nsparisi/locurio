@@ -19,7 +19,7 @@ bool TagDatabase::isDatabaseCreated()
 
 void TagDatabase::createDatabase()
 {
-  tagDebugPrintln("Creating database.");
+  tagDebugPrintln(F("Creating database."));
   database.tagCount = 0;
   database.databaseCreatedFlag = VALID_DATABASE_CREATED_FLAG;
 
@@ -36,22 +36,22 @@ void TagDatabase::createDatabase()
   // Add well known tag IDs to the database by default (the tags from the keychain,
   // as well as the tag on the end of the magic wand)
   addTag(MASTER_TAG_ID, MASTER);
-  addTag("00001E91EA65", TOP1);
-  addTag("00001E5EFEBE", TOP2);
-  addTag("00001EAE8838", TOP3);
-  addTag("00001E64542E", TOP4);
-  addTag("00001E5386CB", TOP5);
-  addTag("00001E45174C", WAND);
-  addTag("6A008FD64A79", WAND);
-
+  addTag(("00001E91EA65"), TOP1);
+  addTag(("00001E5EFEBE"), TOP2);
+  addTag(("00001EAE8838"), TOP3);
+  addTag(("00001E64542E"), TOP4);
+  addTag(("00001E5386CB"), TOP5);
+  addTag(("00001E45174C"), WAND);
+  addTag(("6A008FD64A79"), WAND);
+  addTag(("00001E8CAB39"), DEBUG);
   saveToEEPROM();
 }
 
 void TagDatabase::addTag(const char* tagId, TagType tagType, bool saveDatabase)
 {
-  tagDebugPrint(("Adding tag: "));
+  tagDebugPrint(F("Adding tag: "));
   tagDebugPrint((tagId));
-  tagDebugPrint((" with type "));
+  tagDebugPrint(F(" with type "));
   tagDebugPrintln(((int)tagType));
 
   if (database.tagCount == MAX_TAGS)
@@ -100,26 +100,26 @@ TagDatabase::TagDatabase()
 void TagDatabase::enterEnrollMode(RfidReader* sourceReader)
 {
   isInEnrollmentMode = true;
-  tagDebugPrintln("Entering enrollment mode.");
+  tagDebugPrintln(F("Entering enrollment mode."));
   feedback_info();
   sourceReader->WaitForNoTag();
   delay(2000);
   feedback_none();
 
-  tagDebugPrintln("Waiting for source tag.");
+  tagDebugPrintln(F("Waiting for source tag."));
 
   sourceReader->WaitForValidTag();
   TagType knownTagType = getTagType(sourceReader->GetCurrentTag());
 
   tagDebugPrint((int)knownTagType);
-  tagDebugPrintln(" - source tag type");
+  tagDebugPrintln(F(" - source tag type"));
 
   feedback_success();
   sourceReader->WaitForNoTag();
   delay(2000);
   feedback_none();
 
-  tagDebugPrintln("Waiting for destination tag.");
+  tagDebugPrintln(F("Waiting for destination tag."));
   while (!sourceReader->PollForTag(true))
   {
     delay(10);
@@ -131,7 +131,7 @@ void TagDatabase::enterEnrollMode(RfidReader* sourceReader)
 
   changeOrAddTag(newTagId, knownTagType, true);
 
-  tagDebugPrintln("Tag added.  Rebooting...");
+  tagDebugPrintln(F("Tag added.  Rebooting..."));
 
   feedback_info();
   delay(500);
@@ -173,7 +173,7 @@ bool TagDatabase::isTagOfType(const char* tagId, TagType expectedType, bool acce
 
 TagType TagDatabase::getTagType(const char* tagId)
 {
-  Serial.println("Getting tag type");
+  Serial.println(F("Getting tag type"));
   Serial.println(tagId);
   Serial.println((int)tagId[TAG_LENGTH]);
   Serial.println((int)tagId[0]);
@@ -183,9 +183,9 @@ TagType TagDatabase::getTagType(const char* tagId)
   {
     for (int i = 0; i < database.tagCount; i++)
     {
-      Serial.print("Comparing \"");
+      Serial.print(F("Comparing \""));
       Serial.print(tagId);
-      Serial.print("\" to \"");
+      Serial.print(F("\" to \""));
       Serial.println(database.tagStorage[i].tagName);
 
       if (strncmp(tagId, database.tagStorage[i].tagName, 12) == 0)
@@ -200,19 +200,19 @@ TagType TagDatabase::getTagType(const char* tagId)
 
 void TagDatabase::dumpTagDatabase()
 {
-  Serial.print("Dumping ");
+  Serial.print(F("Dumping "));
   Serial.print(database.tagCount);
-  Serial.println(" tags.");
+  Serial.println(F(" tags."));
 
   for (int i = 0; i < database.tagCount; i++)
   {
-    Serial.print("Tag ");
+    Serial.print(F("Tag "));
     Serial.print(i);
-    Serial.print(": Tag ");
+    Serial.print(F(": Tag "));
     Serial.print(database.tagStorage[i].tagName);
-    Serial.print(" (");
+    Serial.print(F(" ("));
     Serial.print((int)database.tagStorage[i].type);
-    Serial.println(")");
+    Serial.println(F(")"));
   }
 }
 

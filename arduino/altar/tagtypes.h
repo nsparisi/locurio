@@ -11,6 +11,7 @@ enum TagType {
   TOP4 = 3,
   TOP5 = 4,
   WAND = 64,
+  DEBUG = 160,
   UNKNOWN_VALID = 192,
   INVALID = 254,
   NO_TAG = 253

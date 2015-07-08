@@ -27,7 +27,7 @@
  ******************************************************************************/
 
 #define _EEPROMEX_VERSION 1_0_0 // software version of this library
-#define _EEPROMEX_DEBUG         // Enables logging of maximum of writes and out-of-memory
+//#define _EEPROMEX_DEBUG         // Enables logging of maximum of writes and out-of-memory
 /******************************************************************************
  * Constructors
  ******************************************************************************/
@@ -60,10 +60,10 @@ void EEPROMClassEx::setMemPool(int base, int memSize) {
 
 #ifdef _EEPROMEX_DEBUG
   if (_nextAvailableaddress != _base)
-    Serial.println("Cannot change base, addresses have been issued");
+    Serial.println(F("Cannot change base, addresses have been issued"));
 
   if (memSize < _nextAvailableaddress )
-    Serial.println("Cannot change ceiling, below issued addresses");
+    Serial.println(F("Cannot change ceiling, below issued addresses"));
 #endif
 
 }
@@ -86,7 +86,7 @@ int EEPROMClassEx::getAddress(int noOfBytes) {
 
 #ifdef _EEPROMEX_DEBUG
   if (_nextAvailableaddress > _memSize) {
-    Serial.println("Attempt to write outside of EEPROM memory");
+    Serial.println(F("Attempt to write outside of EEPROM memory"));
     return -availableaddress;
   } else {
     return availableaddress;
@@ -321,12 +321,12 @@ bool EEPROMClassEx::isWriteOk(int address)
 #ifdef _EEPROMEX_DEBUG
   _writeCounts++;
   if (_allowedWrites == 0 || _writeCounts > _allowedWrites ) {
-    Serial.println("Exceeded maximum number of writes");
+    Serial.println(F("Exceeded maximum number of writes"));
     return false;
   }
 
   if (address > _memSize) {
-    Serial.println("Attempt to write outside of EEPROM memory");
+    Serial.println(F("Attempt to write outside of EEPROM memory"));
     return false;
   } else {
     return true;
@@ -342,7 +342,7 @@ bool EEPROMClassEx::isReadOk(int address)
 {
 #ifdef _EEPROMEX_DEBUG
   if (address > _memSize) {
-    Serial.println("Attempt to write outside of EEPROM memory");
+    Serial.println(F("Attempt to write outside of EEPROM memory"));
     return false;
   } else {
     return true;

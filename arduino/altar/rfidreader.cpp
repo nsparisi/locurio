@@ -31,7 +31,7 @@ void RfidReader::SetMultiplexer()
 {
   while (serialPort->available())
   {
-    Serial.println((int)(serialPort->read()));
+    serialPort->read();
   }
   
   // Set the multiplexer pin
@@ -45,12 +45,11 @@ void RfidReader::Reset()
 
   if (RfidDebugOutput)
   {
-    Serial.println("Reset!");
+    Serial.println(F("Reset!"));
   }
 
   while (serialPort->available())
   {
-    Serial.print("nom");
     serialPort->read();
   }
 
@@ -89,12 +88,12 @@ bool RfidReader::PollForTag(bool shouldReset)
 
   byte countRead = 0;
 
-  Serial.print("Looking for 0x02");
+  Serial.print(F("Looking for 0x02"));
   if (serialPort->find("\x02"))
   {
     if (RfidDebugOutput)
     {
-      Serial.println("Found start byte 0x02");
+      Serial.println(F("Found start byte 0x02"));
     }
 
     countRead = serialPort->readBytes(buf, 13);
@@ -110,9 +109,9 @@ bool RfidReader::PollForTag(bool shouldReset)
     if (RfidDebugOutput)
     {
       Serial.print(friendlyName);
-      Serial.print(": Read ");
+      Serial.print(F(": Read "));
       Serial.print((int)countRead);
-      Serial.print(" bytes: ");
+      Serial.print(F(" bytes: "));
 
       for (int i = 0; i < countRead; i++)
       {
@@ -137,7 +136,7 @@ bool RfidReader::PollForTag(bool shouldReset)
       {
         if (RfidDebugOutput)
         {
-          Serial.println("All valid tag characters!");
+          Serial.println(F("All valid tag characters!"));
         }
         
         // No need to validate the checksum, since we store the entire tag ID including
@@ -154,7 +153,7 @@ bool RfidReader::PollForTag(bool shouldReset)
       {
         if (RfidDebugOutput)
         {
-          Serial.println("Tag read, but characters were invalid");
+          Serial.println(F("Tag read, but characters were invalid"));
         }
         failCount--;
       }
@@ -182,7 +181,7 @@ bool RfidReader::PollForTag(bool shouldReset)
   {
     currentTagType = TagDatabase::Instance.getTagType(currentTag);
     Serial.print(currentTagType);
-    Serial.println(" was detected tag type.");
+    Serial.println(F(" was detected tag type."));
     if (currentTagType == MASTER && !TagDatabase::Instance.isInEnrollmentMode)
     {
       TagDatabase::Instance.enterEnrollMode(this);
@@ -220,7 +219,7 @@ void RfidReader::WaitForValidTag()
     {
       if (RfidDebugOutput)
       {
-        Serial.println("Invalid tag detected;  remaining in WaitForValidTag()");
+        Serial.println(F("Invalid tag detected;  remaining in WaitForValidTag()"));
       }
     }
     else

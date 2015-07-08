@@ -24,13 +24,11 @@ int Multiplexer::muxChannelLookupTable[16][4] = {
   {1, 1, 1, 1} //channel 15
 };
 
+int Multiplexer::controlPins[4] = {
+  28, 30, 32, 34};
+  
 Multiplexer::Multiplexer(int s0, int s1, int s2, int s3)
-{
-  controlPins[0] = s0;
-  controlPins[1] = s1;
-  controlPins[2] = s2;
-  controlPins[3] = s3;
-
+{ 
   pinMode(s0, OUTPUT);
   pinMode(s1, OUTPUT);
   pinMode(s2, OUTPUT);
@@ -41,16 +39,21 @@ Multiplexer::Multiplexer(int s0, int s1, int s2, int s3)
 
 void Multiplexer::Select(int channel)
 {
-  Serial.print("Setting mux channel to ");
+  Serial.print(F("Setting mux channel to "));
   Serial.println(channel);
   
-  if (channel < 0 || channel > 16)
+  if (channel < 0 || channel > 15)
   {
     channel = 0;
   }
 
   //loop through the 4 segments
   for (int i = 0; i < 4; i ++) {
+    Serial.print(F("Writing pin "));
+    Serial.print(controlPins[i]);
+    Serial.print(F(" with value "));
+    Serial.println(muxChannelLookupTable[channel][i]);
+    
     digitalWrite(controlPins[i], muxChannelLookupTable[channel][i]);
   }
 
