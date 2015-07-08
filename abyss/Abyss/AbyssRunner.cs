@@ -248,6 +248,70 @@ namespace Abyss
 
             // not yet implemented
             // emergency stop pressed
+
+
+            // *****************************************
+            // TEST CODE
+            // testing LIGHT BULBS
+            LimitlessLEDBridge bridge = new LimitlessLEDBridge("Bridge01", "192.168.1.7");
+            AbyssSystem.Instance.RegisterPhysicalObject(bridge);
+
+            SPLimitlessLEDBridge turnOnAll = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOn,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Bridges = new List<LimitlessLEDBridge>
+                {
+                    bridge
+                }
+            };
+
+            SPLimitlessLEDBridge turnOffAll = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Bridges = new List<LimitlessLEDBridge>
+                {
+                    bridge
+                }
+            };
+
+            SPLimitlessLEDBridge turnYellow = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Color = LimitlessLEDBridge.ColorType.Yellow_Orange,
+                Bridges = new List<LimitlessLEDBridge>
+                {
+                    bridge
+                }
+            };
+
+            SPLimitlessLEDBridge turnBlue = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Color = LimitlessLEDBridge.ColorType.Baby_Blue,
+                Bridges = new List<LimitlessLEDBridge>
+                {
+                    bridge
+                }
+            };
+
+            //bridge.TurnOn(LimitlessLEDBridge.ZoneType.All);
+            //bridge.TurnOff(LimitlessLEDBridge.ZoneType.All);
+            //bridge.TurnOn(LimitlessLEDBridge.ZoneType.All);
+
+            //turnOnAll.Run(null, EventArgs.Empty);
+            //Thread.Sleep(1000 * 1);
+            //turnOffAll.Run(null, EventArgs.Empty);
+            //Thread.Sleep(1000 * 1);
+            //turnOnAll.Run(null, EventArgs.Empty);
+            //Thread.Sleep(1000 * 1);
+            //turnYellow.Run(null, EventArgs.Empty);
+            //Thread.Sleep(1000 * 1);
+            //turnBlue.Run(null, EventArgs.Empty);
+            //Thread.Sleep(1000 * 1);
         }
     }
 }

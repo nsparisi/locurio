@@ -53,6 +53,7 @@
     <Compile Include="Hardware\IPhysicalObject.cs" />
     <Compile Include="AbyssUtils.cs" />
     <Compile Include="Hardware\SMSSender.cs" />
+    <Compile Include="Hardware\LimitlessLEDBridge.cs" />
     <Compile Include="Hardware\TextingController.cs" />
     <Compile Include="Hardware\VLCServerControl.cs" />
     <Compile Include="Hardware\XBeeEndpoint.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="SubProcessors\AbstractSubProcessor.cs" />
     <Compile Include="SubProcessors\ISubProcessor.cs" />
     <Compile Include="SubProcessors\SPDelay.cs" />
+    <Compile Include="SubProcessors\SPLimitlessLEDBridge.cs" />
     <Compile Include="SubProcessors\SPTextingController.cs" />
     <Compile Include="SubProcessors\SPSoundControl.cs" />
     <Compile Include="SubProcessors\SPXBeeEndpoint.cs" />
