@@ -79,6 +79,7 @@ namespace AbyssLibrary
 
                 if (calledPlay)
                 {
+                    controller.SetVolume(Volume);
                     controller.Play(SongFileName);
                 }
                 else if(calledPause)

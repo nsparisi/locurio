@@ -14,6 +14,7 @@ namespace AbyssConsole
         private CountDownTimer countdownClock;
 
         private const long OneHourMs = 60 * 60 * 1000;
+        private const long OneMinuteMs = 1 * 60 * 1000;
 
         public ClockController(AbyssScreenController screenController)
         {
