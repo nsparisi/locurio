@@ -47,7 +47,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPTextingController Proc Start");
+            Debug.Log("SPTextingController Proc Start [{0}]", Name);
 
             foreach (TextingController controller in TextingControllers)
             {
@@ -71,7 +71,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPTextingController Proc Ended");
+            Debug.Log("SPTextingController Proc Ended [{0}]", Name);
             clearHistory = false;
         }
     }

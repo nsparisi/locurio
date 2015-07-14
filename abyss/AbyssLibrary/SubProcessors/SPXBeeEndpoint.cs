@@ -62,7 +62,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPXBeeEndpoint Proc Ended");
+            Debug.Log("SPXBeeEndpoint Proc Ended [{0}]", Name);
         }
 
         private void OnReceivedData(object sender, EventArgs args)
@@ -76,6 +76,14 @@ namespace AbyssLibrary
             if (ExpectedMessageReceived != null && xbeeArgs.Message.Equals(ExpectedMessage))
             {
                 ExpectedMessageReceived(sender, args);
+            }
+        }
+
+        public void DebugReceivedExpectedMessage()
+        {
+            if (ExpectedMessageReceived != null)
+            {
+                ExpectedMessageReceived(null, EventArgs.Empty);
             }
         }
     }

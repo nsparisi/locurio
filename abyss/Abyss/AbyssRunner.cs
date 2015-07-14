@@ -381,10 +381,8 @@ namespace Abyss
 
             sp_altarWordSolved.ExpectedMessageReceived += sp_winZone1_delay1.Start;
             sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ1_Color.Run;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ1_On.Run;
             sp_winZone1_delay1.Finished += sp_winZone1_delay2.Start;
             sp_winZone1_delay1.Finished += sp_lightWinZ1_Off.Run;
-            sp_winZone1_delay1.Finished += sp_lightWinZ1_Color.Run;
             sp_winZone1_delay2.Finished += sp_winZone1_delay1.Start;
             sp_winZone1_delay2.Finished += sp_lightWinZ1_On.Run;
 
@@ -436,10 +434,8 @@ namespace Abyss
 
             sp_altarWordSolved.ExpectedMessageReceived += sp_winZone2_delay1.Start;
             sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ2_Color.Run;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ2_On.Run;
             sp_winZone2_delay1.Finished += sp_winZone2_delay2.Start;
             sp_winZone2_delay1.Finished += sp_lightWinZ2_Off.Run;
-            sp_winZone2_delay1.Finished += sp_lightWinZ2_Color.Run;
             sp_winZone2_delay2.Finished += sp_winZone2_delay1.Start;
             sp_winZone2_delay2.Finished += sp_lightWinZ2_On.Run;
             
@@ -493,10 +489,8 @@ namespace Abyss
 
             sp_altarWordSolved.ExpectedMessageReceived += sp_winZone3_delay1.Start;
             sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ3_Color.Run;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ3_On.Run;
             sp_winZone3_delay1.Finished += sp_winZone3_delay2.Start;
             sp_winZone3_delay1.Finished += sp_lightWinZ3_Off.Run;
-            sp_winZone3_delay1.Finished += sp_lightWinZ3_Color.Run;
             sp_winZone3_delay2.Finished += sp_winZone3_delay1.Start;
             sp_winZone3_delay2.Finished += sp_lightWinZ3_On.Run;
 
@@ -548,15 +542,15 @@ namespace Abyss
             };
             sp_winZone4_delay2.Initialize();
 
-
             sp_altarWordSolved.ExpectedMessageReceived += sp_winZone4_delay1.Start;
             sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ4_Color.Run;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ4_On.Run;
             sp_winZone4_delay1.Finished += sp_winZone4_delay2.Start;
             sp_winZone4_delay1.Finished += sp_lightWinZ4_Off.Run;
-            sp_winZone4_delay1.Finished += sp_lightWinZ4_Color.Run;
             sp_winZone4_delay2.Finished += sp_winZone4_delay1.Start;
             sp_winZone4_delay2.Finished += sp_lightWinZ4_On.Run;
+
+            // uncomment to win the game
+            //sp_altarWordSolved.DebugReceivedExpectedMessage();
         }
     }
 }

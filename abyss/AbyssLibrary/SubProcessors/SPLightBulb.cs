@@ -46,7 +46,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPLightBulb Proc Start");
+            Debug.Log("SPLightBulb Proc Start  [{0}]", Name);
 
             if(turnOn)
             {
@@ -68,7 +68,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPLightBulb Proc Ended");
+            Debug.Log("SPLightBulb Proc Ended [{0}]", Name);
         }
 
         public override void Initialize()
