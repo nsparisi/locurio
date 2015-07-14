@@ -59,7 +59,7 @@ namespace AbyssLibrary
             }
             catch(Exception e)
             {
-                Debug.Log(e);
+                Debug.Log("Problem sending text message:", e);
             }
         }
     }

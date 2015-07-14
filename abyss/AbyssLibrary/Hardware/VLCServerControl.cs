@@ -103,7 +103,7 @@ namespace AbyssLibrary
             }
             catch(Exception e)
             {
-                Debug.Log("Ran into an error during ExecuteWebRequest {0}", e.InnerException);
+                Debug.Log("Ran into an error during ExecuteWebRequest for VLC server.", e);
             }
             finally
             {
