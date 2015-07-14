@@ -6,6 +6,8 @@
 bool RfidReader::serialInitialized = false;
 int RfidReader::ResetCounter = 0;
 
+char buf[MAX_TAG_LEN] ;
+
 RfidReader::RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted, HardwareSerial* targetSerialPort)
 {
   this->serialPort = targetSerialPort;
@@ -35,24 +37,18 @@ void RfidReader::SetMultiplexer()
   }
   
   // Set the multiplexer pin
-  Multiplexer::Instance.Select(MultiplexerChannel);
+  MultiplexerInstance.Select(MultiplexerChannel);
 }
 
 void RfidReader::Reset()
 {
-  // First, reset the reader so it will redetect any existing tags.
-  digitalWrite(ResetPin, IsResetPinInverted ? HIGH : LOW);
-
-  if (RfidDebugOutput)
-  {
-    Serial.println(F("Reset!"));
-  }
-
+  Shutdown();
+  
   while (serialPort->available())
   {
     serialPort->read();
   }
-
+  
   // Wait 50 ms.
   delay(ResetDelay);
 
@@ -60,6 +56,22 @@ void RfidReader::Reset()
   digitalWrite(ResetPin, IsResetPinInverted ? LOW : HIGH);
 
   delay(100);
+  
+  if (RfidDebugOutput)
+  {
+    Serial.print((int)ResetPin);
+    Serial.println(F(" Pin - Reset complete."));
+  }
+}
+
+void RfidReader::Shutdown()
+{
+  digitalWrite(ResetPin, IsResetPinInverted ? HIGH : LOW);
+  
+  if (RfidDebugOutput)
+  {
+    Serial.println(F("Shutting down"));
+  }
 }
 
 bool RfidReader::PollForTag()
@@ -79,6 +91,8 @@ bool RfidReader::PollForTag()
 
 bool RfidReader::PollForTag(bool shouldReset)
 {
+  buf[0] = 0;
+  
   SetMultiplexer();
   
   if (shouldReset)
@@ -124,7 +138,7 @@ bool RfidReader::PollForTag(bool shouldReset)
     // Check if tag is valid
     if (countRead == 13)  // exact length of RFID tag + 0x02 prefix
     {
-      currentTag[countRead - 1] = '\0';
+      //currentTag[countRead - 1] = '\0';
 
       bool isLetter = true;
       for (int i = 0; i < 12; i++)
@@ -147,7 +161,7 @@ bool RfidReader::PollForTag(bool shouldReset)
         tagPresent = true;
 
         // Save the buffer to the currentTag field, without the 0x02 prefix
-        strcpy(currentTag, buf);
+        //strcpy(currentTag, buf);
       }
       else
       {
@@ -179,12 +193,12 @@ bool RfidReader::PollForTag(bool shouldReset)
 
   if (tagPresent)
   {
-    currentTagType = TagDatabase::Instance.getTagType(currentTag);
+    currentTagType = TagDatabaseInstance.getTagType(buf);
     Serial.print(currentTagType);
     Serial.println(F(" was detected tag type."));
-    if (currentTagType == MASTER && !TagDatabase::Instance.isInEnrollmentMode)
+    if (currentTagType == MASTER && !TagDatabaseInstance.isInEnrollmentMode)
     {
-      TagDatabase::Instance.enterEnrollMode(this);
+      TagDatabaseInstance.enterEnrollMode(this);
     }
   }
   else
@@ -239,8 +253,6 @@ void RfidReader::WaitForNoTag()
 
 void RfidReader::ClearTag()
 {
-  for (int i=0; i<2; i++)
-  {
     SetMultiplexer();
               
     WaitForNoTag();
@@ -248,16 +260,15 @@ void RfidReader::ClearTag()
     currentTagType = NO_TAG;
     tagPresent = false;
     failCount = 0;
-  }
 }
 
 const char* RfidReader::GetCurrentTag()
 {
-  if (tagPresent)
+//  if (tagPresent)
   {
-    return (const char*)currentTag;
+//    return (const char*)currentTag;
   }
-  else
+//  else
   {
     return 0;
   }

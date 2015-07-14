@@ -7,28 +7,28 @@
 
 void feedback_error()
 {
-  Serial.println("Error");
-  MegaBrite::Instance.AllLightsRed();
+  Serial.println(F("Error"));
+  MegaBriteInstance.AllLightsRed();
   delay(500);
 }
 
 void feedback_success()
 {
-  Serial.println("Success");
-  MegaBrite::Instance.AllLightsGreen();
+  Serial.println(F("Success"));
+  MegaBriteInstance.AllLightsGreen();
   delay(500);
 }
 
 void feedback_info()
 {
-  Serial.println("Info");
-  MegaBrite::Instance.AllLightsBlue();
+  Serial.println(F("Info"));
+  MegaBriteInstance.AllLightsBlue();
   delay(500);
 }
 
 void feedback_none()
 {
-  MegaBrite::Instance.AllLightsOff();
+  MegaBriteInstance.AllLightsOff();
   delay(500);
 }
 

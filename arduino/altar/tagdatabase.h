@@ -18,7 +18,7 @@
 
 #define TagDatabaseDebugOutput 1
 
-#define MAX_TAGS 32
+#define MAX_TAGS 24
 
 // We'll define a number (based on the Locurio address :) that is highly
 // unlikely to occur by chance.  If we don't find it in the data structure,
@@ -26,7 +26,7 @@
 //
 // To force a database recreation, rev this version number.
 
-#define VALID_DATABASE_CREATED_FLAG 619201
+#define VALID_DATABASE_CREATED_FLAG 619203
 
 struct Tag {
   char tagName[TAG_LENGTH + 1];
@@ -53,7 +53,6 @@ class TagDatabase
     void saveToEEPROM();
 
   public:
-    static TagDatabase Instance;
     TagDatabase();
     bool isInEnrollmentMode = false;
     void enterEnrollMode(RfidReader* sourceReader);
@@ -64,5 +63,6 @@ class TagDatabase
     void dumpTagDatabase();
 };
 
+extern TagDatabase TagDatabaseInstance;
 #endif
 

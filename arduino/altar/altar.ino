@@ -20,6 +20,14 @@
 
 int sideLights[16];
 
+#define logMemory 0
+
+int freeRam() {
+  extern int __heap_start, *__brkval;
+  int v;
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
 TagType topExpectedTypes[topCount];
 
 RfidReader* wordPuzzle[wordCount];
@@ -69,15 +77,27 @@ void feedback_failure()
 {
   for(int i=0; i<30; i++)
   {
-    MegaBrite::Instance.AllLightsRed(brightnessFailure[i]);
+    MegaBriteInstance.AllLightsRed(brightnessFailure[i]);
     delay(100);
+  }
+}
+
+void printFreeMem()
+{
+  if (logMemory)
+  {
+    Serial.print(F("Free memory is: "));
+    Serial.print(freeRam());
+    Serial.println(F(" bytes"));
   }
 }
 
 void setup(void)
 {
   Serial.begin(115200);
-
+  
+  printFreeMem();
+  
   wordPuzzle[0] = &reader6;	// reader: Back 0
   wordPuzzle[1] = &reader2;	// reader: Front 2
   wordPuzzle[2] = &reader5;	// reader: Right 2
@@ -89,7 +109,7 @@ void setup(void)
   wordPuzzle[8] = &reader8;	// reader: Back 2
   wordPuzzle[9] = &reader4;	// reader: Right 1
   wordPuzzle[10] = &reader1;	// reader: Front 1
-
+  
   wordLeds[0] = &led6;	        // led: Back 0
   wordLeds[1] = &led2;	        // led: Front 2
   wordLeds[2] = &led5;	        // led: Right 2
@@ -101,7 +121,7 @@ void setup(void)
   wordLeds[8] = &led8;	        // led: Back 2
   wordLeds[9] = &led4;	        // led: Right 1
   wordLeds[10] = &led1;	        // led: Front 1
-
+  
   topPuzzle[0] = &reader11;
   topPuzzle[1] = &reader15;
   topPuzzle[2] = &reader12;
@@ -113,7 +133,7 @@ void setup(void)
   topExpectedTypes[2] = TOP3;
   topExpectedTypes[3] = TOP4;
   topExpectedTypes[4] = TOP5;
-
+  
   sideLights[0] = 1;
   sideLights[1] = 1;
   sideLights[2] = 1;
@@ -130,24 +150,27 @@ void setup(void)
   sideLights[13] = 4;
   sideLights[14] = 4;
   sideLights[15] = 4;
-
+  
   topLightSegments[0] = &led11;
   topLightSegments[1] = &led15;
   topLightSegments[2] = &led12;
   topLightSegments[3] = &led13;
   topLightSegments[4] = &led14;
-
-  Serial.print("Light check");
-  MegaBrite::Instance.AllLightsBlue();
+  
+  Serial.print(F("Light check"));
+  
+  MegaBriteInstance.AllLightsBlue();
   delay(1000);
-  MegaBrite::Instance.AllLightsGreen();
+  MegaBriteInstance.AllLightsGreen();
   delay(1000);
-  MegaBrite::Instance.AllLightsOff();
-
+  MegaBriteInstance.AllLightsOff();
+  
   if (PuzzleDebug)
   {
-    TagDatabase::Instance.dumpTagDatabase();
+    TagDatabaseInstance.dumpTagDatabase();
   }
+    
+  printFreeMem();
 }
 
 void debugReaders()
@@ -158,9 +181,9 @@ void debugReaders()
 
     for (int i = 0; i < 3; i++)
     {
-      MegaBrite::Instance.AllLightsBlue();
+      MegaBriteInstance.AllLightsBlue();
       delay(500);
-      MegaBrite::Instance.AllLightsOff();
+      MegaBriteInstance.AllLightsOff();
       delay(100);
     }
 
@@ -170,9 +193,9 @@ void debugReaders()
       {
         for (int j = 0; j <= i; j++)
         {
-          MegaBrite::Instance.AllLightsRed();
+          MegaBriteInstance.AllLightsRed();
           delay(250);
-          MegaBrite::Instance.AllLightsOff();
+          MegaBriteInstance.AllLightsOff();
           delay(250);
         }
         delay(300);
@@ -180,16 +203,16 @@ void debugReaders()
 
       for (int j = 0; j <= i; j++)
       {
-        MegaBrite::Instance.AllLightsGreen();
+        MegaBriteInstance.AllLightsGreen();
         delay(250);
-        MegaBrite::Instance.AllLightsOff();
+        MegaBriteInstance.AllLightsOff();
         delay(250);
       }
 
       delay(250);
-      MegaBrite::Instance.AllLightsOn();
+      MegaBriteInstance.AllLightsOn();
       delay(100);
-      MegaBrite::Instance.AllLightsOff();
+      MegaBriteInstance.AllLightsOff();
       delay(250);
     }
 
@@ -200,9 +223,9 @@ void debugReaders()
       {
         for (int j = 0; j <= i; j++)
         {
-          MegaBrite::Instance.AllLightsRed();
+          MegaBriteInstance.AllLightsRed();
           delay(250);
-          MegaBrite::Instance.AllLightsOff();
+          MegaBriteInstance.AllLightsOff();
           delay(250);
         }
         delay(300);
@@ -210,16 +233,16 @@ void debugReaders()
 
       for (int j = 0; j <= i; j++)
       {
-        MegaBrite::Instance.AllLightsGreen();
+        MegaBriteInstance.AllLightsGreen();
         delay(250);
-        MegaBrite::Instance.AllLightsOff();
+        MegaBriteInstance.AllLightsOff();
         delay(250);
       }
 
       delay(250);
-      MegaBrite::Instance.AllLightsOn();
+      MegaBriteInstance.AllLightsOn();
       delay(100);
-      MegaBrite::Instance.AllLightsOff();
+      MegaBriteInstance.AllLightsOff();
       delay(250);
     }
   }
@@ -228,7 +251,7 @@ void debugReaders()
 
 void solveTopPuzzle()
 {
-  MegaBrite::Instance.TopLightOnly();
+  MegaBriteInstance.TopLightOnly();
 
   int currentBestReader = -1;
   bool topPuzzleStarted = false;
@@ -294,14 +317,23 @@ void solveTopPuzzle()
 
 bool solveWordPuzzle()
 {
- 
   for (int i = 0; i < wordCount; i++)
   {
-      unsigned long startingTimestamp = millis();
+    printFreeMem();   
+       
+    // Flip all the other reset lines low before starting on a new reader, in an attempt
+    // to minimize interference.
+    
+    for (int j=0; j<wordCount; j++)
+    {
+      wordPuzzle[j]->Shutdown();
+    }
+   
+    unsigned long startingTimestamp = millis();
       
-    MegaBrite::Instance.AllLightsOn();
+    MegaBriteInstance.AllLightsOn();
 
-    while (!wordPuzzle[i]->PollForTag() || wordPuzzle[i]->GetCurrentTagType() != WAND)
+    while (!wordPuzzle[i]->PollForTag(true) || wordPuzzle[i]->GetCurrentTagType() != WAND)
     {
       if (i > 0 && (millis() - startingTimestamp) > TIMEOUT)
       {
@@ -317,7 +349,7 @@ bool solveWordPuzzle()
         return false;
       }
     }
-
+ 
     if (i == 0)
     {
       // first word solved;  notify abyss
@@ -332,8 +364,8 @@ bool solveWordPuzzle()
     {
       wordPuzzle[i + 1]->SetMultiplexer();
     }
-
-    MegaBrite::Instance.AllLightsGreen();
+ 
+    MegaBriteInstance.AllLightsGreen();
     delay(500);
   }
   
@@ -343,12 +375,17 @@ bool solveWordPuzzle()
 void loop(void)
 {
   abyss->send_message("POWERON");
+  
   solveTopPuzzle();
   abyss->send_message("TOPSOLVED");
+  
   while (!solveWordPuzzle())
   {}
-  abyss->send_message("WORDSOLVED");
-  MegaBrite::Instance.Rave();
 
-  Reset::resetFunc();
+  abyss->send_message("WORDSOLVED");
+
+  while (1) 
+  {
+      MegaBriteInstance.Rave();
+  };
 }

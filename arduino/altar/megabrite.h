@@ -90,7 +90,6 @@ class MegaBrite
     void Latch();
 
   public:
-    static MegaBrite Instance;
 
     MegaBrite();
     void Setup();
@@ -110,5 +109,6 @@ class MegaBrite
 
 };
 
+extern MegaBrite MegaBriteInstance;
 #endif
 

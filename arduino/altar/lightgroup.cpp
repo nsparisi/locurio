@@ -1,7 +1,7 @@
 #include "lightgroup.h"
 #include "Arduino.h"
 
-LedControl LightGroup::ledController = LedControl(22, 26, 24, 1); //din clk load 1
+LedControl LedController(22, 26, 24, 1); //din clk load 1
 
 LightGroup::LightGroup(int row, int column)
 {
@@ -9,7 +9,7 @@ LightGroup::LightGroup(int row, int column)
   Row = row;
   Columns[0] = column;
 
-  ledController.shutdown(0, false);
+  LedController.shutdown(0, false);
   CurrentState = false;
   Off();
 }
@@ -21,8 +21,8 @@ LightGroup::LightGroup(int row, int column1, int column2)
   Columns[0] = column1;
   Columns[1] = column2;
 
-  ledController.shutdown(0, false);
-  ledController.setIntensity(0, 15);
+  LedController.shutdown(0, false);
+  LedController.setIntensity(0, 15);
   CurrentState = false;
   Off();
 }
@@ -35,7 +35,7 @@ LightGroup::LightGroup(int row, int column1, int column2, int column3)
   Columns[1] = column2;
   Columns[2] = column3;
 
-  ledController.shutdown(0, false);
+  LedController.shutdown(0, false);
   CurrentState = false;
   Off();
 }
@@ -63,6 +63,6 @@ void LightGroup::SetState(bool state)
        Serial.print(i);
        Serial.println(state ? "true" : "false");
       */
-    ledController.setLed(0, Row, Columns[i], state);
+    LedController.setLed(0, Row, Columns[i], state);
   }
 }

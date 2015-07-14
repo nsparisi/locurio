@@ -1,11 +1,11 @@
 #include "multiplexer.h"
 #include "Arduino.h"
 
-Multiplexer Multiplexer::Instance = Multiplexer(28, 30, 32, 34);
+Multiplexer MultiplexerInstance(28, 30, 32, 34);
 
 // based on code from http://bildr.org/2011/02/cd74hc4067-arduino/
 
-int Multiplexer::muxChannelLookupTable[16][4] = {
+int muxChannelLookupTable[16][4] = {
   {0, 0, 0, 0}, //channel 0
   {1, 0, 0, 0}, //channel 1
   {0, 1, 0, 0}, //channel 2
@@ -39,8 +39,11 @@ Multiplexer::Multiplexer(int s0, int s1, int s2, int s3)
 
 void Multiplexer::Select(int channel)
 {
-//  Serial.print(F("Setting mux channel to "));
-//  Serial.println(channel);
+  if (MultiplexerDebug)
+  {
+  Serial.print(F("Setting mux channel to "));
+  Serial.println(channel);
+  }
   
   if (channel < 0 || channel > 15)
   {
@@ -49,10 +52,13 @@ void Multiplexer::Select(int channel)
 
   //loop through the 4 segments
   for (int i = 0; i < 4; i ++) {
- /*   Serial.print(F("Writing pin "));
+    if (MultiplexerDebug)
+    {
+    Serial.print(F("Writing pin "));
     Serial.print(controlPins[i]);
     Serial.print(F(" with value "));
-    Serial.println(muxChannelLookupTable[channel][i]);*/
+    Serial.println(muxChannelLookupTable[channel][i]);
+    }
     
     digitalWrite(controlPins[i], muxChannelLookupTable[channel][i]);
   }

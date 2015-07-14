@@ -1,7 +1,7 @@
 #include "megabrite.h"
 #include "Arduino.h"
 
-MegaBrite MegaBrite::Instance = MegaBrite();
+MegaBrite MegaBriteInstance;
 
 MegaBrite::MegaBrite()
 {
@@ -108,7 +108,7 @@ void MegaBrite::AllLightsOff()
 {
   for (int i = 0; i < NumLEDs; i++)
   {
-    MegaBrite::Instance.SetLight(i, 0, 0, 0);
+    MegaBriteInstance.SetLight(i, 0, 0, 0);
   }
 }
 

@@ -21,10 +21,8 @@ class LightGroup
     void On();
     void Off();
     void SetState(bool state);
-
-    static LedControl ledController;
-
 };
 
+extern LedControl LedController;
 #endif
 

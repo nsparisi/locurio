@@ -27,12 +27,12 @@ class RfidReader
     int ResetPin;
     HardwareSerial* serialPort;
 
-    char currentTag[MAX_TAG_LEN];
+//    char currentTag[MAX_TAG_LEN];
     TagType currentTagType = NO_TAG;
 
     bool tagPresent = false;
     int failCount = 0;
-    char buf[MAX_TAG_LEN];
+
     const char* friendlyName;
 
     bool IsResetPinInverted = false;
@@ -54,6 +54,7 @@ class RfidReader
     void WaitForNoTag();
 
     void Reset();
+    void Shutdown();
     
     void ClearTag();
     

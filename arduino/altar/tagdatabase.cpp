@@ -5,8 +5,6 @@
 
 #include "genericfeedback.h"
 
-TagDatabase TagDatabase::Instance = TagDatabase();
-
 #define tagDebugPrint(...) \
   do { if (TagDatabaseDebugOutput) Serial.print(__VA_ARGS__); } while (0)
 
@@ -218,3 +216,4 @@ void TagDatabase::dumpTagDatabase()
   }
 }
 
+TagDatabase TagDatabaseInstance;
