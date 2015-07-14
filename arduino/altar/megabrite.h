@@ -104,6 +104,7 @@ class MegaBrite
     void TopLightOnly();
     void AllLightsGreen();
     void AllLightsRed();
+    void AllLightsRed(int brightness);
     void AllLightsBlue();
     void Rave();
 

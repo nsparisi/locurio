@@ -32,6 +32,8 @@ void feedback_none()
   delay(500);
 }
 
+
+
 void permanent_error()
 {
   while (true)

@@ -135,12 +135,17 @@ void MegaBrite::AllLightsGreen()
   }
 }
 
-void MegaBrite::AllLightsRed()
+void MegaBrite::AllLightsRed(int brightness)
 {
   for (int i = 0; i < NumLEDs; i++)
   {
-    SetLight(i, MAX_BRIGHTNESS, 0, 0);
+    SetLight(i, brightness, 0, 0);
   }
+}
+
+void MegaBrite::AllLightsRed()
+{
+  AllLightsRed(MAX_BRIGHTNESS);  
 }
 
 void MegaBrite::AllLightsBlue()

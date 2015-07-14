@@ -1,7 +1,9 @@
 #include "tagdatabase.h"
 #include "tagtypes.h"
-#include "genericfeedback.h"
 #include "reset.h"
+
+
+#include "genericfeedback.h"
 
 TagDatabase TagDatabase::Instance = TagDatabase();
 

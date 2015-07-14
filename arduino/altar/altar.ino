@@ -28,22 +28,6 @@ RfidReader* topPuzzle[topCount];
 LightGroup* wordLeds[wordCount];
 LightGroup* topLightSegments[topCount];
 
-RfidReader reader0 = RfidReader(7, 36, "F0");
-RfidReader reader1 = RfidReader(3, 36, "F1");
-RfidReader reader2 = RfidReader(8, 36, "F2");
-RfidReader reader3 = RfidReader(4, 38, "R0");
-RfidReader reader4 = RfidReader(5, 38, "R1");
-RfidReader reader5 = RfidReader(6, 38, "R2");
-RfidReader reader6 = RfidReader(11, 40, "B0");
-RfidReader reader7 = RfidReader(12, 40, "B1");
-RfidReader reader8 = RfidReader(13, 40, "B2");
-RfidReader reader9 = RfidReader(9, 42, "L0");
-RfidReader reader10 = RfidReader(10, 42, "L1");
-RfidReader reader11 = RfidReader(0, 44, "T1(TC)", true);
-RfidReader reader12 = RfidReader(1, 44, "T2(BR)", true);
-RfidReader reader13 = RfidReader(2, 44, "T3(BL)", true);
-RfidReader reader14 = RfidReader(14, 44, "T4(ML)", true);
-RfidReader reader15 = RfidReader(15, 44, "T5(MR)", true);
 
 LightGroup led0 = LightGroup(0,  0, 1);
 LightGroup led1 = LightGroup(0,  2, 3);
@@ -62,9 +46,37 @@ LightGroup led13 = LightGroup(4,  2);
 LightGroup led14 = LightGroup(4,  3);
 LightGroup led15 = LightGroup(4,  4);
 
+RfidReader reader2 = RfidReader(8, 36, "F2");
+RfidReader reader0 = RfidReader(7, 36, "F0");
+RfidReader reader1 = RfidReader(3, 36, "F1");
+RfidReader reader3 = RfidReader(4, 38, "R0");
+RfidReader reader4 = RfidReader(5, 38, "R1");
+RfidReader reader5 = RfidReader(6, 38, "R2");
+RfidReader reader6 = RfidReader(11, 40, "B0");
+RfidReader reader7 = RfidReader(12, 40, "B1");
+RfidReader reader8 = RfidReader(13, 40, "B2");
+RfidReader reader9 = RfidReader(9, 42, "L0");
+RfidReader reader10 = RfidReader(10, 42, "L1");
+RfidReader reader11 = RfidReader(0, 44, "T1(TC)", true);
+RfidReader reader12 = RfidReader(1, 44, "T2(BR)", true);
+RfidReader reader13 = RfidReader(2, 44, "T3(BL)", true);
+RfidReader reader14 = RfidReader(14, 44, "T4(ML)", true);
+RfidReader reader15 = RfidReader(15, 44, "T5(MR)", true);
+
+int brightnessFailure[30] = {200, 400, 600, 800, 900, 1023, 1023, 1023, 1023, 1023, 900, 850, 700, 750, 600, 650, 500, 550, 400, 450, 300, 350, 200, 250, 200, 100, 75, 50, 0};
+
+void feedback_failure()
+{
+  for(int i=0; i<30; i++)
+  {
+    MegaBrite::Instance.AllLightsRed(brightnessFailure[i]);
+    delay(100);
+  }
+}
+
 void setup(void)
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   wordPuzzle[0] = &reader6;	// reader: Back 0
   wordPuzzle[1] = &reader2;	// reader: Front 2
@@ -277,15 +289,33 @@ void solveTopPuzzle()
   }
 }
 
-void solveWordPuzzle()
+// 8 seconds
+#define TIMEOUT 8000
+
+bool solveWordPuzzle()
 {
+ 
   for (int i = 0; i < wordCount; i++)
   {
+      unsigned long startingTimestamp = millis();
+      
     MegaBrite::Instance.AllLightsOn();
 
     while (!wordPuzzle[i]->PollForTag() || wordPuzzle[i]->GetCurrentTagType() != WAND)
     {
-      delay(5);
+      if (i > 0 && (millis() - startingTimestamp) > TIMEOUT)
+      {
+        feedback_failure();
+        
+        for (int c=0; c<wordCount; c++)
+        {
+          wordPuzzle[c]->ClearTag();
+        } 
+        
+        abyss->send_message("WORDFAILURE");
+        
+        return false;
+      }
     }
 
     if (i == 0)
@@ -304,8 +334,10 @@ void solveWordPuzzle()
     }
 
     MegaBrite::Instance.AllLightsGreen();
-    delay(1000);
+    delay(500);
   }
+  
+  return true;
 }
 
 void loop(void)
@@ -313,7 +345,8 @@ void loop(void)
   abyss->send_message("POWERON");
   solveTopPuzzle();
   abyss->send_message("TOPSOLVED");
-  solveWordPuzzle();
+  while (!solveWordPuzzle())
+  {}
   abyss->send_message("WORDSOLVED");
   MegaBrite::Instance.Rave();
 

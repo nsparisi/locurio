@@ -13,8 +13,8 @@
 #define RfidDebugOutput 1
 
 // Timing parameters
-#define ResetDelay 100
-#define SerialTimeout 250
+#define ResetDelay 50
+#define SerialTimeout 200
 
 #define TimesUntilEachReset 20
 
@@ -38,6 +38,7 @@ class RfidReader
     bool IsResetPinInverted = false;
 
     static int ResetCounter;
+    
   public:
     RfidReader(int muxChannel, int resetPin, const char* readerName, bool isResetPinInverted = false, HardwareSerial* targetSerialPort = &Serial2);
 
@@ -53,7 +54,9 @@ class RfidReader
     void WaitForNoTag();
 
     void Reset();
-
+    
+    void ClearTag();
+    
     void SetMultiplexer();
 };
 

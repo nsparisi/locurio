@@ -237,6 +237,20 @@ void RfidReader::WaitForNoTag()
   }
 }
 
+void RfidReader::ClearTag()
+{
+  for (int i=0; i<2; i++)
+  {
+    SetMultiplexer();
+              
+    WaitForNoTag();
+    
+    currentTagType = NO_TAG;
+    tagPresent = false;
+    failCount = 0;
+  }
+}
+
 const char* RfidReader::GetCurrentTag()
 {
   if (tagPresent)
