@@ -16,9 +16,9 @@
 
 #define TAG_LENGTH 12
 
-#define TagDatabaseDebugOutput 1
+#define TagDatabaseDebugOutput 0
 
-#define MAX_TAGS 24
+#define MAX_TAGS 30
 
 // We'll define a number (based on the Locurio address :) that is highly
 // unlikely to occur by chance.  If we don't find it in the data structure,
@@ -26,7 +26,7 @@
 //
 // To force a database recreation, rev this version number.
 
-#define VALID_DATABASE_CREATED_FLAG 619203
+#define VALID_DATABASE_CREATED_FLAG 619204
 
 struct Tag {
   char tagName[TAG_LENGTH + 1];

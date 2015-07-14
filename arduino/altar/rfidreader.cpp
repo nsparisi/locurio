@@ -138,7 +138,7 @@ bool RfidReader::PollForTag(bool shouldReset)
     // Check if tag is valid
     if (countRead == 13)  // exact length of RFID tag + 0x02 prefix
     {
-      //currentTag[countRead - 1] = '\0';
+      currentTag[countRead - 1] = '\0';
 
       bool isLetter = true;
       for (int i = 0; i < 12; i++)
@@ -161,7 +161,7 @@ bool RfidReader::PollForTag(bool shouldReset)
         tagPresent = true;
 
         // Save the buffer to the currentTag field, without the 0x02 prefix
-        //strcpy(currentTag, buf);
+        strcpy(currentTag, buf);
       }
       else
       {
@@ -264,11 +264,11 @@ void RfidReader::ClearTag()
 
 const char* RfidReader::GetCurrentTag()
 {
-//  if (tagPresent)
+  if (tagPresent)
   {
-//    return (const char*)currentTag;
+    return (const char*)currentTag;
   }
-//  else
+  else
   {
     return 0;
   }

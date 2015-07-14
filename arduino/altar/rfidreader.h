@@ -10,7 +10,7 @@
 #define MAX_FAIL 1
 
 // Set to 1 to obtain debug output
-#define RfidDebugOutput 1
+#define RfidDebugOutput 0
 
 // Timing parameters
 #define ResetDelay 50
@@ -27,7 +27,7 @@ class RfidReader
     int ResetPin;
     HardwareSerial* serialPort;
 
-//    char currentTag[MAX_TAG_LEN];
+    char currentTag[MAX_TAG_LEN];
     TagType currentTagType = NO_TAG;
 
     bool tagPresent = false;

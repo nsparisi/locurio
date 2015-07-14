@@ -12,7 +12,7 @@
 
 #include "tagdatabase.h"
 
-#define PuzzleDebug 1
+#define PuzzleDebug 0
 
 #define readerCount 16
 #define wordCount 11
