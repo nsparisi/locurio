@@ -57,6 +57,8 @@ class RfidReader
     
     void Reset();
     
+    void Flush();
+    
     void SetMultiplexer();
 };
 

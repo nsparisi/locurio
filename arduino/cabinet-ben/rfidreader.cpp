@@ -60,6 +60,15 @@ void RfidReader::SetMultiplexer()
   }
 }
 
+void RfidReader::Flush()
+{
+    while (serialPort->available())
+    {
+      serialPort->read();
+    }
+
+}
+
 void RfidReader::Reset()
 {
   if (usesResetPin)

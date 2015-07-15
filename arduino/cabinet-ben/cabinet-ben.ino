@@ -54,17 +54,19 @@ void loop()
     if (currentRfidReader < 3)
     {
       Serial.println("Starting loop");
+      
+      
       if (readers[currentRfidReader]->PollForTag(false))
       {
-        Serial.println("oij");
         if (readers[currentRfidReader]->GetCurrentTagType() == WAND)
         {
-            tone(12, 131, 500);
+            tone(12, NOTE_G3, 500);
 
         currentRfidReader++;
         if (currentRfidReader < 3)
         {
           Serial.print("TAG DETECTED");
+          readers[currentRfidReader]->Flush();
         }
         else
         {
@@ -73,7 +75,7 @@ void loop()
           
           for (int i=0; i<10; i++)
           {
-            tone(12, 131, 100);
+            tone(12, NOTE_C4, 100);
             delay(500);
             noTone(12);
             delay(500);
