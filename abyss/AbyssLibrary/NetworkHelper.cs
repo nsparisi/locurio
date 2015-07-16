@@ -53,14 +53,40 @@ namespace AbyssLibrary
                 macToIpTable.Clear();
             }
 
-            string baseip = "192.168.1.";
-            string[] ipAddresses = new string[255];
-            for(int i = 1; i <= 255; i++)
+            string gateway = GetDefaultGatewayOrBestGuess();
+            string baseip = gateway.Substring(0, gateway.LastIndexOf('.') + 1);
+            string[] ipAddresses = new string[254];
+            for(int i = 1; i <= 254; i++)
             {
                 ipAddresses[i-1] = baseip + i.ToString();
 
                 SendArp(baseip + i.ToString());
             }
+        }
+
+        private string GetDefaultGatewayOrBestGuess()
+        {
+            string defaultGateway = "192.168.0.1";
+            try
+            {
+                foreach(var iface in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    var address = iface.GetIPProperties().GatewayAddresses.FirstOrDefault(
+                        ip => ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+
+                    if(address != null)
+                    {
+                        defaultGateway = address.Address.ToString();
+                        break;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.Log("There was an error getting the default gateway. Make sure we're connected to the network.", e);
+            }
+
+            return defaultGateway;
         }
 
         public string GetIpAddress(string macAddress)
