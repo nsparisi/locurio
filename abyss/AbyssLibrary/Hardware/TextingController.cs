@@ -10,22 +10,13 @@ using System.Xml;
 
 namespace AbyssLibrary
 {
-    public class TextingController : AbstractPhysicalObject
+    public class TextingController : AbstractNetworkedDevice
     {
-        public string IpAddress { get; private set; }
-
         private const string Clear_Message_History = "CLEAR_MESSAGE_HISTORY";
         
-        public TextingController(string ipAddress)
-            : base()
+        public TextingController(string name, string deviceMacAddress)
+            : base(name, deviceMacAddress)
         {
-            this.IpAddress = ipAddress;
-        }
-
-        public TextingController(string ipAddress, string name)
-            : base(name)
-        {
-            this.IpAddress = ipAddress;
         }
 
         public void ClearHistory()
@@ -35,6 +26,12 @@ namespace AbyssLibrary
 
         public void SendTextMessage(string toSend)
         {
+            if (!this.IsConnected)
+            {
+                Debug.Log("Cannot send text message. Texting controller '{0}' is not connected to text device at '{1}'.", this.Name, this.MacAddress);
+                return;
+            }
+
             if(string.IsNullOrWhiteSpace(toSend))
             {
                 return;

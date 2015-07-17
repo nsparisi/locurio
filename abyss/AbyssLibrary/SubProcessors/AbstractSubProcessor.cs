@@ -26,6 +26,7 @@ namespace AbyssLibrary
         protected virtual void StartProcess()
         {
             Thread thread = new Thread(Process);
+            thread.IsBackground = true;
             thread.Start();
         }
 

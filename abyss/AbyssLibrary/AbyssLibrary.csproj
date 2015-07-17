@@ -50,11 +50,12 @@
     <Compile Include="Debug.cs" />
     <Compile Include="Hardware\AbstractPhysicalObject.cs" />
     <Compile Include="Hardware\AbyssScreenController.cs" />
+    <Compile Include="Hardware\INetworkedDevice.cs" />
     <Compile Include="Hardware\IPhysicalObject.cs" />
     <Compile Include="AbyssUtils.cs" />
-    <Compile Include="Hardware\SMSSender.cs" />
     <Compile Include="Hardware\LimitlessLEDBridge.cs" />
     <Compile Include="Hardware\TextingController.cs" />
+    <Compile Include="Hardware\AbstractNetworkedDevice.cs" />
     <Compile Include="Hardware\VLCServerControl.cs" />
     <Compile Include="Hardware\XBeeEndpoint.cs" />
     <Compile Include="Hardware\XBeeReceivedEvent.cs" />

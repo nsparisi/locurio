@@ -35,15 +35,15 @@ namespace Abyss
             // VLC Servers on Raspberry PIs
             // ***********************
             VLCServerControl vlc01 = new VLCServerControl(
-                "RPi 107:50000", 
-                VLCServerControl.OSType.Linux, 
-                "192.168.0.107", 
+                "RPi Dress:50000",
+                "94:DE:80:07:BD:AF",
+                VLCServerControl.OSType.Linux,
                 "50000");
 
             VLCServerControl vlc02 = new VLCServerControl(
-                "RPi 106:50000",
+                "RPi Secret:50000",
+                "94:DE:80:07:BD:Ad",
                 VLCServerControl.OSType.Linux,
-                "192.168.0.106",
                 "50000");
 
             SPSoundControl sp_soundDressingRoomBGM = new SPSoundControl()
@@ -130,7 +130,9 @@ namespace Abyss
             // ***********************
             // Hint Text Messages
             // ***********************
-            TextingController textingMotorola = new TextingController("192.168.1.12", "Motorola Droid 2");
+            TextingController textingMotorola =
+                new TextingController( "Motorola Droid 2", "94:DE:80:07:BD:AF");
+
             AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
 
             // ***********************
@@ -267,7 +269,10 @@ namespace Abyss
             // *****************************************
             // TEST CODE
             // testing LIGHT BULBS
-            LimitlessLEDBridge bridge = new LimitlessLEDBridge("Bridge01", "192.168.0.104");
+            LimitlessLEDBridge bridge =  new LimitlessLEDBridge(
+                    "MiLight Bridge 01", 
+                    "94:DE:80:07:BD:AF");
+
             AbyssSystem.Instance.RegisterPhysicalObject(bridge);
             
             SPLimitlessLEDBridge sp_lightGameStart = new SPLimitlessLEDBridge()

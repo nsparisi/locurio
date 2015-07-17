@@ -16,9 +16,13 @@ namespace AbyssLibrary
         public static extern int SendARP(
             uint DestIP, uint SrcIP, byte[] pMacAddr, ref int PhyAddrLen);
 
-        private static object lockObj = new Object();
+        private static object scanLock = new Object();
+        private static object propertyLock = new Object();
 
         Dictionary<string, string> macToIpTable;
+        bool isInitialized;
+
+        public bool IsScanning { get; private set; }
 
         private static volatile NetworkHelper instance;
         public static NetworkHelper Instance
@@ -27,7 +31,7 @@ namespace AbyssLibrary
             {
                 if (instance == null)
                 {
-                    lock (lockObj)
+                    lock (propertyLock)
                     {
                         if (instance == null)
                         {
@@ -43,64 +47,84 @@ namespace AbyssLibrary
         private NetworkHelper()
         {
             macToIpTable = new Dictionary<string, string>();
-            ClearAndRefreshCache();
+            isInitialized = false;
         }
 
         public void ClearAndRefreshCache()
         {
-            lock (lockObj)
+            if(IsScanning)
             {
+                return;
+            }
+
+            lock (scanLock)
+            {
+                Debug.Log("Scanning network for IPs... ");
+                IsScanning = true;
+
                 macToIpTable.Clear();
-            }
 
-            string gateway = GetDefaultGatewayOrBestGuess();
-            string baseip = gateway.Substring(0, gateway.LastIndexOf('.') + 1);
-            string[] ipAddresses = new string[254];
-            for(int i = 1; i <= 254; i++)
-            {
-                ipAddresses[i-1] = baseip + i.ToString();
-
-                SendArp(baseip + i.ToString());
-            }
-        }
-
-        private string GetDefaultGatewayOrBestGuess()
-        {
-            string defaultGateway = "192.168.0.1";
-            try
-            {
-                foreach(var iface in NetworkInterface.GetAllNetworkInterfaces())
+                string gateway = GetDefaultGatewayOrBestGuess();
+                string baseip = gateway.Substring(0, gateway.LastIndexOf('.') + 1);
+                string[] ipAddresses = new string[254];
+                for (int i = 1; i <= 254; i++)
                 {
-                    var address = iface.GetIPProperties().GatewayAddresses.FirstOrDefault(
-                        ip => ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
-
-                    if(address != null)
-                    {
-                        defaultGateway = address.Address.ToString();
-                        break;
-                    }
+                    ipAddresses[i - 1] = baseip + i.ToString();
                 }
-            }
-            catch(Exception e)
-            {
-                Debug.Log("There was an error getting the default gateway. Make sure we're connected to the network.", e);
-            }
 
-            return defaultGateway;
+                Parallel.ForEach(ipAddresses, ipAddress =>
+                    {
+                        SendArp(ipAddress);
+                    });
+
+                IsScanning = false;
+                isInitialized = true;
+                Debug.Log("Finished IP scan. ");
+            }
         }
 
-        public string GetIpAddress(string macAddress)
+        public string GetIpAddress(string macAddress, bool scanNetworkIfNotPresent = false)
         {
-            Debug.Log("Getting IP address for MAC: {0}", macAddress);
+            //Debug.Log("Getting IP address for MAC: {0}", macAddress);
             if(string.IsNullOrEmpty(macAddress))
             {
                 return string.Empty;
             }
 
-            macAddress = macAddress.ToUpper();
-            if(macToIpTable.ContainsKey(macAddress))
+            // if the IP is not in the cache
+            // determine if we should scan again
+            bool shouldScanNetwork;
+            lock (propertyLock)
             {
-                return macToIpTable[macAddress];
+                shouldScanNetwork = (!isInitialized || scanNetworkIfNotPresent) && !IsScanning;
+                isInitialized = true;
+            }
+
+            // check the cache for this entry
+            lock (scanLock)
+            {
+                macAddress = macAddress.ToUpper();
+                if (macToIpTable.ContainsKey(macAddress))
+                {
+                    Debug.Log("Found MAC {0} mapped to IP {1}.", macAddress, macToIpTable[macAddress]);
+                    return macToIpTable[macAddress];
+                }
+
+                // no entry found in cache
+                // if we explicitly want to refresh the cache, and we're not already refreshing it
+                // then refresh the cache and try again
+                if (!shouldScanNetwork)
+                {
+                    //Debug.Log("Could not find MAC {0} on the network.", macAddress);
+                    return string.Empty;
+                }
+
+                ClearAndRefreshCache();
+
+                if (macToIpTable.ContainsKey(macAddress))
+                {
+                    return macToIpTable[macAddress];
+                }
             }
 
             Debug.Log("Could not find MAC {0} on the network.", macAddress);
@@ -113,7 +137,7 @@ namespace AbyssLibrary
         /// </summary>
         /// <param name="ipAddress">IP address of the destination</param>
         /// <returns>MAC address i.e. AA:BB:CC:DD:EE:FF</returns>
-        public void SendArp(string ipAddress)
+        private void SendArp(string ipAddress)
         {
             try
             {
@@ -125,7 +149,8 @@ namespace AbyssLibrary
                 int retValue = SendARP(uintAddress, 0, macAddress, ref macAddressLength);
                 if (retValue != 0)
                 {
-                    throw new Win32Exception(retValue, "SendARP failed.");
+                    Debug.Log("ARP request for IP: {0} failed with result {1}.", ipAddress, retValue);
+                    return;
                 }
 
                 // convert the mac bytes into a string array
@@ -138,7 +163,7 @@ namespace AbyssLibrary
                 // convert the string array into a single string
                 string resultantMac = string.Join(":", str).ToUpper();
 
-                lock (lockObj)
+                lock (propertyLock)
                 {
                     // add the ip-mac mapping to our cache
                     if (!string.IsNullOrEmpty(resultantMac) && !macToIpTable.ContainsKey(resultantMac))
@@ -155,7 +180,32 @@ namespace AbyssLibrary
             }
         }
 
-        public void SendPing(string ipAddress)
+        private string GetDefaultGatewayOrBestGuess()
+        {
+            string defaultGateway = "192.168.0.1";
+            try
+            {
+                foreach (var iface in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    var address = iface.GetIPProperties().GatewayAddresses.FirstOrDefault(
+                        ip => ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+
+                    if (address != null)
+                    {
+                        defaultGateway = address.Address.ToString();
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("There was an error getting the default gateway. Make sure we're connected to the network.", e);
+            }
+
+            return defaultGateway;
+        }
+
+        private void SendPing(string ipAddress)
         {
             try
             {

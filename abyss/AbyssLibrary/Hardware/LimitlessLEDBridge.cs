@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public class LimitlessLEDBridge : AbstractPhysicalObject
+    public class LimitlessLEDBridge : AbstractNetworkedDevice
     {
         public event AbyssEvent TurnedOff;
         public event AbyssEvent TurnedOn;
@@ -74,34 +74,60 @@ namespace AbyssLibrary
             Zone4 
         }
 
-        private string hostname;
         private int port;
         
-        public LimitlessLEDBridge(string name, string hostname, int port = 8899)
-            : base(name)
+        public LimitlessLEDBridge(string name, string deviceMacAddress, int port = 8899)
+            : base(name, deviceMacAddress)
         {
-            this.hostname = hostname;
             this.port = port;
         }
 
         private void SendCommand(byte[] message)
         {
-            UdpClient udpClient = new UdpClient(this.hostname, this.port);
-            udpClient.Send(message, message.Length);
-            udpClient.Close();
+            if (!this.IsConnected)
+            {
+                Debug.Log("Cannot send LED LightBulb message. LimitlessLEDBridge controller '{0}' is not connected to device '{1}'.", this.Name, this.MacAddress);
+                return;
+            }
+
+            try
+            {
+                UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
+                udpClient.Send(message, message.Length);
+                udpClient.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("There was an error sending LED LightBulb message {0}", message);
+                Debug.Log("Error:", e);
+            }
         }
 
         private void SendTwoCommandsWithDelay(
             byte[] messageBeforeDelay,
             byte[] messageAfterDelay)
         {
-            // for some commands, the bridge expects two messages
-            // that have a 100ms delay in between.
-            UdpClient udpClient = new UdpClient(this.hostname, this.port);
-            udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
-            Thread.Sleep(100);
-            udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
-            udpClient.Close();
+            if (!this.IsConnected)
+            {
+                Debug.Log("Cannot send LED LightBulb message. LimitlessLEDBridge controller '{0}' is not connected to device '{1}'.", this.Name, this.MacAddress);
+                return;
+            }
+
+            try
+            {
+                // for some commands, the bridge expects two messages
+                // that have a 100ms delay in between.
+                UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
+                udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
+                Thread.Sleep(100);
+                udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
+                udpClient.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("There was an error sending LED LightBulb messages '{0}' + '{1}'", messageBeforeDelay, messageAfterDelay);
+                Debug.Log("Error:", e);
+            }
         }
 
         public void TurnOn(ZoneType zone)
