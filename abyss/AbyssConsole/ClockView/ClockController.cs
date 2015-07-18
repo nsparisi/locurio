@@ -10,37 +10,16 @@ namespace AbyssConsole
 {
     public class ClockController
     {
-        private List<ClockWindow> allClockWindows;
         private CountDownTimer countdownClock;
 
-        private const long OneHourMs = 60 * 60 * 1000;
+        private const long OneHourMs = 2 * 60 * 60 * 1000;
         private const long OneMinuteMs = 1 * 60 * 1000;
 
         public ClockController(AbyssScreenController screenController)
         {
-            allClockWindows = new List<ClockWindow>();
 
             countdownClock = screenController.CountDownTimer;
-            countdownClock.CountDownTicked += OnCountDownTicked;
             countdownClock.SetTime(OneHourMs);
-        }
-
-        public void SpawnClock()
-        {
-            ClockWindow clock = new ClockWindow();
-            clock.SetTimeText("12:00:00");
-            clock.Show();
-
-            allClockWindows.Add(clock);
-        }
-
-        public void CloseAllClockWindows()
-        {
-            countdownClock.CountDownTicked -= OnCountDownTicked;
-            foreach(ClockWindow clock in allClockWindows)
-            {
-                clock.Close();
-            }
         }
 
         public void StartCountDown()
@@ -50,17 +29,29 @@ namespace AbyssConsole
             countdownClock.Start();
         }
 
-        public void StopCountDown()
+        public void StartCountDown(int minutes)
         {
-            countdownClock.Stop();
+            countdownClock.Reset();
+            countdownClock.SetTime(minutes * 60 * 1000);
+            countdownClock.Start();
         }
 
-        public void OnCountDownTicked(object sender, CountDownEventArgs args)
+        public static string GetPrettyTimeText(long milliseconds)
         {
-            foreach (ClockWindow clock in allClockWindows)
-            {
-                clock.SetTime(args.TimeMs);
-            }
+            TimeSpan t = TimeSpan.FromMilliseconds(milliseconds);
+            /*long hours = milliseconds / (60 * 60 * 1000);
+            long minutes = milliseconds / (60 * 1000);
+            long seconds = Ceiling(milliseconds, (1000));
+            string prettyTime = string.Format(
+                "{0}:{1}:{2}",
+                hours.ToString("00"),
+                minutes.ToString("00"),
+                seconds.ToString("00"));*/
+            string prettyTime = string.Format(
+                "{0}:{1}",
+                (t.Minutes + t.Hours * 60).ToString("00"),
+                t.Seconds.ToString("00"));
+            return prettyTime;
         }
     }
 }

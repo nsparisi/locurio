@@ -29,7 +29,7 @@ namespace AbyssConsole
                 if (physicalObject is AbyssScreenController)
                 {
                     abyssConsoleApp.RootWindow.TimeView.AddClock((AbyssScreenController)physicalObject);
-                    abyssConsoleApp.RootWindow.HomeView.AddClock(((AbyssScreenController)physicalObject).CountDownTimer);
+                    abyssConsoleApp.RootWindow.AddClock(((AbyssScreenController)physicalObject).CountDownTimer);
                 }
 
                 if(physicalObject is TextingController)
@@ -58,8 +58,6 @@ namespace AbyssConsole
         public void ExitProgram()
         {
             AbyssSystem.Instance.UnregisterClientConsole(this);
-
-            abyssConsoleApp.RootWindow.TimeView.CloseAllClockWindows();
         }
     }
 }

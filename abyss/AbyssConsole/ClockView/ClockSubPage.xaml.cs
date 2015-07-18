@@ -39,27 +39,22 @@ namespace AbyssConsole
             this.controller = controller;
         }
 
-        public void CloseAllClockWindows()
-        {
-            if (controller != null)
-            {
-                controller.CloseAllClockWindows();
-            }
-        }
-
-        private void SpawnWindow_Click(object sender, RoutedEventArgs e)
-        {
-            if (controller != null)
-            {
-                controller.SpawnClock();
-            }
-        }
-
         private void StartCountdown_Click(object sender, RoutedEventArgs e)
         {
             if (controller != null)
             {
-                controller.StartCountDown();
+                string minutesString = this.MinutesBox.Text;
+
+                int minutes = 60;
+                if(int.TryParse(minutesString, out minutes))
+                {
+                    controller.StartCountDown(minutes);
+                }
+                else
+                {
+                    controller.StartCountDown();
+                }
+
             }
         }
     }

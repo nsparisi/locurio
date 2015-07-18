@@ -3,18 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="118" Width="150">
+             mc:Ignorable="d" Height="320" Width="320">
     <UserControl.Resources>
         <BitmapImage x:Key="Icon" UriSource="Images/ArduinoIcon.png"/>
     </UserControl.Resources>
-    <Grid>
-        <Image Name="Icon" Height="32" Width="32" Margin="5,-2,113,88" Source="{StaticResource Icon}" IsEnabled="True" RenderTransformOrigin="0.25,0.469"/>
-        <Label Content="XBee Endpoint" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="103" Margin="37,0,10,0"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>
-        <Label Name="NameText" Content="UnNamed" HorizontalAlignment="Left" Margin="47,30,0,0" VerticalAlignment="Top" Width="93"/>
-        <Label Content="ID" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>
-        <Label Name="IDText" Content="Default" HorizontalAlignment="Left" Margin="47,56,0,0" VerticalAlignment="Top" Width="93"/>
-        <Button Content="Send" HorizontalAlignment="Left" Margin="5,93,0,4" Click="SendMessage_Click" Width="42" />
-        <TextBox Name="SendMessageBox" HorizontalAlignment="Left" Margin="52,93,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Height="21" Width="93"/>
+    <Grid Style="{StaticResource SecondaryBGColor}" Height="300" Width="300">
+        <Image Name="Icon" Height="32" Margin="0,0,258,268" Source="{StaticResource Icon}" IsEnabled="True" RenderTransformOrigin="0.25,0.469"/>
+        <Label Content="XBee Endpoint" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="258" Margin="42,0,0,0" RenderTransformOrigin="0.476,0.167"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="1,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>
+        <Label Name="NameText" Content="UnNamed" HorizontalAlignment="Left" Margin="76,61,-1,0" VerticalAlignment="Top" Width="225"/>
+        <Label Content="ID" HorizontalAlignment="Left" Margin="0,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346" Width="71"/>
+        <Label Name="IDText" Content="Default" HorizontalAlignment="Left" Margin="76,101,0,0" VerticalAlignment="Top" Width="224"/>
+        <Button Content="Send" HorizontalAlignment="Left" Margin="10,178,0,89" Click="SendMessage_Click" Width="70" />
+        <TextBox Name="SendMessageBox" HorizontalAlignment="Left" Margin="85,185,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Height="22" Width="205"/>
     </Grid>
 </AbyssConsole:AbstractPhysicalObjectUserControl>

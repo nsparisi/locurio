@@ -1,4 +1,5 @@
 ﻿using AbyssLibrary;
+using AbyssScreen;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,8 @@ namespace AbyssConsole
         public ClockSubPage TimeView { get; private set; }
         public HintSubPage HintView { get; private set; }
 
+        CountDownTimer countdownTimer;
+
         bool isExiting;
 
         public MainWindow()
@@ -54,6 +57,11 @@ namespace AbyssConsole
             {
                 RoomView.Refresh();
                 HomeView.Refresh();
+
+                if (countdownTimer != null)
+                {
+                    ClockLabel.Content = ClockController.GetPrettyTimeText(countdownTimer.GetTimeRemaining());
+                }
             });
         }
 
@@ -92,6 +100,11 @@ namespace AbyssConsole
         private void Home_Click(object sender, RoutedEventArgs e)
         {
             SwapToHomeView();
+        }
+
+        public void AddClock(CountDownTimer timer)
+        {
+            this.countdownTimer = timer;
         }
     }
 }

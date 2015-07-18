@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="118" Width="115">
+             mc:Ignorable="d" Height="320" Width="320">
     <UserControl.Resources>
         <BitmapImage x:Key="Icon" UriSource="Images/LBIcon.png"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid Style="{StaticResource SecondaryBGColor}" Height="300" Width="300">
         <Image Name="Icon" Height="32" Width="32" Margin="0,-2,83,88" Source="{StaticResource Icon}" IsEnabled="True"/>
         <Label Content="Light Bulb" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="83" Margin="32,0,0,0"/>
         <Label Content="Name" HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>

@@ -2,13 +2,25 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="350" Width="525">
+
+    <UserControl.Resources>
+        <Style x:Key="MenuFont" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+        </Style>
+
+        <!-- Applies this to all labels by default-->
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MenuFont}" />
+    </UserControl.Resources>
+
     <Grid>
         <TextBlock Text="Welcome to Abyss Hint System" VerticalAlignment="Top" TextAlignment="Center" />
 
         <Button Content="Send Hint" HorizontalAlignment="Left" Margin="287,161,0,0" VerticalAlignment="Top" Width="178" Height="40" Click="SendHint_Click"/>
         <TextBox Name="TextBox" HorizontalAlignment="Left" Height="109" Margin="287,47,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="228"/>
-        <Label Name="DeviceField" Content="Not Connected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="121,21,10,0" Height="26" />
-        <Label Content="Connected Device:" HorizontalAlignment="Center" HorizontalContentAlignment="Right" Margin="0,21,409,0" VerticalAlignment="Top" Width="116"/>
+        <Label Name="DeviceField" Content="Not Connected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="134,21,10,0" Height="26" />
+        <Label Content="Connected Device:" HorizontalAlignment="Center" HorizontalContentAlignment="Right" Margin="0,21,396,0" VerticalAlignment="Top" Width="129"/>
         <ListBox Name="SentHistory" HorizontalAlignment="Left" Margin="287,211,0,26" Width="230"/>
         <Label Content="Sent History" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="287,324,0,0" VerticalAlignment="Top" Width="228"/>
         <TreeView Name="SuggestionList" HorizontalAlignment="Left" Height="277" Margin="10,47,0,0" VerticalAlignment="Top" Width="251">

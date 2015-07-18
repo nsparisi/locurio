@@ -58,17 +58,11 @@
       <DependentUpon>HintSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="HomeView\AbstractThumbnailUserControl.cs" />
+    <Compile Include="HomeView\DashboardUserControl.xaml.cs">
+      <DependentUpon>DashboardUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HomeView\HomeSubPage.xaml.cs">
       <DependentUpon>HomeSubPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HomeView\HintThumbUserControl.xaml.cs">
-      <DependentUpon>HintThumbUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HomeView\TimeThumbUserControl.xaml.cs">
-      <DependentUpon>TimeThumbUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HomeView\RoomThumbUserControl.xaml.cs">
-      <DependentUpon>RoomThumbUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RoomView\AbstractPhysicalObjectUserControl.cs" />
     <Compile Include="RoomView\SoundUserControl.xaml.cs">
@@ -84,9 +78,6 @@
       <DependentUpon>RoomSubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClockView\ClockController.cs" />
-    <Compile Include="ClockView\ClockWindow.xaml.cs">
-      <DependentUpon>ClockWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ClockView\ClockSubPage.xaml.cs">
       <DependentUpon>ClockSubPage.xaml</DependentUpon>
     </Compile>
@@ -94,19 +85,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="HomeView\DashboardUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="HomeView\HomeSubPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HomeView\HintThumbUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HomeView\TimeThumbUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HomeView\RoomThumbUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -142,10 +125,6 @@
     <Page Include="RoomView\RoomSubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClockView\ClockWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ClockView\ClockSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +183,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="RoomView\Images\MusicNote.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="HomeView\Images\DebugIcon.png" />
+    <Resource Include="HomeView\Images\DeviceManagerIcon.png" />
+    <Resource Include="HomeView\Images\GameControlIcon.png" />
+    <Resource Include="HomeView\Images\HintsIcon.png" />
+    <Resource Include="HomeView\Images\LightsIcon.png" />
+    <Resource Include="HomeView\Images\ScriptingIcon.png" />
+    <Resource Include="HomeView\Images\SettingsIcon.png" />
+    <Resource Include="HomeView\Images\SoundIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

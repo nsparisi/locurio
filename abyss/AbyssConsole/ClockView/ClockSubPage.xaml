@@ -10,8 +10,8 @@
             VerticalAlignment="Top" 
             Height="20" 
             TextAlignment="Center" />
-        <Button Content="Spawn Window" HorizontalAlignment="Left" Margin="161,128,0,0" VerticalAlignment="Top" Width="210" Height="55" Click="SpawnWindow_Click"/>
-        <Button Content="Start Countdown" HorizontalAlignment="Left" Margin="161,200,0,0" VerticalAlignment="Top" Width="210" Height="55" Click="StartCountdown_Click"/>
-
+        <Button Content="Start Countdown" HorizontalAlignment="center" Margin="0,0,0,0" VerticalAlignment="Center" Width="210" Height="55" Click="StartCountdown_Click"/>
+        <TextBlock Text="Minutes: " TextAlignment="Left" Margin="198,227,259,0" VerticalAlignment="Top" Height="18"/>
+        <TextBox Name="MinutesBox" Text="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="271,226,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" Width="44"/>
     </Grid>
 </UserControl>
