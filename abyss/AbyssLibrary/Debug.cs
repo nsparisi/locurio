@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    class Debug
+    public class Debug
     {
         private const string NullString = "<null>";
         private const string LogFormat = "[{0}][{1}] {2}{3}";
@@ -17,6 +17,19 @@ namespace AbyssLibrary
         private static string logFile;
         private static bool initialized;
         private static object threadLock = new Object();
+
+        public static event AbyssEvent LogMessageEvent;
+
+        public class LogEventArgs : EventArgs
+        {
+            public string Message { get; private set; }
+            public DateTime Timestamp { get; private set; }
+            public LogEventArgs(string message)
+            {
+                this.Message = message;
+                this.Timestamp = DateTime.Now;
+            }
+        }
 
         private static void Initialize()
         {
@@ -56,6 +69,11 @@ namespace AbyssLibrary
                 Initialize();
                 Console.Out.WriteLine(message);
                 File.AppendAllText(logFile, FormatLine(message));
+
+                if(LogMessageEvent != null)
+                {
+                    LogMessageEvent(null, new LogEventArgs(message));
+                }
             }
         }
 

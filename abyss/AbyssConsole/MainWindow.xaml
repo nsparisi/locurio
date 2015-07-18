@@ -42,34 +42,8 @@
             <Rectangle HorizontalAlignment="Left" Height="4" Margin="0,146,0,0" VerticalAlignment="Top" Width="300" Style="{StaticResource AccentRectangleColor}"/>
             <Rectangle HorizontalAlignment="Left" Height="4" Margin="0,192,0,0" VerticalAlignment="Top" Width="300" Style="{StaticResource AccentRectangleColor}"/>
             
-            <ListBox BorderBrush="Transparent" 
-                     Background="Transparent"
-                     BorderThickness="0"
+            <ListBox Name="ActivityLogBox" BorderBrush="Transparent"  Background="Transparent" BorderThickness="0"
                      HorizontalAlignment="Left" Margin="0,193,0,58" VerticalAlignment="Stretch" Width="300">
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="First Item" Style="{StaticResource ActivityLogItem1Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
-                <ListBoxItem Content="Second Item" Style="{StaticResource ActivityLogItem2Style}"/>
             </ListBox>
         </Grid>
 

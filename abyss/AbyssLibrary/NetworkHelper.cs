@@ -149,7 +149,11 @@ namespace AbyssLibrary
                 int retValue = SendARP(uintAddress, 0, macAddress, ref macAddressLength);
                 if (retValue != 0)
                 {
-                    Debug.Log("ARP request for IP: {0} failed with result {1}.", ipAddress, retValue);
+                    if (retValue != 67)
+                    {
+                        Debug.Log("ARP request for IP: {0} failed with result {1}.", ipAddress, retValue);
+                    }
+
                     return;
                 }
 
