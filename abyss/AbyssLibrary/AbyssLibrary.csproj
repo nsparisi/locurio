@@ -49,6 +49,7 @@
     <Compile Include="Attributes\AbyssSubProcessor.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="Hardware\AbstractPhysicalObject.cs" />
+    <Compile Include="Hardware\AbyssGameController.cs" />
     <Compile Include="Hardware\AbyssScreenController.cs" />
     <Compile Include="Hardware\INetworkedDevice.cs" />
     <Compile Include="Hardware\IPhysicalObject.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubProcessors\AbstractSubProcessor.cs" />
     <Compile Include="SubProcessors\ISubProcessor.cs" />
+    <Compile Include="SubProcessors\SPGame.cs" />
     <Compile Include="SubProcessors\SPDelay.cs" />
     <Compile Include="SubProcessors\SPLimitlessLEDBridge.cs" />
     <Compile Include="SubProcessors\SPTextingController.cs" />

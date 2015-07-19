@@ -50,7 +50,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPXBeeEndpoint Proc Start");
+            Debug.Log("SPXBeeEndpoint Start [{0}]", Name);
 
             foreach (XBeeEndpoint endpoint in Endpoints)
             {
@@ -62,7 +62,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPXBeeEndpoint Proc Ended [{0}]", Name);
+            Debug.Log("SPXBeeEndpoint Ended [{0}]", Name);
         }
 
         private void OnReceivedData(object sender, EventArgs args)

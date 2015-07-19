@@ -72,7 +72,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPLightBulb Proc Start [{0}]", Name);
+            Debug.Log("SPLightBulb Start [{0}]", Name);
 
             foreach (LimitlessLEDBridge bridge in this.Bridges)
             {
@@ -103,7 +103,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPLightBulb Proc Ended [{0}]", Name);
+            Debug.Log("SPLightBulb Ended [{0}]", Name);
         }
 
         public override void Initialize()

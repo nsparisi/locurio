@@ -7,6 +7,22 @@ namespace Abyss
 {
     public class AbyssRunner
     {
+        public const string SoundDressingRoomBGMFileName = "dressing_room_bgm_7-3.mp3";
+        public const string SoundSecretRoomBGMFileName = "";
+        public const string SoundAltarTouchFileName = "explosion_sfx.mp3";
+        public const string SoundAltarWindSFXFileName = "Altar.mp3";
+        public const string SoundAltarWhispersFileName = "";
+        public const string SoundNoxSuccessNarrationFileName = "endgame_win.mp3";
+        public const string SoundNoxFailureNarrationFileName = "EndgameLoseNew.mp3";
+
+        public const float SoundDressingRoomBGMVolume = 400f;
+        public const float SoundSecretRoomBGMVolume = 0f;
+        public const float SoundAltarTouchVolume = 120f;
+        public const float SoundAltarWindSFXVolume = 200f;
+        public const float SoundAltarWhispersVolume = 0f;
+        public const float SoundNoxSuccessNarrationVolume = 280f;
+        public const float SoundNoxFailureNarrationVolume = 280f;
+
         public void Start()
         {
             Thread t = new Thread(Run);
@@ -15,6 +31,19 @@ namespace Abyss
 
         public void Run()
         {
+            // ***********************
+            // The Game Itself
+            // ***********************
+            AbyssGameController gameController = new AbyssGameController("Game: The Vanishing Act");
+            SPGame sp_gameController = new SPGame()
+            {
+                Games = MakeList(gameController)
+            };
+
+            sp_gameController.Initialize();
+            AbyssSystem.Instance.RegisterPhysicalObject(gameController);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_gameController);
+
             // ***********************
             // Countdown Clock
             // ***********************
@@ -52,84 +81,100 @@ namespace Abyss
                 VLCServerControl.OSType.Linux,
                 "50001");
 
+            SPSoundControl sp_soundDressingRoom01 = new SPSoundControl()
+            {
+                Name = "Dressing Room 01",
+                VLCControllers = MakeList(vlc01)
+            };
+
+            SPSoundControl sp_soundSecretRoom01 = new SPSoundControl()
+            {
+                Name = "Secret Room 01",
+                VLCControllers = MakeList(vlc02)
+            };
+
+            SPSoundControl sp_soundSecretRoom02 = new SPSoundControl()
+            {
+                Name = "Secret Room 02",
+                VLCControllers = MakeList(vlc02_02)
+            }; 
+
             SPSoundControl sp_soundDressingRoomBGM = new SPSoundControl()
             {
                 Name = "Dressing Room BGM",
-                SongFileName = @"dressing_room_bgm_7-3.mp3",
-                Volume = 400f,
-                VLCControllers = new List<VLCServerControl>() 
-                {
-                    vlc01
-                }
+                SongFileName = SoundDressingRoomBGMFileName,
+                Volume = SoundDressingRoomBGMVolume,
+                VLCControllers = MakeList(vlc01)
             };
 
             SPSoundControl sp_soundSecretRoomBGM = new SPSoundControl()
             {
                 Name = "Secret Room BGM",
-                SongFileName = @"MagicShow-NoSFX.mp3",
-                Volume = 400f,
-                VLCControllers = new List<VLCServerControl>() 
-                {
-                    vlc02
-                }
+                SongFileName = SoundSecretRoomBGMFileName,
+                Volume = SoundSecretRoomBGMVolume,
+                VLCControllers = MakeList(vlc02)
             };
 
             SPSoundControl sp_soundAltarTouch = new SPSoundControl()
             {
                 Name = "Altar Touch",
-                SongFileName = @"explosion_sfx.mp3",
-                Volume = 120f,
-                VLCControllers = new List<VLCServerControl>() 
-                {
-                    vlc02
-                }
+                SongFileName = SoundAltarTouchFileName,
+                Volume = SoundAltarTouchVolume,
+                VLCControllers = MakeList(vlc02)
+            };
+
+            SPSoundControl sp_soundAltarWindEffect = new SPSoundControl()
+            {
+                Name = "Altar Wind Effect",
+                SongFileName = SoundAltarWindSFXFileName,
+                Volume = SoundAltarWindSFXVolume,
+                VLCControllers = MakeList(vlc02_02)
             };
 
             SPSoundControl sp_soundAltarWhispers = new SPSoundControl()
             {
                 Name = "Altar Whispers",
-                SongFileName = @"Altar.mp3",
-                Volume = 200f,
-                VLCControllers = new List<VLCServerControl>() 
-                {
-                    vlc02_02
-                }
+                SongFileName = SoundAltarWhispersFileName,
+                Volume = SoundAltarWhispersVolume,
+                VLCControllers = MakeList(vlc02)
             };
 
             SPSoundControl sp_soundNoxSuccessNarration = new SPSoundControl()
             {
                 Name = "Nox Success Narration",
-                SongFileName = @"endgame_win.mp3",
-                Volume = 280f,
-                VLCControllers = new List<VLCServerControl>() 
-                {
-                    vlc02
-                }
+                SongFileName = SoundNoxSuccessNarrationFileName,
+                Volume = SoundNoxSuccessNarrationVolume,
+                VLCControllers = MakeList(vlc02)
             };
 
             SPSoundControl sp_soundNoxFailureNarration = new SPSoundControl()
             {
                 Name = "Nox Fail Narration",
-                SongFileName = @"EndgameLoseNew.mp3",
-                Volume = 280f,
-                VLCControllers = new List<VLCServerControl>() 
-                {
-                    vlc02
-                }
+                SongFileName = SoundNoxFailureNarrationFileName,
+                Volume = SoundNoxFailureNarrationVolume,
+                VLCControllers = MakeList(vlc02)
             };
 
             AbyssSystem.Instance.RegisterPhysicalObject(vlc01);
             AbyssSystem.Instance.RegisterPhysicalObject(vlc02);
             AbyssSystem.Instance.RegisterPhysicalObject(vlc02_02);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundDressingRoom01);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundSecretRoom01);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundSecretRoom02);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundDressingRoomBGM);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundSecretRoomBGM);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundAltarTouch);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundAltarWhispers);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundAltarWindEffect);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxSuccessNarration);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxFailureNarration);
+            sp_soundDressingRoom01.Initialize();
+            sp_soundSecretRoom01.Initialize();
+            sp_soundSecretRoom02.Initialize();
             sp_soundDressingRoomBGM.Initialize();
             sp_soundSecretRoomBGM.Initialize();
             sp_soundAltarWhispers.Initialize();
+            sp_soundAltarWindEffect.Initialize();
             sp_soundNoxSuccessNarration.Initialize();
             sp_soundNoxFailureNarration.Initialize();
             sp_soundAltarTouch.Initialize();
@@ -150,64 +195,43 @@ namespace Abyss
             SPXBeeEndpoint sp_altarPowerOn = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "POWERON",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             SPXBeeEndpoint sp_altarTopStart = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "TOPSTART",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             SPXBeeEndpoint sp_altarTopSolved = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "TOPSOLVED",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             SPXBeeEndpoint sp_altarWordBegin = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "WORDBEGIN",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             SPXBeeEndpoint sp_altarTagPresent = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "WORDTAGPRESENT",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             SPXBeeEndpoint sp_altarWordSolved = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "WORDSOLVED",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             SPXBeeEndpoint sp_altarWordFailed = new SPXBeeEndpoint()
             {
                 ExpectedMessage = "WORDFAILED",
-                Endpoints = new List<XBeeEndpoint>
-                {
-                    altarArduino
-                }
+                Endpoints = MakeList(altarArduino)
             };
 
             AbyssSystem.Instance.RegisterPhysicalObject(altarArduino);
@@ -225,129 +249,164 @@ namespace Abyss
             sp_altarWordSolved.Initialize();
 
             // ***********************
-            // Script Event Logic
+            // LED RGB+W Lightbulbs
             // ***********************
-
-            // countdown clock START -> start dressing room music
-            // countdown clock START -> start secret room music
-
-            // countdown clock EXPIRED -> stop dressing room music
-            // countdown clock EXPIRED -> stop secret room music
-            // countdown clock EXPIRED -> stop secret room whispers
-            // countdown clock EXPIRED -> lose game music
-
-            // altar WORDTAGPRESENT (first time only) -> start whispers
-            // altar WORDFAILED (not present) -> stop whispers
-
-            // altar WORDSOLVED -> pause clock
-            // altar WORDSOLVED -> stop dressing room music
-            // altar WORDSOLVED -> stop secret room music
-            // altar WORDSOLVED -> stop secret room whispers
-            // altar WORDSOLVED -> start success game music
-
-            // emergency stop PRESSED -> pause dressing room music
-            // emergency stop PRESSED -> pause secret room music
-            // emergency stop PRESSED -> pause countdown clock 
-
-            sp_countdownScreen.CountdownStarted += sp_soundDressingRoomBGM.Play;
-            sp_countdownScreen.CountdownStarted += sp_soundAltarWhispers.Stop;
-            sp_countdownScreen.CountdownStarted += sp_soundSecretRoomBGM.Stop;
-            //sp_countdownScreen.CountdownStarted += sp_soundSecretRoomBGM.Play;
-
-            //sp_countdownScreen.CountdownExpired += sp_soundDressingRoomBGM.Stop;
-            //sp_countdownScreen.CountdownExpired += sp_soundSecretRoomBGM.Stop;
-            //sp_countdownScreen.CountdownExpired += sp_soundAltarWhispers.Stop;
-            //sp_countdownScreen.CountdownExpired += sp_soundNoxFailureNarration.Play;
-
-            // not yet implemented
-            sp_altarTopSolved.ExpectedMessageReceived += sp_soundAltarWhispers.Play;
-            sp_altarTagPresent.ExpectedMessageReceived += sp_soundAltarTouch.Play;
-            //sp_altarWordFailed.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
-
-            sp_altarWordSolved.ExpectedMessageReceived += sp_countdownScreen.Stop;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_soundDressingRoomBGM.Stop;
-            //sp_altarWordSolved.ExpectedMessageReceived += sp_soundSecretRoomBGM.Stop;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
-            //sp_altarWordSolved.ExpectedMessageReceived += sp_soundNoxFailureNarration.Stop;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_soundNoxSuccessNarration.Play;
-
-            // not yet implemented
-            // emergency stop pressed
-
-
-            // *****************************************
-            // TEST CODE
-            // testing LIGHT BULBS
-            LimitlessLEDBridge bridge =  new LimitlessLEDBridge(
+            LimitlessLEDBridge bridge = new LimitlessLEDBridge(
                     "MiLight Bridge 01",
                     "AC-CF-23-46-86-46");
 
             AbyssSystem.Instance.RegisterPhysicalObject(bridge);
 
+            SPLimitlessLEDBridge sp_lightAllWhite = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Bridges = MakeList(bridge)
+            };
+
+            SPLimitlessLEDBridge sp_lightAllFullBrightness = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Brightness = 1,
+                Bridges = MakeList(bridge)
+            };
+
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllWhite);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllFullBrightness);
+            sp_lightAllWhite.Initialize();
+            sp_lightAllFullBrightness.Initialize();
+
+            // ***********************
+            // Script Event Logic
+            // ***********************
+
+            // when the game is started
+            // stop all music on all servers
+            // play dressing room BGM
+            // start game timer
+            // TODO: enable secret room ambience
+            sp_gameController.GameStarted += sp_soundDressingRoomBGM.Play;
+            sp_gameController.GameStarted += sp_soundSecretRoom01.Stop;
+            sp_gameController.GameStarted += sp_soundSecretRoom02.Stop;
+            sp_gameController.GameStarted += sp_countdownScreen.Start;
+
+            // when the top of the altar is solved
+            // play some spooky MYST wind effects
+            sp_altarTopSolved.ExpectedMessageReceived += sp_soundAltarWindEffect.Play;
+
+            // every time a syllable of the spell is cast on the altar
+            // play some sound effect
+            sp_altarTagPresent.ExpectedMessageReceived += sp_soundAltarTouch.Play;
+
+            // TODO:
+            // when the altar-side word game is started, ramp up spooky whispers
+            // when the altar-side word game is failed, turn off the whipsers.
+            sp_altarWordBegin.ExpectedMessageReceived += sp_soundAltarWhispers.Play;
+            sp_altarWordFailed.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
+
+            // when the altar-side word game is completed,
+            // WIN THE GAME!!
+            sp_altarWordSolved.ExpectedMessageReceived += sp_gameController.Win;
+
+            // This is the Win scenario:
+            // stop the game timer
+            // stop any sounds from the dressing room
+            // play Nox narration
+            // TODO: decide if the wind effects or other sounds should be turned off
+            sp_gameController.GameWon += sp_countdownScreen.Stop;
+            sp_gameController.GameWon += sp_soundDressingRoom01.Stop;
+            sp_gameController.GameWon += sp_soundNoxSuccessNarration.Play;
+
+            // When the time is up, 
+            // LOSE!!
+            sp_countdownScreen.CountdownExpired += sp_gameController.Lose;
+
+            // emergency stop
+            // pause all sounds
+            // whiten all lights
+            sp_gameController.GameHardPaused += sp_soundDressingRoom01.Pause;
+            sp_gameController.GameHardPaused += sp_soundSecretRoom01.Pause;
+            sp_gameController.GameHardPaused += sp_soundSecretRoom02.Pause;
+            sp_gameController.GameHardPaused += sp_countdownScreen.Stop;
+            sp_gameController.GameHardPaused += sp_lightAllWhite.Run;
+            sp_gameController.GameHardPaused += sp_lightAllFullBrightness.Run;
+            
+            // soft pause:
+            // pause all music and sounds, pause game timer
+            sp_gameController.GameSoftPaused += sp_soundDressingRoom01.Pause;
+            sp_gameController.GameSoftPaused += sp_soundSecretRoom01.Pause;
+            sp_gameController.GameSoftPaused += sp_soundSecretRoom02.Pause;
+            sp_gameController.GameSoftPaused += sp_countdownScreen.Stop;
+
+            // game is resumed from paused state
+            // TODO: 'pause' message is sent to music devices. this is both for pause and unpause. can be dangerous if spamming.
+            sp_gameController.GameUnPaused += sp_soundDressingRoom01.Pause;
+            sp_gameController.GameUnPaused += sp_soundSecretRoom01.Pause;
+            sp_gameController.GameUnPaused += sp_soundSecretRoom02.Pause;
+            sp_gameController.GameUnPaused += sp_countdownScreen.Start;
+
+            // ***********************
+            // Script Event Logic for LIGHTS
+            // ***********************
             SPLimitlessLEDBridge sp_lightGameStart = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Green,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightGameStart);
+            sp_lightGameStart.Initialize();
 
             SPLimitlessLEDBridge sp_lightGameStartBrighness = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 1,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightGameStartBrighness);
+            sp_lightGameStartBrighness.Initialize();
 
             SPLimitlessLEDBridge sp_lightSolveAltarTop = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Royal_Blue,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightSolveAltarTop);
+            sp_lightSolveAltarTop.Initialize();
 
             SPLimitlessLEDBridge sp_lightTouchAltarWordBefore = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Red,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightTouchAltarWordBefore);
+            sp_lightTouchAltarWordBefore.Initialize();
 
             SPLimitlessLEDBridge sp_lightTouchAltarWordAfter = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Violet,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightTouchAltarWordAfter);
+            sp_lightTouchAltarWordAfter.Initialize();
 
             SPDelay sp_touchAltarWordDelay = new SPDelay()
             {
                 DurationMs = 300
             };
 
-
             // turn on back lights when game is started
-            sp_countdownScreen.CountdownStarted += sp_lightGameStart.Run;
-            sp_countdownScreen.CountdownStarted += sp_lightGameStartBrighness.Run;
+            sp_gameController.GameStarted += sp_lightGameStart.Run;
+            sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
 
             // turn on light when top is solved
             sp_altarTopSolved.ExpectedMessageReceived += sp_lightSolveAltarTop.Run;
@@ -364,10 +423,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.Zone1,
                 Color = LimitlessLEDBridge.ColorType.Green,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ1_Color.Initialize();
 
@@ -375,10 +431,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOn,
                 Zone = LimitlessLEDBridge.ZoneType.Zone1,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ1_On.Initialize();
 
@@ -386,10 +439,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
                 Zone = LimitlessLEDBridge.ZoneType.Zone1,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ1_Off.Initialize();
 
@@ -405,8 +455,8 @@ namespace Abyss
             };
             sp_winZone1_delay2.Initialize();
 
-            sp_altarWordSolved.ExpectedMessageReceived += sp_winZone1_delay1.Start;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ1_Color.Run;
+            sp_gameController.GameWon += sp_winZone1_delay1.Start;
+            sp_gameController.GameWon += sp_lightWinZ1_Color.Run;
             sp_winZone1_delay1.Finished += sp_winZone1_delay2.Start;
             sp_winZone1_delay1.Finished += sp_lightWinZ1_Off.Run;
             sp_winZone1_delay2.Finished += sp_winZone1_delay1.Start;
@@ -419,30 +469,21 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.Zone2,
                 Color = LimitlessLEDBridge.ColorType.Violet,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ2_Color.Initialize();
             SPLimitlessLEDBridge sp_lightWinZ2_On = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOn,
                 Zone = LimitlessLEDBridge.ZoneType.Zone2,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ2_On.Initialize();
             SPLimitlessLEDBridge sp_lightWinZ2_Off = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
                 Zone = LimitlessLEDBridge.ZoneType.Zone2,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ2_Off.Initialize();
 
@@ -458,8 +499,8 @@ namespace Abyss
             };
             sp_winZone2_delay2.Initialize();
 
-            sp_altarWordSolved.ExpectedMessageReceived += sp_winZone2_delay1.Start;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ2_Color.Run;
+            sp_gameController.GameWon += sp_winZone2_delay1.Start;
+            sp_gameController.GameWon += sp_lightWinZ2_Color.Run;
             sp_winZone2_delay1.Finished += sp_winZone2_delay2.Start;
             sp_winZone2_delay1.Finished += sp_lightWinZ2_Off.Run;
             sp_winZone2_delay2.Finished += sp_winZone2_delay1.Start;
@@ -472,10 +513,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.Zone3,
                 Color = LimitlessLEDBridge.ColorType.Red,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_Color.Initialize();
             SPLimitlessLEDBridge sp_lightWinZ3_On = new SPLimitlessLEDBridge()
@@ -483,10 +521,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.Zone3,
                 Brightness = 1,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_On.Initialize();
             SPLimitlessLEDBridge sp_lightWinZ3_Off = new SPLimitlessLEDBridge()
@@ -494,10 +529,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.Zone3,
                 Brightness = 0.01,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_Off.Initialize();
 
@@ -513,8 +545,8 @@ namespace Abyss
             };
             sp_winZone3_delay2.Initialize();
 
-            sp_altarWordSolved.ExpectedMessageReceived += sp_winZone3_delay1.Start;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ3_Color.Run;
+            sp_gameController.GameWon += sp_winZone3_delay1.Start;
+            sp_gameController.GameWon += sp_lightWinZ3_Color.Run;
             sp_winZone3_delay1.Finished += sp_winZone3_delay2.Start;
             sp_winZone3_delay1.Finished += sp_lightWinZ3_Off.Run;
             sp_winZone3_delay2.Finished += sp_winZone3_delay1.Start;
@@ -527,10 +559,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.Zone4,
                 Color = LimitlessLEDBridge.ColorType.Red,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ4_Color.Initialize();
             SPLimitlessLEDBridge sp_lightWinZ4_On = new SPLimitlessLEDBridge()
@@ -538,10 +567,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.Zone4,
                 Brightness = 1,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ4_On.Initialize();
             SPLimitlessLEDBridge sp_lightWinZ4_Off = new SPLimitlessLEDBridge()
@@ -549,10 +575,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.Zone4,
                 Brightness = 0.01,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             sp_lightWinZ4_Off.Initialize();
 
@@ -568,55 +591,43 @@ namespace Abyss
             };
             sp_winZone4_delay2.Initialize();
 
-            sp_altarWordSolved.ExpectedMessageReceived += sp_winZone4_delay1.Start;
-            sp_altarWordSolved.ExpectedMessageReceived += sp_lightWinZ4_Color.Run;
+            sp_gameController.GameWon += sp_winZone4_delay1.Start;
+            sp_gameController.GameWon += sp_lightWinZ4_Color.Run;
             sp_winZone4_delay1.Finished += sp_winZone4_delay2.Start;
             sp_winZone4_delay1.Finished += sp_lightWinZ4_Off.Run;
             sp_winZone4_delay2.Finished += sp_winZone4_delay1.Start;
             sp_winZone4_delay2.Finished += sp_lightWinZ4_On.Run;
 
-
             // *****************************************
             // lose game sequence
+            // *****************************************
             SPLimitlessLEDBridge sp_lightLoseHalfDimAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.5,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             SPLimitlessLEDBridge sp_lightLoseRedAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Red,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             SPLimitlessLEDBridge sp_lightLoseDimAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.01,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             SPLimitlessLEDBridge sp_lightLoseOffAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.01,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
             
             SPLimitlessLEDBridge sp_lightLoseWhiteAll = new SPLimitlessLEDBridge()
@@ -624,10 +635,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.01,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
 
             SPLimitlessLEDBridge sp_lightLoseLightenAll = new SPLimitlessLEDBridge()
@@ -635,10 +643,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.6,
-                Bridges = new List<LimitlessLEDBridge>
-                {
-                    bridge
-                }
+                Bridges = MakeList(bridge)
             };
 
             SPDelay sp_delayLoseWaitForSoundStop = new SPDelay()
@@ -666,41 +671,44 @@ namespace Abyss
             {
                 DurationMs = 100
             };
+            
+            // When the game is lost, turn off all sounds, 
+            // TODO: currently leaving wind effects playing, maybe should change
+            sp_gameController.GameLost += sp_soundDressingRoom01.Stop;
+            sp_gameController.GameLost += sp_soundSecretRoom01.Stop;
 
-            // when countdown expires
-            // stop all music
-            // play nox narration
-            // dim lights
-            // wait
-            // set lights to white
-            // brighten lights
+            // Wait for just a moment to sounds to stop
+            sp_gameController.GameLost += sp_delayLoseWaitForSoundStop.Start;
 
-            // leave whispers on during lose
-            //sp_countdownScreen.CountdownExpired += sp_soundAltarWhispers.Stop;
-            sp_countdownScreen.CountdownExpired += sp_soundAltarTouch.Stop;
-            sp_countdownScreen.CountdownExpired += sp_soundDressingRoomBGM.Stop;
-            sp_countdownScreen.CountdownExpired += sp_soundSecretRoomBGM.Stop;
-            sp_countdownScreen.CountdownExpired += sp_delayLoseWaitForSoundStop.Start;
-
+            // Then, play the Nox soundtrack
+            // turn all lights to red and dim all lights a bit
             sp_delayLoseWaitForSoundStop.Finished += sp_soundNoxFailureNarration.Play;
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseRedAll.Run;
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseHalfDimAll.Run;
+
+            // wait for the Nox narration
             sp_delayLoseWaitForSoundStop.Finished += sp_delayLoseWaitForNox.Start;
 
+            // dim the lights to as low as possible
+            // then turn off the lights (hacky transition)
             sp_delayLoseWaitForNox.Finished += sp_lightLoseDimAll.Run;
             sp_delayLoseWaitForNox.Finished += sp_delayLoseWaitForDim.Start;
-
             sp_delayLoseWaitForDim.Finished += sp_lightLoseOffAll.Run;
+
+            // wait for dramatic effect
             sp_delayLoseWaitForDim.Finished += sp_delayLoseWaitForOff.Start;
 
+            // turn to white and turn back on
             sp_delayLoseWaitForOff.Finished += sp_lightLoseWhiteAll.Run;
             sp_delayLoseWaitForOff.Finished += sp_delayLoseWaitForWhite.Start;
-
             sp_delayLoseWaitForWhite.Finished += sp_lightLoseLightenAll.Run;
+        }
 
-
-            // uncomment to win the game
-            //sp_altarWordSolved.DebugReceivedExpectedMessage();
+        private List<T> MakeList<T>(params T[] listItems)
+        {
+            List<T> list = new List<T>();
+            list.AddRange(listItems);
+            return list;
         }
     }
 }

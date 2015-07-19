@@ -23,7 +23,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPDelay Proc Start [{0}]", Name);
+            Debug.Log("SPDelay Start [{0}]", Name);
             Thread.Sleep(DurationMs);
 
             ProcessEnded();
@@ -31,7 +31,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPDelay Proc Ended [{0}]", Name);
+            Debug.Log("SPDelay Ended [{0}]", Name);
             if (Finished != null)
             {
                 Finished(this, EventArgs.Empty);
