@@ -44,7 +44,8 @@ namespace AbyssLibrary
 
         private const byte Empty_Middle_Byte = 0x00;
         private const byte Final_Byte = 0x55;
-        
+
+        private object lockObj = new object();
 
         public enum ColorType
         {
@@ -92,9 +93,12 @@ namespace AbyssLibrary
 
             try
             {
-                UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
-                udpClient.Send(message, message.Length);
-                udpClient.Close();
+                lock (lockObj)
+                {
+                    UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
+                    udpClient.Send(message, message.Length);
+                    udpClient.Close();
+                }
             }
             catch (Exception e)
             {
@@ -115,13 +119,16 @@ namespace AbyssLibrary
 
             try
             {
-                // for some commands, the bridge expects two messages
-                // that have a 100ms delay in between.
-                UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
-                udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
-                Thread.Sleep(100);
-                udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
-                udpClient.Close();
+                lock (lockObj)
+                {
+                    // for some commands, the bridge expects two messages
+                    // that have a 100ms delay in between.
+                    UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
+                    udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
+                    Thread.Sleep(100);
+                    udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
+                    udpClient.Close();
+                }
             }
             catch (Exception e)
             {

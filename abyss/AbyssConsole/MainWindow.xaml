@@ -35,7 +35,6 @@
 
         <!-- Left panel grid-->
         <Grid HorizontalAlignment="Left" Margin="0,0,0,0" Width="300" VerticalAlignment="Stretch" Style="{StaticResource SecondaryBGColor}" >
-            <Button Content="Home" Margin="0,816,0,0" HorizontalAlignment="Stretch" Click="Home_Click"/>
             <Label Content="CURRENT GAME:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Style="{StaticResource MenuFont}"/>
             <Label Name="ClockLabel" Content="12:56" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" Height="111" Width="292" Style="{StaticResource ClockFontStyle}"/>
             <Label Content="ACTIVITY LOG:" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top" Width="280"/>
@@ -43,8 +42,9 @@
             <Rectangle HorizontalAlignment="Left" Height="4" Margin="0,192,0,0" VerticalAlignment="Top" Width="300" Style="{StaticResource AccentRectangleColor}"/>
             
             <ListBox Name="ActivityLogBox" BorderBrush="Transparent"  Background="Transparent" BorderThickness="0"
-                     HorizontalAlignment="Left" Margin="0,193,0,58" VerticalAlignment="Stretch" Width="300">
+                     HorizontalAlignment="Left" Margin="0,193,0,60" VerticalAlignment="Stretch" Width="300">
             </ListBox>
+            <Button Content="Home" HorizontalAlignment="Stretch" Click="Home_Click" Height="60" VerticalAlignment="Bottom"/>
         </Grid>
 
         <!-- Tiled Grid -->

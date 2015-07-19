@@ -115,7 +115,7 @@ namespace AbyssLibrary
                 // then refresh the cache and try again
                 if (!shouldScanNetwork)
                 {
-                    //Debug.Log("Could not find MAC {0} on the network.", macAddress);
+                    Debug.Log("Could not find MAC {0} on the network.", macAddress);
                     return string.Empty;
                 }
 
@@ -123,6 +123,7 @@ namespace AbyssLibrary
 
                 if (macToIpTable.ContainsKey(macAddress))
                 {
+                    Debug.Log("Found MAC {0} mapped to IP {1}.", macAddress, macToIpTable[macAddress]);
                     return macToIpTable[macAddress];
                 }
             }
@@ -166,14 +167,19 @@ namespace AbyssLibrary
 
                 // convert the string array into a single string
                 string resultantMac = string.Join(":", str).ToUpper();
+                string resultantMac2 = string.Join("-", str).ToUpper();
 
                 lock (propertyLock)
                 {
                     // add the ip-mac mapping to our cache
                     if (!string.IsNullOrEmpty(resultantMac) && !macToIpTable.ContainsKey(resultantMac))
                     {
-                        Debug.Log("Finished arp request with MAC: '{0}', IP: {1}", resultantMac, ipAddress);
                         macToIpTable.Add(resultantMac, ipAddress);
+                    }
+                    if (!string.IsNullOrEmpty(resultantMac2) && !macToIpTable.ContainsKey(resultantMac2))
+                    {
+                        Debug.Log("Matched MAC: '{0}'to IP: {1}", resultantMac2, ipAddress);
+                        macToIpTable.Add(resultantMac2, ipAddress);
                     }
                 }
             }
