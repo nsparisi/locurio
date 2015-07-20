@@ -254,7 +254,6 @@ namespace Abyss
             LimitlessLEDBridge bridge = new LimitlessLEDBridge(
                     "MiLight Bridge 01",
                     "AC-CF-23-46-86-46");
-
             AbyssSystem.Instance.RegisterPhysicalObject(bridge);
 
             SPLimitlessLEDBridge sp_lightAllWhite = new SPLimitlessLEDBridge()
@@ -263,6 +262,8 @@ namespace Abyss
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Bridges = MakeList(bridge)
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllWhite);
+            sp_lightAllWhite.Initialize();
 
             SPLimitlessLEDBridge sp_lightAllFullBrightness = new SPLimitlessLEDBridge()
             {
@@ -271,17 +272,35 @@ namespace Abyss
                 Brightness = 1,
                 Bridges = MakeList(bridge)
             };
-
-            AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllWhite);
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllFullBrightness);
-            sp_lightAllWhite.Initialize();
             sp_lightAllFullBrightness.Initialize();
+
+            SPLimitlessLEDBridge sp_lightTestSetAllColor = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Color = LimitlessLEDBridge.ColorType.Yellow_Orange,
+                Bridges = MakeList(bridge)
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightTestSetAllColor);
+            sp_lightTestSetAllColor.Initialize();
+
+            SPLimitlessLEDBridge sp_lightTestSetAllBrightness = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
+                Zone = LimitlessLEDBridge.ZoneType.All,
+                Brightness = 1,
+                Bridges = MakeList(bridge)
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightTestSetAllBrightness);
+            sp_lightTestSetAllBrightness.Initialize();
 
             // ***********************
             // Script Event Logic
             // ***********************
 
-            // when the game is started
+            //--------------------
+            // START
             // stop all music on all servers
             // play dressing room BGM
             // start game timer
@@ -305,11 +324,13 @@ namespace Abyss
             sp_altarWordBegin.ExpectedMessageReceived += sp_soundAltarWhispers.Play;
             sp_altarWordFailed.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
 
+            //--------------------
+            // WIN CONDITION
             // when the altar-side word game is completed,
-            // WIN THE GAME!!
             sp_altarWordSolved.ExpectedMessageReceived += sp_gameController.Win;
 
-            // This is the Win scenario:
+            //--------------------
+            // WIN
             // stop the game timer
             // stop any sounds from the dressing room
             // play Nox narration
@@ -318,11 +339,12 @@ namespace Abyss
             sp_gameController.GameWon += sp_soundDressingRoom01.Stop;
             sp_gameController.GameWon += sp_soundNoxSuccessNarration.Play;
 
-            // When the time is up, 
-            // LOSE!!
+            //--------------------
+            // LOSE CONDITION
             sp_countdownScreen.CountdownExpired += sp_gameController.Lose;
 
-            // full stop
+            //--------------------
+            // FULL STOP and RESET
             // stop all sounds
             // whiten all lights
             sp_gameController.GameStopped += sp_soundDressingRoom01.Stop;
@@ -331,20 +353,30 @@ namespace Abyss
             sp_gameController.GameStopped += sp_countdownScreen.Stop;
             sp_gameController.GameStopped += sp_lightAllWhite.Run;
             sp_gameController.GameStopped += sp_lightAllFullBrightness.Run;
-            
-            // soft pause:
+
+            //--------------------
+            // SOFT PAUSE
             // pause all music and sounds, pause game timer
             sp_gameController.GamePaused += sp_soundDressingRoom01.Pause;
             sp_gameController.GamePaused += sp_soundSecretRoom01.Pause;
             sp_gameController.GamePaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GamePaused += sp_countdownScreen.Stop;
 
-            // game is resumed from paused state
+            //--------------------
+            // RESUME FROM PAUSE
             // TODO: 'pause' message is sent to music devices. this is both for pause and unpause. can be dangerous if spamming.
             sp_gameController.GameUnPaused += sp_soundDressingRoom01.Pause;
             sp_gameController.GameUnPaused += sp_soundSecretRoom01.Pause;
             sp_gameController.GameUnPaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GameUnPaused += sp_countdownScreen.Start;
+
+            //--------------------
+            // TEST MODE
+            sp_gameController.GameEnteredTestMode += sp_soundNoxSuccessNarration.Play;
+            sp_gameController.GameEnteredTestMode += sp_soundAltarWindEffect.Play;
+            sp_gameController.GameEnteredTestMode += sp_soundDressingRoomBGM.Play;
+            sp_gameController.GameEnteredTestMode += sp_lightTestSetAllColor.Run;
+            sp_gameController.GameEnteredTestMode += sp_lightTestSetAllBrightness.Run;
 
             // ***********************
             // Script Event Logic for LIGHTS

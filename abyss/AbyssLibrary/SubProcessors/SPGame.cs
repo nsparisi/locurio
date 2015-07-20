@@ -9,7 +9,7 @@ namespace AbyssLibrary
 {
     public class SPGame : AbstractSubProcessor
     {
-        private enum SPGameEventType { Start, Win, Lose, Pause, UnPause, Stop }
+        private enum SPGameEventType { Start, Win, Lose, Pause, UnPause, Stop, Test }
         private SPGameEventType eventType;
 
         [AbyssParameter]
@@ -60,6 +60,13 @@ namespace AbyssLibrary
             eventType = SPGameEventType.Stop;
             StartProcess();
         }
+
+        [AbyssInput]
+        public void Test(object sender, EventArgs e)
+        {
+            eventType = SPGameEventType.Test;
+            StartProcess();
+        }
         
         [AbyssOutput]
         public event AbyssEvent GameStarted;
@@ -73,6 +80,8 @@ namespace AbyssLibrary
         public event AbyssEvent GameStopped;
         [AbyssOutput]
         public event AbyssEvent GameUnPaused;
+        [AbyssOutput]
+        public event AbyssEvent GameEnteredTestMode;
 
         public SPGame()
             : base()
@@ -91,6 +100,7 @@ namespace AbyssLibrary
                 game.GamePaused += OnGamePaused;
                 game.GameStopped += OnGameStopped;
                 game.GameUnPaused += OnGameUnPaused;
+                game.GameEnteredTestMode += OnGameEnteredTestMode;
             }
         }
 
@@ -123,7 +133,11 @@ namespace AbyssLibrary
                 else if (eventType == SPGameEventType.UnPause)
                 {
                     game.UnPause();
-                }                
+                }
+                else if (eventType == SPGameEventType.Test)
+                {
+                    game.EnterTestMode();
+                }
             }
 
             ProcessEnded();
@@ -180,6 +194,14 @@ namespace AbyssLibrary
             if (GameStopped != null)
             {
                 GameStopped(sender, e);
+            }
+        }
+
+        private void OnGameEnteredTestMode(object sender, EventArgs e)
+        {
+            if (GameEnteredTestMode != null)
+            {
+                GameEnteredTestMode(sender, e);
             }
         }
     }

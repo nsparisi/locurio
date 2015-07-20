@@ -10,7 +10,7 @@ namespace AbyssLibrary
 {
     public class AbyssGameController : AbstractPhysicalObject
     {
-        public enum SPGameStateType { NotRunning, Running, Paused }
+        public enum SPGameStateType { NotRunning, Running, Paused, Testing }
         public SPGameStateType GameState { get; private set; }
 
         public event AbyssEvent GameStarted;
@@ -19,6 +19,15 @@ namespace AbyssLibrary
         public event AbyssEvent GamePaused;
         public event AbyssEvent GameUnPaused;
         public event AbyssEvent GameStopped;
+        public event AbyssEvent GameEnteredTestMode;
+
+        public bool CanStart { get { return GameState == SPGameStateType.NotRunning; } }
+        public bool CanWin { get { return GameState != SPGameStateType.NotRunning; } }
+        public bool CanLose { get { return GameState != SPGameStateType.NotRunning; } }
+        public bool CanPause { get { return GameState == SPGameStateType.Running; } }
+        public bool CanUnPause { get { return GameState == SPGameStateType.Paused; } }
+        public bool CanStop { get { return true; } }
+        public bool CanEnterTestMode { get { return GameState == SPGameStateType.NotRunning; } }
         
         public AbyssGameController(string name)
             : base(name)
@@ -27,7 +36,7 @@ namespace AbyssLibrary
 
         public void Start()
         {
-            if (GameState == SPGameStateType.NotRunning)
+            if (CanStart)
             {
                 GameState = SPGameStateType.Running;
                 OnGameStarted(this, EventArgs.Empty);
@@ -37,7 +46,7 @@ namespace AbyssLibrary
         public void Win()
         {
             // win if game is running or even if paused
-            if (GameState != SPGameStateType.NotRunning)
+            if (CanWin)
             {
                 GameState = SPGameStateType.NotRunning;
                 OnGameWon(this, EventArgs.Empty);
@@ -47,7 +56,7 @@ namespace AbyssLibrary
         public void Lose()
         {
             // lose if game is running or even if paused
-            if (GameState != SPGameStateType.NotRunning)
+            if (CanLose)
             {
                 GameState = SPGameStateType.NotRunning;
                 OnGameLost(this, EventArgs.Empty);
@@ -56,7 +65,7 @@ namespace AbyssLibrary
 
         public void Pause()
         {
-            if (GameState == SPGameStateType.Running)
+            if (CanPause)
             {
                 GameState = SPGameStateType.Paused;
                 OnGamePaused(this, EventArgs.Empty);
@@ -65,7 +74,7 @@ namespace AbyssLibrary
 
         public void UnPause()
         {
-            if (GameState == SPGameStateType.Paused)
+            if (CanUnPause)
             {
                 GameState = SPGameStateType.Running;
                 OnGameUnPaused(this, EventArgs.Empty);
@@ -74,9 +83,21 @@ namespace AbyssLibrary
 
         public void Stop()
         {
-            // stop takes priority, can be done always
-            GameState = SPGameStateType.NotRunning;
-            OnGameStopped(this, EventArgs.Empty);
+            if (CanStop)
+            {
+                // stop takes priority, can be done always
+                GameState = SPGameStateType.NotRunning;
+                OnGameStopped(this, EventArgs.Empty);
+            }
+        }
+
+        public void EnterTestMode()
+        {
+            if (CanEnterTestMode)
+            {
+                GameState = SPGameStateType.Testing;
+                OnGameEnteredTestMode(this, EventArgs.Empty);
+            }
         }
 
         private void OnGameStarted(object sender, EventArgs e)
@@ -124,6 +145,14 @@ namespace AbyssLibrary
             if (GameStopped != null)
             {
                 GameStopped(sender, e);
+            }
+        }
+
+        private void OnGameEnteredTestMode(object sender, EventArgs e)
+        {
+            if (GameEnteredTestMode != null)
+            {
+                GameEnteredTestMode(sender, e);
             }
         }
     }

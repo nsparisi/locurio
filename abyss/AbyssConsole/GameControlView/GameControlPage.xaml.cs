@@ -44,7 +44,7 @@ namespace AbyssConsole
 
         public void Refresh()
         {
-            if (gameController != null)
+            if(gameController != null)
             {
                 if (gameController.GameState == AbyssGameController.SPGameStateType.NotRunning)
                 {
@@ -62,10 +62,41 @@ namespace AbyssConsole
                 {
                     this.StatusLabel.Content = "RUNNING";
                     shouldPrintPreviousTime = true;
-                } 
+                }
                 else if (gameController.GameState == AbyssGameController.SPGameStateType.Paused)
                 {
                     this.StatusLabel.Content = "PAUSED";
+                }
+                else if (gameController.GameState == AbyssGameController.SPGameStateType.Testing)
+                {
+                    this.StatusLabel.Content = "TEST MODE";
+                }
+
+                this.StartButton.Opacity = gameController.CanStart ? 1 : 0.2;
+                this.WinButton.Opacity = gameController.CanWin ? 1 : 0.2;
+                this.LoseButton.Opacity = gameController.CanLose ? 1 : 0.2;
+                this.PauseButton.Opacity = gameController.CanPause ? 1 : 0.2;
+                this.UnPauseButton.Opacity = gameController.CanUnPause? 1 : 0.2;
+                this.TestButton.Opacity = gameController.CanEnterTestMode ? 1 : 0.2;
+            }
+        }
+
+        private void SetClockUsingMinutesBox()
+        {
+            if (clockController != null)
+            {
+                // try to read the value in the minutes box and use that
+                // otherwise default
+                int minutes;
+                string minutesString = this.MinutesBox.Text;
+                if (int.TryParse(minutesString, out minutes))
+                {
+                    Debug.Log("Setting time as: m {0}", minutes);
+                    clockController.SetTime(minutes);
+                }
+                else
+                {
+                    Debug.Log("Please specify a valid number. {0} is invalid.", minutesString);
                 }
             }
         }
@@ -86,7 +117,7 @@ namespace AbyssConsole
 
         private void GameStart_Click(object sender, RoutedEventArgs e)
         {
-            if (gameController != null)
+            if (gameController != null && gameController.CanStart)
             {
                 MessageBoxResult messageBoxResult = 
                     System.Windows.MessageBox.Show(
@@ -102,28 +133,9 @@ namespace AbyssConsole
             }
         }
 
-        private void SetClockUsingMinutesBox()
-        {
-            if (clockController != null)
-            {
-                // try to read the value in the minutes box and use that
-                // otherwise default
-                int minutes;
-                string minutesString = this.MinutesBox.Text;
-                if (int.TryParse(minutesString, out minutes))
-                {
-                    clockController.SetTime(minutes);
-                }
-                else
-                {
-                    Debug.Log("Please specify a valid number. {0} is invalid.", minutesString);
-                }
-            }
-        }
-
         private void GameStop_Click(object sender, RoutedEventArgs e)
         {
-            if (gameController != null)
+            if (gameController != null && gameController.CanStop)
             {
                 MessageBoxResult messageBoxResult =
                     System.Windows.MessageBox.Show(
@@ -142,7 +154,7 @@ namespace AbyssConsole
 
         private void GameWin_Click(object sender, RoutedEventArgs e)
         {
-            if (gameController != null)
+            if (gameController != null && gameController.CanWin)
             {
                 MessageBoxResult messageBoxResult =
                     System.Windows.MessageBox.Show(
@@ -159,7 +171,7 @@ namespace AbyssConsole
 
         private void GameLose_Click(object sender, RoutedEventArgs e)
         {
-            if (gameController != null)
+            if (gameController != null && gameController.CanLose)
             {
                 MessageBoxResult messageBoxResult =
                     System.Windows.MessageBox.Show(
@@ -176,7 +188,7 @@ namespace AbyssConsole
 
         private void GamePause_Click(object sender, RoutedEventArgs e)
         {
-            if (gameController != null)
+            if (gameController != null && gameController.CanPause)
             {
                 MessageBoxResult messageBoxResult =
                     System.Windows.MessageBox.Show(
@@ -193,7 +205,7 @@ namespace AbyssConsole
 
         private void GameUnPause_Click(object sender, RoutedEventArgs e)
         {
-            if (gameController != null)
+            if (gameController != null && gameController.CanUnPause)
             {
                 MessageBoxResult messageBoxResult =
                     System.Windows.MessageBox.Show(
@@ -204,6 +216,23 @@ namespace AbyssConsole
                 if (messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes)
                 {
                     gameController.UnPause();
+                }
+            }
+        }
+
+        private void TestMode_Click(object sender, RoutedEventArgs e)
+        {
+            if (gameController != null && gameController.CanEnterTestMode)
+            {
+                MessageBoxResult messageBoxResult =
+                    System.Windows.MessageBox.Show(
+                    "Are you sure you want to start test mode? This will play test audio on all media servers, and change the color of lights.",
+                    "Confirm Test Mode",
+                    System.Windows.MessageBoxButton.OKCancel);
+                
+                if (messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes)
+                {
+                    gameController.EnterTestMode();
                 }
             }
         }
