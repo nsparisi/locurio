@@ -85,6 +85,7 @@ namespace AbyssConsole
                 RoomView.Refresh();
                 HomeView.Refresh();
                 GameControlView.Refresh();
+                HintView.Refresh();
 
                 lock (lockObj)
                 {

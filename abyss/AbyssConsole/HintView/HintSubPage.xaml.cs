@@ -47,21 +47,40 @@ namespace AbyssConsole
             this.SuggestionList.SelectedItemChanged += Suggestion_Selected;
         }
 
+        bool shouldRefreshDevice;
         public void AddTextingController(TextingController textingController)
         {
             this.controllerSubProcessor.TextingControllers.Add(textingController);
+            RefreshDeviceField();
+        }
 
-            string devices = "";
-            for (int i = 0; i < this.controllerSubProcessor.TextingControllers.Count; i++ )
+        public void Refresh()
+        {
+            if (shouldRefreshDevice)
             {
-                if(i > 0)
+                shouldRefreshDevice = false;
+                RefreshDeviceField();
+            }
+        }
+
+        private void RefreshDeviceField()
+        {
+            string devices = "";
+            for (int i = 0; i < this.controllerSubProcessor.TextingControllers.Count; i++)
+            {
+                if (!this.controllerSubProcessor.TextingControllers[i].IsConnected)
+                {
+                    shouldRefreshDevice = true;
+                }
+
+                if (i > 0)
                 {
                     devices += ", ";
                 }
 
                 devices += string.Format(
-                    "{0} ({1})", 
-                    this.controllerSubProcessor.TextingControllers[i].Name, 
+                    "{0} ({1})",
+                    this.controllerSubProcessor.TextingControllers[i].Name,
                     this.controllerSubProcessor.TextingControllers[i].IpAddress);
             }
 
@@ -107,6 +126,21 @@ namespace AbyssConsole
         {
             this.SentHistory.ItemsSource = messageHistory;
             this.SentHistory.Items.Refresh();
+        }
+
+        private void IPRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.controllerSubProcessor != null)
+            {
+                foreach (var textDevice in this.controllerSubProcessor.TextingControllers)
+                {
+                    // hard refresh IP address if non-existent
+                    if (!textDevice.IsConnected)
+                    {
+                        textDevice.RefreshIpAddress(true);
+                    }
+                }
+            }
         }
     }
 }

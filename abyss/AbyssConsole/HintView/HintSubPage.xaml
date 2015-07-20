@@ -16,7 +16,7 @@
 
     <Grid>
         <TextBlock Text="Welcome to Abyss Hint System" VerticalAlignment="Top" TextAlignment="Center" />
-
+        <Button Content="Retry IP" HorizontalAlignment="Left" Margin="477,0,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.75,0.35" Height="35" Click="IPRefresh_Click"/>
         <Button Content="Send Hint" HorizontalAlignment="Left" Margin="287,161,0,0" VerticalAlignment="Top" Width="178" Height="40" Click="SendHint_Click"/>
         <TextBox Name="TextBox" HorizontalAlignment="Left" Height="109" Margin="287,47,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="228"/>
         <Label Name="DeviceField" Content="Not Connected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="134,21,10,0" Height="26" />
