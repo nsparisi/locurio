@@ -1,7 +1,10 @@
 ﻿<UserControl x:Class="AbyssConsole.HintSubPage"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="350" Width="525">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
 
     <UserControl.Resources>
         <Style x:Key="MenuFont" TargetType="{x:Type Label}">
@@ -12,35 +15,91 @@
 
         <!-- Applies this to all labels by default-->
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MenuFont}" />
+        
+        <Style TargetType="TreeViewItem">
+            <Setter Property="IsExpanded" Value="True" />
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <TextBlock Text="Welcome to Abyss Hint System" VerticalAlignment="Top" TextAlignment="Center" />
-        <Button Content="Retry IP" HorizontalAlignment="Left" Margin="477,0,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.75,0.35" Height="35" Click="IPRefresh_Click"/>
-        <Button Content="Send Hint" HorizontalAlignment="Left" Margin="287,161,0,0" VerticalAlignment="Top" Width="178" Height="40" Click="SendHint_Click"/>
-        <TextBox Name="TextBox" HorizontalAlignment="Left" Height="109" Margin="287,47,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="228"/>
-        <Label Name="DeviceField" Content="Not Connected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="134,21,10,0" Height="26" />
-        <Label Content="Connected Device:" HorizontalAlignment="Center" HorizontalContentAlignment="Right" Margin="0,21,396,0" VerticalAlignment="Top" Width="129"/>
-        <ListBox Name="SentHistory" HorizontalAlignment="Left" Margin="287,211,0,26" Width="230"/>
-        <Label Content="Sent History" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="287,324,0,0" VerticalAlignment="Top" Width="228"/>
-        <TreeView Name="SuggestionList" HorizontalAlignment="Left" Height="277" Margin="10,47,0,0" VerticalAlignment="Top" Width="251">
+        <Button Content="Retry IP" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.75,0.35" Height="29" Click="IPRefresh_Click"/>
+        <Button Content="Send Hint" HorizontalAlignment="Right" Margin="0,218,62,0" VerticalAlignment="Top" Width="258" Height="40" Click="SendHint_Click"/>
+        <Label Content="Message To Send" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Margin="0,79,10,0" VerticalAlignment="Top" Width="310"/>
+        <TextBox Name="TextBox" HorizontalAlignment="Right" Height="109" Margin="0,104,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="310"/>
+        <Label Name="DeviceField" Content="Not Connected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="196,42,407,0" Height="26" />
+        <Label Content="Connected Device:" HorizontalAlignment="Center" HorizontalContentAlignment="Right" Margin="63,42,1009,0" VerticalAlignment="Top" Width="128"/>
+        <ListBox Name="SentHistory" HorizontalAlignment="Right" Margin="0,288,10,10" Width="312" VerticalAlignment="Stretch"/>
+        <Label Content="Sent History" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,263,10,0" VerticalAlignment="Top" Width="310"/>
+        <Label Content="Suggested Hints" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10,79,332,0" VerticalAlignment="Top"/>
+        <Button HorizontalAlignment="Right" Margin="0,218,10,0" VerticalAlignment="Top" Width="47" Height="40" Click="ClearMessageHistory_Click">
+            <TextBlock Text="Clear History" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <TreeView Name="SuggestionList" HorizontalAlignment="Stretch" Margin="10,104,332,10" VerticalAlignment="Stretch">
             <TreeViewItem Header="The Vanishing Act">
-                <TreeViewItem Header="1: Wall 3 Posters">
-                    <TreeViewItem Header="Use the posters." />
-                    <TreeViewItem Header="Don't use the posters." />
-                    <TreeViewItem Header="Poster the posters." />
+                <TreeViewItem Header="DRESSING ROOM:">
+                    <TreeViewItem Header="RINGS:">
+                        <TreeViewItem Header="I've seen Nox use many different rings in his linking ring act, even very small ones." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="PLAYING CARDS:">
+                        <TreeViewItem Header="Nox says that when he designs a playing card trick, it's important to view it through the eyes of the audience." />
+                        <TreeViewItem Header="Nox doesn't believe in waste – when it comes to his playing card act, he even uses the box!" />
+                        <TreeViewItem Header="I believe that if you play your cards right, life imitates art." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="TAROT:">
+                        <TreeViewItem Header="Nox loves tarot. He says it gives his life direction." />
+                        <TreeViewItem Header="Nox always tries to give me directions in six simple steps." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="HANDKERCHIEFS:">
+                        <TreeViewItem Header="Nox likes to color-coordinate his handkerchief collection." />
+                        <TreeViewItem Header="In regards to his handkerchief act, Nox says the first handkerchief is always the start to every other part of the trick." />
+                        <TreeViewItem Header="When Nox has trouble coming up with magic words, he says that putting something in front of them is often the answer." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="BOOKS:">
+                        <TreeViewItem Header="Nox should really keep his library in order!" />
+                        <TreeViewItem Header="When it comes to the marquee at the theater, Nox demands that the show's title be in the right place." />
+                        <TreeViewItem Header="I like the old saying, 'sometimes all you have to do is turn around, and the answer is right in front of you!'" />
+                        <TreeViewItem Header="Nox is a big fan of Eastern proverbs. He says he appreciates that they're always very literal." />
+                        <TreeViewItem Header="Nox loves that Chinese mirror of his." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="POSTERS:">
+                        <TreeViewItem Header="It's well-known that Nox often likes to add and subtract numbers from his show." />
+                        <TreeViewItem Header="Nox thinks it's important that each and every show be unique. He never carries over numbers from one to the next." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="CABINET:">
+                        <TreeViewItem Header="Some people don't like enclosed spaces, but Nox says he finds it comforting to be in small, dark places." />
+                        <TreeViewItem Header="Nox refuses to perform magic without his wand. Even his back-up wand will do!" />
+                        <TreeViewItem Header="Sometimes magic is as easy as 1-2-3." />
+                    </TreeViewItem>
                 </TreeViewItem>
-                <TreeViewItem Header="2: Hankerchief">
-                    <TreeViewItem Header="Use the Hankerchief." />
-                    <TreeViewItem Header="Don't use the Hankerchief." />
-                    <TreeViewItem Header="Hankerchief the Hankerchief." />
+                <TreeViewItem Header="SECRET ROOM:">
+                    <TreeViewItem Header="BONES:">
+                        <TreeViewItem Header="Nox is very strict about dating. He says I'm a seven and should stick with other sevens – leave the sixes with the other sixes and so on. What a jerk!" />
+                        <TreeViewItem Header="In his promotional materials, Nox often crafts letters out of arcane symbols." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="MIRROR:">
+                        <TreeViewItem Header="Nox likes to say that when things line up in life, everything starts to make sense." />
+                        <TreeViewItem Header="The key to seeing a magic trick is all about where you stand." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="BLOOD:">
+                        <TreeViewItem Header="Nox is so old-fashioned, he calls films 'moving pictures.'" />
+                        <TreeViewItem Header="When cleaning up after a show, Nox likes to tell me that everything has a proper place and should be put there." />
+                        <TreeViewItem Header="Some people like to read between the lines, but Nox prefers to read above them." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="DEMONS:">
+                        <TreeViewItem Header="The first thing Nox ever told me is that you have to listen closely or else you might miss a few things." />
+                        <TreeViewItem Header="When it comes to illusions, Nox says if you just equate what you hear to what you see, everything becomes clear." />
+                        <TreeViewItem Header="Eight is Nox's lucky number. That's how many columns he's been featured in." />
+                        <TreeViewItem Header="Nox is fluent in many languages, but he says he prefers the ones that read from left to right." />
+                    </TreeViewItem>
+                    <TreeViewItem Header="ALTAR:">
+                        <TreeViewItem Header="Manipulating emotions in his act is one of Nox's specialties. He says you just need to find what's most dear to someone and use it in the right spot." />
+                        <TreeViewItem Header="Nox refuses to perform magic without his wand." />
+                        <TreeViewItem Header="Nox always says that timing is everything!" />
+                        <TreeViewItem Header="Whenever a trick goes wrong, Nox insists on starting over from the very beginning." />
+                    </TreeViewItem>
                 </TreeViewItem>
             </TreeViewItem>
         </TreeView>
-        <Label Content="Suggested Hints" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="10,324,0,0" VerticalAlignment="Top" Width="251"/>
-        <Button HorizontalAlignment="Left" Margin="470,161,0,0" VerticalAlignment="Top" Width="47" Height="40" Click="ClearMessageHistory_Click">
-            <TextBlock Text="Clear History" TextWrapping="Wrap" TextAlignment="Center"/>
-        </Button>
-
     </Grid>
 </UserControl>

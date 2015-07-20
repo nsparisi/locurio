@@ -2,9 +2,11 @@ package com.locurio.abysstexting;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,12 @@ public class MainActivity extends Activity {
         // wait for MessageService
         Thread waitForService = new Thread(new WaitForService());
         waitForService.start();
+
+        // keep a WakeLock running, which will keep the phone from sleeping
+        // I will never release this lock
+        PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WakeLockTag");
+        wakeLock.acquire();
     }
 
     @Override

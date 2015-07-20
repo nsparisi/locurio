@@ -166,7 +166,7 @@ public class MessageService extends Service
                     // todo, split message into parts
                     MessageData data = new MessageData();
                     data.message = line;
-                    data.time = "7:21 PM";
+                    data.time = "";
 
                     allMessages.add(data);
                     if(messageListener != null)
