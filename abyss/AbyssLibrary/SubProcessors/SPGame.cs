@@ -9,7 +9,7 @@ namespace AbyssLibrary
 {
     public class SPGame : AbstractSubProcessor
     {
-        private enum SPGameEventType { Start, Win, Lose, SoftPause, HardPause, UnPause }
+        private enum SPGameEventType { Start, Win, Lose, Pause, UnPause, Stop }
         private SPGameEventType eventType;
 
         [AbyssParameter]
@@ -41,16 +41,9 @@ namespace AbyssLibrary
         }
 
         [AbyssInput]
-        public void SoftPause(object sender, EventArgs e)
+        public void Pause(object sender, EventArgs e)
         {
-            eventType = SPGameEventType.SoftPause;
-            StartProcess();
-        }
-
-        [AbyssInput]
-        public void HardPause(object sender, EventArgs e)
-        {
-            eventType = SPGameEventType.HardPause;
+            eventType = SPGameEventType.Pause;
             StartProcess();
         }
 
@@ -58,6 +51,13 @@ namespace AbyssLibrary
         public void UnPause(object sender, EventArgs e)
         {
             eventType = SPGameEventType.UnPause;
+            StartProcess();
+        }
+
+        [AbyssInput]
+        public void Stop(object sender, EventArgs e)
+        {
+            eventType = SPGameEventType.Stop;
             StartProcess();
         }
         
@@ -68,9 +68,9 @@ namespace AbyssLibrary
         [AbyssOutput]
         public event AbyssEvent GameLost;
         [AbyssOutput]
-        public event AbyssEvent GameSoftPaused;
+        public event AbyssEvent GamePaused;
         [AbyssOutput]
-        public event AbyssEvent GameHardPaused;
+        public event AbyssEvent GameStopped;
         [AbyssOutput]
         public event AbyssEvent GameUnPaused;
 
@@ -88,8 +88,8 @@ namespace AbyssLibrary
                 game.GameStarted += OnGameStarted;
                 game.GameWon += OnGameWon;
                 game.GameLost += OnGameLost;
-                game.GameSoftPaused += OnGameSoftPaused;
-                game.GameHardPaused += OnGameHardPaused;
+                game.GamePaused += OnGamePaused;
+                game.GameStopped += OnGameStopped;
                 game.GameUnPaused += OnGameUnPaused;
             }
         }
@@ -112,13 +112,13 @@ namespace AbyssLibrary
                 {
                     game.Lose();
                 }
-                else if (eventType == SPGameEventType.SoftPause)
+                else if (eventType == SPGameEventType.Pause)
                 {
-                    game.SoftPause();
+                    game.Pause();
                 }
-                else if (eventType == SPGameEventType.HardPause)
+                else if (eventType == SPGameEventType.Stop)
                 {
-                    game.HardPause();
+                    game.Stop();
                 }
                 else if (eventType == SPGameEventType.UnPause)
                 {
@@ -159,19 +159,11 @@ namespace AbyssLibrary
             }
         }
 
-        private void OnGameSoftPaused(object sender, EventArgs e)
+        private void OnGamePaused(object sender, EventArgs e)
         {
-            if (GameSoftPaused != null)
+            if (GamePaused != null)
             {
-                GameSoftPaused(sender, e);
-            }
-        }
-
-        private void OnGameHardPaused(object sender, EventArgs e)
-        {
-            if (GameHardPaused != null)
-            {
-                GameHardPaused(sender, e);
+                GamePaused(sender, e);
             }
         }
 
@@ -180,6 +172,14 @@ namespace AbyssLibrary
             if (GameUnPaused != null)
             {
                 GameUnPaused(sender, e);
+            }
+        }
+
+        private void OnGameStopped(object sender, EventArgs e)
+        {
+            if (GameStopped != null)
+            {
+                GameStopped(sender, e);
             }
         }
     }

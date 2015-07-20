@@ -17,7 +17,6 @@ namespace AbyssConsole
 
         public ClockController(AbyssScreenController screenController)
         {
-
             countdownClock = screenController.CountDownTimer;
             countdownClock.SetTime(OneHourMs);
         }
@@ -34,6 +33,16 @@ namespace AbyssConsole
             countdownClock.Reset();
             countdownClock.SetTime(minutes * 60 * 1000);
             countdownClock.Start();
+        }
+
+        public void SetTime(int minutes)
+        {
+            countdownClock.SetTime(minutes * 60 * 1000);
+        }
+
+        public long GetTimeRemaining()
+        {
+            return countdownClock.GetTimeRemaining();
         }
 
         public static string GetPrettyTimeText(long milliseconds)

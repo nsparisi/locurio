@@ -96,7 +96,7 @@ namespace AbyssConsole
         private void Game_Click(object sender, RoutedEventArgs e)
         {
             App app = (App)Application.Current;
-            app.RootWindow.SwapToTimeView();
+            app.RootWindow.SwapToGameControlView();
         }
 
         private void Hint_Click(object sender, RoutedEventArgs e)

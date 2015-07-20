@@ -77,9 +77,9 @@
     <Compile Include="RoomView\RoomSubPage.xaml.cs">
       <DependentUpon>RoomSubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClockView\ClockController.cs" />
-    <Compile Include="ClockView\ClockSubPage.xaml.cs">
-      <DependentUpon>ClockSubPage.xaml</DependentUpon>
+    <Compile Include="GameControlView\ClockController.cs" />
+    <Compile Include="GameControlView\GameControlPage.xaml.cs">
+      <DependentUpon>GameControlPage.xaml</DependentUpon>
     </Compile>
     <Page Include="HintView\HintSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -126,7 +126,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClockView\ClockSubPage.xaml">
+    <Page Include="GameControlView\GameControlPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

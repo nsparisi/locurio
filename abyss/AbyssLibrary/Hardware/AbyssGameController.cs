@@ -10,15 +10,15 @@ namespace AbyssLibrary
 {
     public class AbyssGameController : AbstractPhysicalObject
     {
-        public enum SPGameStateType { NotRunning, Running, SoftPaused, HardPaused }
+        public enum SPGameStateType { NotRunning, Running, Paused }
         public SPGameStateType GameState { get; private set; }
 
         public event AbyssEvent GameStarted;
         public event AbyssEvent GameWon;
         public event AbyssEvent GameLost;
-        public event AbyssEvent GameSoftPaused;
-        public event AbyssEvent GameHardPaused;
+        public event AbyssEvent GamePaused;
         public event AbyssEvent GameUnPaused;
+        public event AbyssEvent GameStopped;
         
         public AbyssGameController(string name)
             : base(name)
@@ -54,29 +54,29 @@ namespace AbyssLibrary
             }
         }
 
-        public void SoftPause()
+        public void Pause()
         {
             if (GameState == SPGameStateType.Running)
             {
-                GameState = SPGameStateType.SoftPaused;
-                OnGameSoftPaused(this, EventArgs.Empty);
+                GameState = SPGameStateType.Paused;
+                OnGamePaused(this, EventArgs.Empty);
             }
-        }
-
-        public void HardPause()
-        {
-            // hard pause takes priority, can be done always
-            GameState = SPGameStateType.HardPaused;
-            OnGameHardPaused(this, EventArgs.Empty);
         }
 
         public void UnPause()
         {
-            if (GameState == SPGameStateType.SoftPaused)
+            if (GameState == SPGameStateType.Paused)
             {
                 GameState = SPGameStateType.Running;
                 OnGameUnPaused(this, EventArgs.Empty);
             }
+        }
+
+        public void Stop()
+        {
+            // stop takes priority, can be done always
+            GameState = SPGameStateType.NotRunning;
+            OnGameStopped(this, EventArgs.Empty);
         }
 
         private void OnGameStarted(object sender, EventArgs e)
@@ -103,19 +103,11 @@ namespace AbyssLibrary
             }
         }
 
-        private void OnGameSoftPaused(object sender, EventArgs e)
+        private void OnGamePaused(object sender, EventArgs e)
         {
-            if (GameSoftPaused != null)
+            if (GamePaused != null)
             {
-                GameSoftPaused(sender, e);
-            }
-        }
-
-        private void OnGameHardPaused(object sender, EventArgs e)
-        {
-            if (GameHardPaused != null)
-            {
-                GameHardPaused(sender, e);
+                GamePaused(sender, e);
             }
         }
 
@@ -127,5 +119,12 @@ namespace AbyssLibrary
             }
         }
 
+        private void OnGameStopped(object sender, EventArgs e)
+        {
+            if (GameStopped != null)
+            {
+                GameStopped(sender, e);
+            }
+        }
     }
 }

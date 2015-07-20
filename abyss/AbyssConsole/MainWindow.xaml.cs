@@ -27,12 +27,15 @@ namespace AbyssConsole
     {
         public RoomSubPage RoomView { get; private set; }
         public HomeSubPage HomeView { get; private set; }
-        public ClockSubPage TimeView { get; private set; }
+        public GameControlPage GameControlView { get; private set; }
         public HintSubPage HintView { get; private set; }
 
         CountDownTimer countdownTimer;
+        AbyssGameController gameController;
         List<string> logHistory;
         List<string> logCache;
+
+        private const string GameStoppedClockString = "-- --";
 
         static object lockObj = new object();
 
@@ -46,7 +49,7 @@ namespace AbyssConsole
 
             this.HomeView = new HomeSubPage();
             this.RoomView = new RoomSubPage();
-            this.TimeView = new ClockSubPage();
+            this.GameControlView = new GameControlPage();
             this.HintView = new HintSubPage();
 
             SwapToHomeView();
@@ -56,6 +59,18 @@ namespace AbyssConsole
             logHistory = new List<string>();
             Debug.LogMessageEvent += LogReceived;
             this.ActivityLogBox.ItemsSource = logHistory;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to quit Abyss?", "Exit Abyss", System.Windows.MessageBoxButton.OKCancel);
+            if (messageBoxResult == MessageBoxResult.Cancel ||
+                messageBoxResult == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+
+            base.OnClosing(e);
         }
 
         public void Refresh()
@@ -69,6 +84,7 @@ namespace AbyssConsole
             {
                 RoomView.Refresh();
                 HomeView.Refresh();
+                GameControlView.Refresh();
 
                 lock (lockObj)
                 {
@@ -89,9 +105,20 @@ namespace AbyssConsole
                     }
                 }
 
-                if (countdownTimer != null)
+                if (countdownTimer != null && gameController != null)
                 {
-                    ClockLabel.Content = ClockController.GetPrettyTimeText(countdownTimer.GetTimeRemaining());
+                    if (gameController.GameState != AbyssGameController.SPGameStateType.NotRunning)
+                    {
+                        ClockLabel.Content = ClockController.GetPrettyTimeText(countdownTimer.GetTimeRemaining());
+                    }
+                    else
+                    {
+                        ClockLabel.Content = GameStoppedClockString;
+                    }
+                }
+                else
+                {
+                    ClockLabel.Content = GameStoppedClockString;
                 }
             });
         }
@@ -108,10 +135,10 @@ namespace AbyssConsole
             this.SubViewGrid.Children.Add(RoomView);
         }
 
-        public void SwapToTimeView()
+        public void SwapToGameControlView()
         {
             this.SubViewGrid.Children.Clear();
-            this.SubViewGrid.Children.Add(TimeView);
+            this.SubViewGrid.Children.Add(GameControlView);
         }
 
         public void SwapToHintView()
@@ -136,6 +163,11 @@ namespace AbyssConsole
         public void AddClock(CountDownTimer timer)
         {
             this.countdownTimer = timer;
+        }
+
+        public void AddGameController(AbyssGameController gameController)
+        {
+            this.gameController = gameController;
         }
 
         public void LogReceived(object o, EventArgs args)

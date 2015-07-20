@@ -54,12 +54,6 @@ namespace AbyssConsole
             {
                 this.NameText.Content = this.soundController.Name;
                 this.IPAddressField.Content = this.soundController.IpAddress;
-
-                // soft refresh IP address if non-existent
-                if (!this.soundController.IsConnected)
-                {
-                    this.soundController.RefreshIpAddress();
-                }
             }
         }
 

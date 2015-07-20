@@ -322,22 +322,22 @@ namespace Abyss
             // LOSE!!
             sp_countdownScreen.CountdownExpired += sp_gameController.Lose;
 
-            // emergency stop
-            // pause all sounds
+            // full stop
+            // stop all sounds
             // whiten all lights
-            sp_gameController.GameHardPaused += sp_soundDressingRoom01.Pause;
-            sp_gameController.GameHardPaused += sp_soundSecretRoom01.Pause;
-            sp_gameController.GameHardPaused += sp_soundSecretRoom02.Pause;
-            sp_gameController.GameHardPaused += sp_countdownScreen.Stop;
-            sp_gameController.GameHardPaused += sp_lightAllWhite.Run;
-            sp_gameController.GameHardPaused += sp_lightAllFullBrightness.Run;
+            sp_gameController.GameStopped += sp_soundDressingRoom01.Stop;
+            sp_gameController.GameStopped += sp_soundSecretRoom01.Stop;
+            sp_gameController.GameStopped += sp_soundSecretRoom02.Stop;
+            sp_gameController.GameStopped += sp_countdownScreen.Stop;
+            sp_gameController.GameStopped += sp_lightAllWhite.Run;
+            sp_gameController.GameStopped += sp_lightAllFullBrightness.Run;
             
             // soft pause:
             // pause all music and sounds, pause game timer
-            sp_gameController.GameSoftPaused += sp_soundDressingRoom01.Pause;
-            sp_gameController.GameSoftPaused += sp_soundSecretRoom01.Pause;
-            sp_gameController.GameSoftPaused += sp_soundSecretRoom02.Pause;
-            sp_gameController.GameSoftPaused += sp_countdownScreen.Stop;
+            sp_gameController.GamePaused += sp_soundDressingRoom01.Pause;
+            sp_gameController.GamePaused += sp_soundSecretRoom01.Pause;
+            sp_gameController.GamePaused += sp_soundSecretRoom02.Pause;
+            sp_gameController.GamePaused += sp_countdownScreen.Stop;
 
             // game is resumed from paused state
             // TODO: 'pause' message is sent to music devices. this is both for pause and unpause. can be dangerous if spamming.
