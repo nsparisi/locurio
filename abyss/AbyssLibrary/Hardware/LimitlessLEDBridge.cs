@@ -76,8 +76,8 @@ namespace AbyssLibrary
         }
 
         private int port;
-        
-        public LimitlessLEDBridge(string name, string deviceMacAddress, int port = 8899)
+
+        public LimitlessLEDBridge(string name, string deviceMacAddress, int port = 5577)
             : base(name, deviceMacAddress)
         {
             this.port = port;
@@ -95,9 +95,21 @@ namespace AbyssLibrary
             {
                 lock (lockObj)
                 {
+                    TcpClient tcpClient = new TcpClient(this.IpAddress, this.port);
+                    NetworkStream networkStream = tcpClient.GetStream();
+                    networkStream.Write(message, 0, message.Length);
+                    tcpClient.Close();
+
+                    // TODO remove this code block once above has been thoroughly tested.
+                    /*
                     UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
                     udpClient.Send(message, message.Length);
+
+                    // TODO: this is a test, double/triple up on the message sent
+                    Thread.Sleep(10);
+                    udpClient.Send(message, message.Length);
                     udpClient.Close();
+                    */
                 }
             }
             catch (Exception e)
@@ -121,13 +133,39 @@ namespace AbyssLibrary
             {
                 lock (lockObj)
                 {
+                    TcpClient tcpClient = new TcpClient(this.IpAddress, this.port);
+                    NetworkStream networkStream = tcpClient.GetStream();
+                    networkStream.Write(messageBeforeDelay, 0, messageBeforeDelay.Length);
+                    Thread.Sleep(100);
+                    networkStream.Write(messageAfterDelay, 0, messageAfterDelay.Length);
+                    tcpClient.Close();
+
+                    // TODO remove this code block once above has been thoroughly tested.
+                    /*
                     // for some commands, the bridge expects two messages
                     // that have a 100ms delay in between.
                     UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
+
                     udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
+
+                    // TODO: this is a test, double/triple up on the message sent
+                    Thread.Sleep(10);
+                    udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
+                    Thread.Sleep(10);
+                    udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
+
                     Thread.Sleep(100);
+
                     udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
+
+                    // TODO: this is a test, double/triple up on the message sent
+                    Thread.Sleep(10);
+                    udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
+                    Thread.Sleep(10);
+                    udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
+
                     udpClient.Close();
+                    */
                 }
             }
             catch (Exception e)
