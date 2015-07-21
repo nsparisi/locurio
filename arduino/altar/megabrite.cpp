@@ -120,6 +120,14 @@ void MegaBrite::AllLightsOn()
   }
 }
 
+void MegaBrite::AllLightsDim()
+{
+  for (int i = 0; i < NumLEDs; i++)
+  {
+    SetLight(i, DIM_BRIGHTNESS, DIM_BRIGHTNESS, DIM_BRIGHTNESS);
+  }
+}
+
 void MegaBrite::TopLightOnly()
 {
   AllLightsOff();

@@ -70,6 +70,7 @@
 #define DATPIN  5
 
 #define MAX_BRIGHTNESS 1023
+#define DIM_BRIGHTNESS 512
 
 #define NumLEDs 4
 
@@ -100,6 +101,7 @@ class MegaBrite
 
     void AllLightsOff();
     void AllLightsOn();
+    void AllLightsDim();
     void TopLightOnly();
     void AllLightsGreen();
     void AllLightsRed();

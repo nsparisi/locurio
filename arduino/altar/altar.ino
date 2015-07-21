@@ -268,12 +268,17 @@ void solveTopPuzzle()
 
 // 8 seconds
 #define TIMEOUT 8000
+#define BLINKTIME 4000
+#define FASTBLINKTIME 6500
 
 bool solveWordPuzzle()
 {
   for (int i = 0; i < wordCount; i++)
   {
     printFreeMem();   
+    
+    bool parity = false;
+    bool skipnext = false;
        
     // Flip all the other reset lines low before starting on a new reader, in an attempt
     // to minimize interference.
@@ -302,6 +307,24 @@ bool solveWordPuzzle()
         
         return false;
       }
+      else if (i > 0 && (millis() - startingTimestamp) > FASTBLINKTIME)
+      {
+        parity = !parity;
+        parity ? MegaBriteInstance.AllLightsDim() : MegaBriteInstance.AllLightsOn();
+      }
+      else if (i > 0 && (millis() - startingTimestamp) > BLINKTIME)
+      {
+        if (skipnext)
+        {
+          skipnext = false;
+        }
+        else
+        {
+          skipnext = true;
+          parity = !parity;
+          parity ? MegaBriteInstance.AllLightsDim() : MegaBriteInstance.AllLightsOn();
+        }
+      }
     }
  
     if (i == 0)
@@ -309,15 +332,14 @@ bool solveWordPuzzle()
       // first word solved;  notify abyss
       abyss->send_message("WORDBEGIN");
     }
-
-    abyss->send_message("WORDTAGPRESENT");
-
-    wordLeds[i]->On();
-
+    
     if (i < (wordCount - 1))
     {
+      abyss->send_message("WORDTAGPRESENT");
       wordPuzzle[i + 1]->SetMultiplexer();
     }
+
+    wordLeds[i]->On();
  
     MegaBriteInstance.AllLightsGreen();
     delay(500);
