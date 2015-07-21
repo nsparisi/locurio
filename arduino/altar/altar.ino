@@ -54,7 +54,8 @@ LightGroup led13 = LightGroup(4,  2);
 LightGroup led14 = LightGroup(4,  3);
 LightGroup led15 = LightGroup(4,  4);
 
-RfidReader reader2 = RfidReader(8, 36, "F2");
+RfidReader reader2 = RfidReader(8, 52, "F2", false, &Serial1);
+//RfidReader reader2 = RfidReader(8, 36, "F2");
 RfidReader reader0 = RfidReader(7, 36, "F0");
 RfidReader reader1 = RfidReader(3, 36, "F1");
 RfidReader reader3 = RfidReader(4, 38, "R0");
@@ -187,63 +188,16 @@ void debugReaders()
       delay(100);
     }
 
-    for (int i = 0; i < topCount; i++)
+    while (true)
     {
-      while (!(topPuzzle[i]->PollForTag(true)))
+      MegaBriteInstance.AllLightsRed();
+      while (!(wordPuzzle[1]->PollForTag(true)))
       {
-        for (int j = 0; j <= i; j++)
-        {
-          MegaBriteInstance.AllLightsRed();
-          delay(250);
-          MegaBriteInstance.AllLightsOff();
-          delay(250);
-        }
-        delay(300);
       }
-
-      for (int j = 0; j <= i; j++)
-      {
         MegaBriteInstance.AllLightsGreen();
         delay(250);
         MegaBriteInstance.AllLightsOff();
         delay(250);
-      }
-
-      delay(250);
-      MegaBriteInstance.AllLightsOn();
-      delay(100);
-      MegaBriteInstance.AllLightsOff();
-      delay(250);
-    }
-
-
-    for (int i = 0; i < wordCount; i++)
-    {
-      while (!(wordPuzzle[i]->PollForTag(true)))
-      {
-        for (int j = 0; j <= i; j++)
-        {
-          MegaBriteInstance.AllLightsRed();
-          delay(250);
-          MegaBriteInstance.AllLightsOff();
-          delay(250);
-        }
-        delay(300);
-      }
-
-      for (int j = 0; j <= i; j++)
-      {
-        MegaBriteInstance.AllLightsGreen();
-        delay(250);
-        MegaBriteInstance.AllLightsOff();
-        delay(250);
-      }
-
-      delay(250);
-      MegaBriteInstance.AllLightsOn();
-      delay(100);
-      MegaBriteInstance.AllLightsOff();
-      delay(250);
     }
   }
 }
