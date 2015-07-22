@@ -267,6 +267,7 @@ void solveTopPuzzle()
 }
 
 // 8 seconds
+#define BUGGYTIMEOUT 16000
 #define TIMEOUT 8000
 #define BLINKTIME 4000
 #define FASTBLINKTIME 6500
@@ -294,7 +295,13 @@ bool solveWordPuzzle()
 
     while (!wordPuzzle[i]->PollForTag(true) || wordPuzzle[i]->GetCurrentTagType() != WAND)
     {
-      if (i > 0 && (millis() - startingTimestamp) > TIMEOUT)
+      int timeout = TIMEOUT;
+      if (i ==6 || i == 10)
+      {
+        timeout = BUGGYTIMEOUT;
+      }
+      
+      if (i > 0 && (millis() - startingTimestamp) > timeout)
       {
         feedback_failure();
         
