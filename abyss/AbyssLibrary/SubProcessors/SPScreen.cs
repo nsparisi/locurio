@@ -59,7 +59,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPScreen Proc Start");
+            Debug.Log("SPScreen Start [{0}]", Name);
 
             if (startCountdown)
             {
@@ -81,7 +81,7 @@ namespace AbyssLibrary
 
         protected override void ProcessEnded()
         {
-            Debug.Log("SPScreen Proc Ended");
+            Debug.Log("SPScreen Ended [{0}]", Name);
         }
 
         private void OnCountDownExpired(object sender, EventArgs e)

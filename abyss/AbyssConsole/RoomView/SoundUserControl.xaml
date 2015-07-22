@@ -3,18 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="140" Width="180">
+             mc:Ignorable="d" Height="320" Width="320">
     <UserControl.Resources>
         <BitmapImage x:Key="Icon" UriSource="Images/MusicNote.png"/>
     </UserControl.Resources>
-    <Grid>
-        <Image Name="Icon" Height="32" Width="32" Margin="5,-2,113,88" Source="{StaticResource Icon}" IsEnabled="True" RenderTransformOrigin="0.25,0.469"/>
-        <Label Content="Sound Control" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="103" Margin="37,0,10,0"/>
-        <Label Name="NameText" Content="UnNamed" HorizontalAlignment="Left" Margin="37,23,0,0" VerticalAlignment="Top" Width="103"/>
-        <Button Content="Play" HorizontalAlignment="Left" Margin="5,61,0,58" Click="Play_Click" Width="32" />
-        <Button Content="Pause" HorizontalAlignment="Left" Margin="42,61,0,58" Click="Pause_Click" Width="47" RenderTransformOrigin="-0.462,1.571" />
-        <Button Content="Set Volume" HorizontalAlignment="Left" Margin="57,113,0,6" Click="SetVolume_Click" Width="71" RenderTransformOrigin="1.269,0.524" />
-        <TextBox Name="VolumeBox" Text="200" HorizontalAlignment="Left" Margin="5,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="21" Width="47"/>
-        <TextBox Name="FileName" Text="MagicShow-NoSFX.mp3" HorizontalAlignment="Left" Margin="5,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="21" Width="165"/>
+    <Grid Style="{StaticResource SecondaryBGColor}" Height="300" Width="300" >
+        <Image Name="Icon" Margin="0,0,268,270" Source="{StaticResource Icon}" IsEnabled="True" RenderTransformOrigin="0.25,0.469"/>
+        <Label Content="Sound Control" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="263" Margin="37,0,0,0"/>
+        <Label Content="Name:" HorizontalAlignment="Left" Margin="0,35,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label Name="NameText" Content="UnNamed" HorizontalAlignment="Left" Margin="80,35,0,0" VerticalAlignment="Top" Width="220"/>
+        <Label Content="IP:" HorizontalAlignment="Left" Margin="0,70,0,0" VerticalAlignment="Top" Width="32"/>
+        <Label Name="IPAddressField" Content="UnNamed" HorizontalAlignment="Left" Margin="80,70,0,0" VerticalAlignment="Top" Width="162"/>
+        <Button Content="Play" HorizontalAlignment="Left" Margin="10,155,0,105" Click="Play_Click" Width="32" />
+        <Button Content="Pause" HorizontalAlignment="Left" Margin="47,155,0,105" Click="Pause_Click" Width="47" RenderTransformOrigin="-0.462,1.571" />
+        <Button Content="Set Volume" HorizontalAlignment="Left" Margin="80,239,0,40" Click="SetVolume_Click" Width="71" RenderTransformOrigin="1.269,0.524" />
+        <TextBox Name="VolumeBox" Text="200" HorizontalAlignment="Left" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="21" Width="65"/>
+        <TextBox Name="FileName" Text="MagicShow-NoSFX.mp3" HorizontalAlignment="Left" Margin="10,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="21" Width="280"/>
+        <Button Content="Retry IP" HorizontalAlignment="Left" Margin="242,70,0,0" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.75,0.35" Height="35" Click="IPRefresh_Click"/>
     </Grid>
 </AbyssConsole:AbstractPhysicalObjectUserControl>

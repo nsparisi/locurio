@@ -53,6 +53,7 @@ namespace AbyssConsole
             if (this.soundController != null)
             {
                 this.NameText.Content = this.soundController.Name;
+                this.IPAddressField.Content = this.soundController.IpAddress;
             }
         }
 
@@ -70,6 +71,18 @@ namespace AbyssConsole
             if (this.soundController != null)
             {
                 this.soundControllerSubProcess.Pause(this, EventArgs.Empty);
+            }
+        }
+
+        private void IPRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.soundController != null)
+            {
+                // hard refresh IP address if non-existent
+                if (!this.soundController.IsConnected)
+                {
+                    this.soundController.RefreshIpAddress(true);
+                }
             }
         }
 

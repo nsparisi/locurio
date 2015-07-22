@@ -1,5 +1,4 @@
 ﻿using AbyssLibrary;
-using AbyssScreen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,32 +17,30 @@ using System.Windows.Shapes;
 namespace AbyssConsole
 {
     /// <summary>
-    /// Interaction logic for PhysicalObjectUserControl.xaml
+    /// Interaction logic for DashboardUserControl.xaml
     /// </summary>
-    public partial class TimeThumbUserControl : AbstractThumbnailUserControl
+    public partial class DashboardUserControl : AbstractThumbnailUserControl
     {
-        CountDownTimer countdownTimer;
-
-        public TimeThumbUserControl()
+        public enum IconType { DebugIcon, DeviceManagerIcon, GameControlIcon, HintsIcon, LightsIcon, ScriptingIcon, SettingsIcon, SoundIcon }
+        
+        public DashboardUserControl()
         {
             InitializeComponent();
         }
 
-        public void AddClock(CountDownTimer timer)
+        public void SetupTile(IconType icon, string text)
         {
-            this.countdownTimer = timer;
+            TileIcon.Source = (ImageSource)Resources[icon.ToString()];
+            TileLabel.Content = text;
         }
 
         public override void Refresh()
         {
-            if(countdownTimer != null)
-            {
-                TimeLabel.Text = ClockWindow.GetPrettyTimeText(countdownTimer.GetTimeRemaining());
-            }
-            else
-            {
-                TimeLabel.Text = "No Clock Found";
-            }
+        }
+
+        public void FadeTile()
+        {
+            Fade.Opacity = 0.5;
         }
     }
 }

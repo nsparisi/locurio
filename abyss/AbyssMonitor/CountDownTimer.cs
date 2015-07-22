@@ -36,7 +36,7 @@ namespace AbyssScreen
 
         public void SetTime(long milliseconds)
         {
-            resetTime = milliseconds;
+            resetTime = milliseconds + stopwatch.ElapsedMilliseconds;
             UpdateListeners();
         }
 

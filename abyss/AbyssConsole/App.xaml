@@ -7,5 +7,25 @@
             <Setter Property="TextTrimming" Value="None"/>
             <Setter Property="FontSize" Value="80" />
         </Style>
+
+        <Style x:Key="PrimaryBGColor" TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="#FFE7F2F9"/>
+        </Style>
+        <Style x:Key="SecondaryBGColor" TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="#FFA3C0D8"/>
+        </Style>
+        <Style x:Key="AccentBGColor" TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="#FF8DB1D0"/>
+        </Style>
+
+        <Style x:Key="MenuFont" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+        </Style>
+
+        <!-- Applies this to all labels by default-->
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MenuFont}" />
+        
     </Application.Resources>
 </Application>

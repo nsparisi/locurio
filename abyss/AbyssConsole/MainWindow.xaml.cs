@@ -1,11 +1,14 @@
 ﻿using AbyssLibrary;
+using AbyssScreen;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -24,8 +27,17 @@ namespace AbyssConsole
     {
         public RoomSubPage RoomView { get; private set; }
         public HomeSubPage HomeView { get; private set; }
-        public ClockSubPage TimeView { get; private set; }
+        public GameControlPage GameControlView { get; private set; }
         public HintSubPage HintView { get; private set; }
+
+        CountDownTimer countdownTimer;
+        AbyssGameController gameController;
+        List<string> logHistory;
+        List<string> logCache;
+
+        private const string GameStoppedClockString = "-- --";
+
+        static object lockObj = new object();
 
         bool isExiting;
 
@@ -37,10 +49,28 @@ namespace AbyssConsole
 
             this.HomeView = new HomeSubPage();
             this.RoomView = new RoomSubPage();
-            this.TimeView = new ClockSubPage();
+            this.GameControlView = new GameControlPage();
             this.HintView = new HintSubPage();
 
             SwapToHomeView();
+
+            // listen for logging
+            logCache = new List<string>();
+            logHistory = new List<string>();
+            Debug.LogMessageEvent += LogReceived;
+            this.ActivityLogBox.ItemsSource = logHistory;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to quit Abyss?", "Exit Abyss", System.Windows.MessageBoxButton.OKCancel);
+            if (messageBoxResult == MessageBoxResult.Cancel ||
+                messageBoxResult == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+
+            base.OnClosing(e);
         }
 
         public void Refresh()
@@ -54,6 +84,43 @@ namespace AbyssConsole
             {
                 RoomView.Refresh();
                 HomeView.Refresh();
+                GameControlView.Refresh();
+                HintView.Refresh();
+
+                lock (lockObj)
+                {
+                    if (logCache.Any())
+                    {
+                        bool shouldScroll = (this.ActivityLogBox.Items.Count - 1) == this.ActivityLogBox.SelectedIndex;
+                        int lastItemIndex = this.ActivityLogBox.Items.Count - 1;
+
+                        logHistory.AddRange(logCache);
+                        logCache.Clear();
+                        this.ActivityLogBox.Items.Refresh();
+
+                        if(shouldScroll)
+                        {
+                            this.ActivityLogBox.SelectedIndex = this.ActivityLogBox.Items.Count - 1;
+                            this.ActivityLogBox.ScrollIntoView(this.ActivityLogBox.SelectedItem);
+                        }
+                    }
+                }
+
+                if (countdownTimer != null && gameController != null)
+                {
+                    if (gameController.GameState != AbyssGameController.SPGameStateType.NotRunning)
+                    {
+                        ClockLabel.Content = ClockController.GetPrettyTimeText(countdownTimer.GetTimeRemaining());
+                    }
+                    else
+                    {
+                        ClockLabel.Content = GameStoppedClockString;
+                    }
+                }
+                else
+                {
+                    ClockLabel.Content = GameStoppedClockString;
+                }
             });
         }
 
@@ -69,10 +136,10 @@ namespace AbyssConsole
             this.SubViewGrid.Children.Add(RoomView);
         }
 
-        public void SwapToTimeView()
+        public void SwapToGameControlView()
         {
             this.SubViewGrid.Children.Clear();
-            this.SubViewGrid.Children.Add(TimeView);
+            this.SubViewGrid.Children.Add(GameControlView);
         }
 
         public void SwapToHintView()
@@ -92,6 +159,26 @@ namespace AbyssConsole
         private void Home_Click(object sender, RoutedEventArgs e)
         {
             SwapToHomeView();
+        }
+
+        public void AddClock(CountDownTimer timer)
+        {
+            this.countdownTimer = timer;
+        }
+
+        public void AddGameController(AbyssGameController gameController)
+        {
+            this.gameController = gameController;
+        }
+
+        public void LogReceived(object o, EventArgs args)
+        {
+            lock (lockObj)
+            {
+                AbyssLibrary.Debug.LogEventArgs logArgs = (AbyssLibrary.Debug.LogEventArgs)args;
+                
+                logCache.Add(string.Format("[{0}] {1}", logArgs.Timestamp.ToString("H:mm:ss"), logArgs.Message));
+            }
         }
     }
 }

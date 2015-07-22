@@ -22,55 +22,113 @@ namespace AbyssConsole
     /// </summary>
     public partial class HomeSubPage : UserControl
     {
-        RoomThumbUserControl roomThumb;
-        TimeThumbUserControl timeThumb;
-        HintThumbUserControl hintThumb;
+        DashboardUserControl gameDashboard;
+        DashboardUserControl hintDashboard;
+        DashboardUserControl soundDashboard;
+        DashboardUserControl lightDashboard;
+        DashboardUserControl settingsDashboard;
+        DashboardUserControl deviceDashboard;
+        DashboardUserControl scriptingDashboard;
+        DashboardUserControl debugDashboard;
 
         public HomeSubPage()
         {
             InitializeComponent();
 
-            roomThumb = new RoomThumbUserControl();
-            roomThumb.MouseDown += Room_Click;
-            this.WrapPanel.Children.Add(roomThumb);
+            gameDashboard = new DashboardUserControl();
+            gameDashboard.SetupTile(DashboardUserControl.IconType.GameControlIcon, "GAME CONTROL");
+            gameDashboard.MouseDown += Game_Click;
+            this.WrapPanel.Children.Add(gameDashboard);
 
-            timeThumb = new TimeThumbUserControl();
-            timeThumb.MouseDown += Time_Click;
-            this.WrapPanel.Children.Add(timeThumb);
+            hintDashboard = new DashboardUserControl();
+            hintDashboard.SetupTile(DashboardUserControl.IconType.HintsIcon, "HINTS");
+            hintDashboard.MouseDown += Hint_Click;
+            this.WrapPanel.Children.Add(hintDashboard);
 
-            hintThumb = new HintThumbUserControl();
-            hintThumb.MouseDown += Hint_Click;
-            this.WrapPanel.Children.Add(hintThumb);
-        }
+            soundDashboard = new DashboardUserControl();
+            soundDashboard.SetupTile(DashboardUserControl.IconType.SoundIcon, "SOUND");
+            //soundDashboard.MouseDown += Sound_Click;
+            soundDashboard.FadeTile();
+            this.WrapPanel.Children.Add(soundDashboard);
 
-        public void AddClock(CountDownTimer timer)
-        {
-            timeThumb.AddClock(timer);
+            lightDashboard = new DashboardUserControl();
+            lightDashboard.SetupTile(DashboardUserControl.IconType.LightsIcon, "LIGHTING");
+            //lightDashboard.MouseDown += Lighting_Click;
+            lightDashboard.FadeTile();
+            this.WrapPanel.Children.Add(lightDashboard);
+
+            settingsDashboard = new DashboardUserControl();
+            settingsDashboard.SetupTile(DashboardUserControl.IconType.SettingsIcon, "SETTINGS");
+            settingsDashboard.MouseDown += Setting_Click;
+            settingsDashboard.FadeTile();
+            this.WrapPanel.Children.Add(settingsDashboard);
+
+            deviceDashboard = new DashboardUserControl();
+            deviceDashboard.SetupTile(DashboardUserControl.IconType.DeviceManagerIcon, "DEVICE MANAGER");
+            deviceDashboard.MouseDown += Device_Click;
+            this.WrapPanel.Children.Add(deviceDashboard);
+
+            scriptingDashboard = new DashboardUserControl();
+            scriptingDashboard.SetupTile(DashboardUserControl.IconType.ScriptingIcon, "SCRIPTING");
+            scriptingDashboard.MouseDown += Scripting_Click;
+            scriptingDashboard.FadeTile();
+            this.WrapPanel.Children.Add(scriptingDashboard);
+
+            debugDashboard = new DashboardUserControl();
+            debugDashboard.SetupTile(DashboardUserControl.IconType.DebugIcon, "DEBUG / TEST");
+            debugDashboard.MouseDown += Debug_Click;
+            debugDashboard.FadeTile();
+            this.WrapPanel.Children.Add(debugDashboard);
         }
 
         public void Refresh()
         {
-            roomThumb.Refresh();
-            timeThumb.Refresh();
-            hintThumb.Refresh();
+            gameDashboard.Refresh();
+            hintDashboard.Refresh();
+            soundDashboard.Refresh();
+            lightDashboard.Refresh();
+            settingsDashboard.Refresh();
+            deviceDashboard.Refresh();
+            scriptingDashboard.Refresh();
+            debugDashboard.Refresh();
         }
 
-        private void Time_Click(object sender, RoutedEventArgs e)
+        private void Game_Click(object sender, RoutedEventArgs e)
         {
             App app = (App)Application.Current;
-            app.RootWindow.SwapToTimeView();
-        }
-
-        private void Room_Click(object sender, RoutedEventArgs e)
-        {
-            App app = (App)Application.Current;
-            app.RootWindow.SwapToRoomView();
+            app.RootWindow.SwapToGameControlView();
         }
 
         private void Hint_Click(object sender, RoutedEventArgs e)
         {
             App app = (App)Application.Current;
             app.RootWindow.SwapToHintView();
+        }
+
+        private void Sound_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Lighting_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Device_Click(object sender, RoutedEventArgs e)
+        {
+            App app = (App)Application.Current;
+            app.RootWindow.SwapToRoomView();
+        }
+
+        private void Scripting_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Debug_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

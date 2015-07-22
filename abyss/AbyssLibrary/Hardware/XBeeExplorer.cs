@@ -45,7 +45,7 @@ namespace AbyssLibrary
             }
             catch(Exception e)
             {
-                Debug.Log("Problem with serial port: ", e.ToString());
+                Debug.Log("Problem opening serial port: ", e);
             }
         }
 
@@ -68,7 +68,7 @@ namespace AbyssLibrary
             }
             catch (Exception e)
             {
-                Debug.Log("Problem sending serial data: ", e.ToString());
+                Debug.Log("Problem sending serial data: ", e);
             }
         }
 
@@ -85,7 +85,7 @@ namespace AbyssLibrary
             }
             catch (Exception e)
             {
-                Debug.Log("Problem reading serial data: ", e.ToString());
+                Debug.Log("Problem reading serial data: ", e);
             }
 
             string[] allMessages = (new string(buffer)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);

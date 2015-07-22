@@ -9,10 +9,9 @@ using System.Xml;
 
 namespace AbyssLibrary
 {
-    public class VLCServerControl : AbstractPhysicalObject
+    public class VLCServerControl : AbstractNetworkedDevice
     {
         public OSType DeviceOS;
-        public string DeviceIPAddress;
         public string DevicePort;
 
         public enum OSType { Linux, Windows }
@@ -38,19 +37,10 @@ namespace AbyssLibrary
             }
         }
 
-        public VLCServerControl(OSType deviceOS, string deviceIPAddress, string devicePort)
-            : base()
+        public VLCServerControl(string name, string deviceMacAddress, OSType deviceOS, string devicePort)
+            : base(name, deviceMacAddress)
         {
             this.DeviceOS = deviceOS;
-            this.DeviceIPAddress = deviceIPAddress;
-            this.DevicePort = devicePort;
-        }
-
-        public VLCServerControl(string name, OSType deviceOS, string deviceIPAddress, string devicePort)
-            : base(name)
-        {
-            this.DeviceOS = deviceOS;
-            this.DeviceIPAddress = deviceIPAddress;
             this.DevicePort = devicePort;
         }
 
@@ -84,11 +74,17 @@ namespace AbyssLibrary
 
         void ExecuteWebRequest(string command)
         {
+            if(!this.IsConnected)
+            {
+                Debug.Log("Cannot execute web request. VLC server controller '{0}' is not connected to the VLC server at '{1}'.", this.Name, this.MacAddress);
+                return;
+            }
+
             HttpWebResponse response = null;
             Stream receiveStream = null;
             try
             {
-                string urlBase = string.Format(BaseURLFormat, this.DeviceIPAddress, this.DevicePort);
+                string urlBase = string.Format(BaseURLFormat, this.IpAddress, this.DevicePort);
                 HttpWebRequest request = WebRequest.CreateHttp(urlBase + command);
                 request.Proxy = WebRequest.DefaultWebProxy;
                 response = (HttpWebResponse)request.GetResponse();
@@ -103,7 +99,7 @@ namespace AbyssLibrary
             }
             catch(Exception e)
             {
-                Debug.Log("Ran into an error during ExecuteWebRequest {0}", e.InnerException);
+                Debug.Log("Ran into an error during ExecuteWebRequest for VLC server.", e);
             }
             finally
             {

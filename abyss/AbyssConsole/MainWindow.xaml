@@ -2,14 +2,52 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:AbyssConsole" x:Class="AbyssConsole.MainWindow"
-        Title="Abyss Console" Width="1200" Height="800" >
-    <Grid x:Name="MainGrid">
-        <Grid HorizontalAlignment="Left" Height="54" VerticalAlignment="Top" Width="1200">
-            <Button Content="Home" Width="78" Height="39" Margin="100,0,0,0" HorizontalAlignment="Left" Click="Home_Click"/>
+        Title="Abyss Console" Width="1600" Height="900" >
+
+    <Window.Resources>
+        <Style x:Key="ClockFontStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontSize" Value="80" />
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+        <Style x:Key="AccentRectangleColor" TargetType="{x:Type Rectangle}">
+            <Setter Property="Fill" Value="#FF8DB1D0"/>
+        </Style>
+        
+        <Style x:Key="ActivityLogItem1Style" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#FF8DB1D0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        <Style x:Key="ActivityLogItem2Style" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#FFA3C0D8"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid" Style="{StaticResource PrimaryBGColor}">
+
+        <!-- Left panel grid-->
+        <Grid HorizontalAlignment="Left" Margin="0,0,0,0" Width="300" VerticalAlignment="Stretch" Style="{StaticResource SecondaryBGColor}" >
+            <Label Content="CURRENT GAME:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Style="{StaticResource MenuFont}"/>
+            <Label Name="ClockLabel" Content="12:56" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="0,36,0,0" VerticalAlignment="Top" Height="111" Width="292" Style="{StaticResource ClockFontStyle}"/>
+            <Label Content="ACTIVITY LOG:" HorizontalAlignment="Left" Margin="10,152,0,0" VerticalAlignment="Top" Width="280"/>
+            <Rectangle HorizontalAlignment="Left" Height="4" Margin="0,146,0,0" VerticalAlignment="Top" Width="300" Style="{StaticResource AccentRectangleColor}"/>
+            <Rectangle HorizontalAlignment="Left" Height="4" Margin="0,192,0,0" VerticalAlignment="Top" Width="300" Style="{StaticResource AccentRectangleColor}"/>
+            
+            <ListBox Name="ActivityLogBox" BorderBrush="Transparent"  Background="Transparent" BorderThickness="0"
+                     HorizontalAlignment="Left" Margin="0,193,0,60" VerticalAlignment="Stretch" Width="300">
+            </ListBox>
+            <Button Content="Home" HorizontalAlignment="Stretch" Click="Home_Click" Height="60" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <Grid Name="SubViewGrid" Margin="0,54,0,0" >
-
-        </Grid>
+        <!-- Tiled Grid -->
+        <Grid Name="SubViewGrid" Margin="300,0,0,0" HorizontalAlignment="Stretch" />
     </Grid>
 </Window>

@@ -28,8 +28,14 @@ namespace AbyssConsole
             {
                 if (physicalObject is AbyssScreenController)
                 {
-                    abyssConsoleApp.RootWindow.TimeView.AddClock((AbyssScreenController)physicalObject);
-                    abyssConsoleApp.RootWindow.HomeView.AddClock(((AbyssScreenController)physicalObject).CountDownTimer);
+                    abyssConsoleApp.RootWindow.GameControlView.AddClock((AbyssScreenController)physicalObject);
+                    abyssConsoleApp.RootWindow.AddClock(((AbyssScreenController)physicalObject).CountDownTimer);
+                }
+
+                if (physicalObject is AbyssGameController)
+                {
+                    abyssConsoleApp.RootWindow.GameControlView.AddGame((AbyssGameController)physicalObject);
+                    abyssConsoleApp.RootWindow.AddGameController((AbyssGameController)physicalObject);
                 }
 
                 if(physicalObject is TextingController)
@@ -58,8 +64,6 @@ namespace AbyssConsole
         public void ExitProgram()
         {
             AbyssSystem.Instance.UnregisterClientConsole(this);
-
-            abyssConsoleApp.RootWindow.TimeView.CloseAllClockWindows();
         }
     }
 }
