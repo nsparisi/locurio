@@ -241,12 +241,14 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_altarWordBegin);
             AbyssSystem.Instance.RegisterSubProcessor(sp_altarTagPresent);
             AbyssSystem.Instance.RegisterSubProcessor(sp_altarWordSolved);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_altarWordFailed);
             sp_altarPowerOn.Initialize();
             sp_altarTopStart.Initialize();
             sp_altarTopSolved.Initialize();
             sp_altarWordBegin.Initialize();
             sp_altarTagPresent.Initialize();
             sp_altarWordSolved.Initialize();
+            sp_altarWordFailed.Initialize();
 
             // ***********************
             // LED RGB+W Lightbulbs
@@ -343,6 +345,15 @@ namespace Abyss
             // LOSE CONDITION
             sp_countdownScreen.CountdownExpired += sp_gameController.Lose;
 
+            // if the game is lost, prevent anything from coming outta the altar
+            sp_gameController.GameLost += sp_altarPowerOn.Disable;
+            sp_gameController.GameLost += sp_altarTopStart.Disable;
+            sp_gameController.GameLost += sp_altarTopSolved.Disable;
+            sp_gameController.GameLost += sp_altarWordBegin.Disable;
+            sp_gameController.GameLost += sp_altarTagPresent.Disable;
+            sp_gameController.GameLost += sp_altarWordSolved.Disable;
+            sp_gameController.GameLost += sp_altarWordFailed.Disable;
+
             //--------------------
             // FULL STOP and RESET
             // stop all sounds
@@ -435,6 +446,8 @@ namespace Abyss
             {
                 DurationMs = 300
             };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_touchAltarWordDelay);
+            sp_touchAltarWordDelay.Initialize();
 
             // turn on back lights when game is started
             sp_gameController.GameStarted += sp_lightGameStart.Run;
@@ -458,6 +471,7 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ1_Color.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ1_Color);
 
             SPLimitlessLEDBridge sp_lightWinZ1_On = new SPLimitlessLEDBridge()
             {
@@ -466,6 +480,7 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ1_On.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ1_On);
 
             SPLimitlessLEDBridge sp_lightWinZ1_Off = new SPLimitlessLEDBridge()
             {
@@ -474,18 +489,21 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ1_Off.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ1_Off);
 
             SPDelay sp_winZone1_delay1 = new SPDelay()
             {
                 DurationMs = 200
             };
             sp_winZone1_delay1.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone1_delay1);
 
             SPDelay sp_winZone1_delay2 = new SPDelay()
             {
                 DurationMs = 200
             };
             sp_winZone1_delay2.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone1_delay2);
 
             sp_gameController.GameWon += sp_winZone1_delay1.Start;
             sp_gameController.GameWon += sp_lightWinZ1_Color.Run;
@@ -504,6 +522,8 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ2_Color.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ2_Color);
+
             SPLimitlessLEDBridge sp_lightWinZ2_On = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOn,
@@ -511,6 +531,8 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ2_On.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ2_On);
+
             SPLimitlessLEDBridge sp_lightWinZ2_Off = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
@@ -518,18 +540,23 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ2_Off.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ2_Off);
+
 
             SPDelay sp_winZone2_delay1 = new SPDelay()
             {
                 DurationMs = 600
             };
             sp_winZone2_delay1.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone2_delay1);
+
 
             SPDelay sp_winZone2_delay2 = new SPDelay()
             {
                 DurationMs = 800
             };
             sp_winZone2_delay2.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone2_delay2);
 
             sp_gameController.GameWon += sp_winZone2_delay1.Start;
             sp_gameController.GameWon += sp_lightWinZ2_Color.Run;
@@ -548,6 +575,8 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_Color.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ3_Color);
+
             SPLimitlessLEDBridge sp_lightWinZ3_On = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
@@ -556,6 +585,8 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_On.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ3_On);
+
             SPLimitlessLEDBridge sp_lightWinZ3_Off = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
@@ -564,18 +595,21 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_Off.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ3_Off);
 
             SPDelay sp_winZone3_delay1 = new SPDelay()
             {
                 DurationMs = 1000
             };
             sp_winZone3_delay1.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone3_delay1);
 
             SPDelay sp_winZone3_delay2 = new SPDelay()
             {
                 DurationMs = 1000
             };
             sp_winZone3_delay2.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone3_delay2);
 
             sp_gameController.GameWon += sp_winZone3_delay1.Start;
             sp_gameController.GameWon += sp_lightWinZ3_Color.Run;
@@ -594,6 +628,8 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ4_Color.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ4_Color);
+
             SPLimitlessLEDBridge sp_lightWinZ4_On = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
@@ -602,6 +638,8 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ4_On.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ4_On);
+
             SPLimitlessLEDBridge sp_lightWinZ4_Off = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
@@ -610,18 +648,21 @@ namespace Abyss
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ4_Off.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ4_Off);
 
             SPDelay sp_winZone4_delay1 = new SPDelay()
             {
                 DurationMs = 500
             };
             sp_winZone4_delay1.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone4_delay1);
 
             SPDelay sp_winZone4_delay2 = new SPDelay()
             {
                 DurationMs = 1000
             };
             sp_winZone4_delay2.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone4_delay2);
 
             sp_gameController.GameWon += sp_winZone4_delay1.Start;
             sp_gameController.GameWon += sp_lightWinZ4_Color.Run;
@@ -640,6 +681,9 @@ namespace Abyss
                 Brightness = 0.5,
                 Bridges = MakeList(bridge)
             };
+            sp_lightLoseHalfDimAll.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseHalfDimAll);
+
             SPLimitlessLEDBridge sp_lightLoseRedAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
@@ -647,6 +691,9 @@ namespace Abyss
                 Color = LimitlessLEDBridge.ColorType.Red,
                 Bridges = MakeList(bridge)
             };
+            sp_lightLoseRedAll.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseRedAll);
+
             SPLimitlessLEDBridge sp_lightLoseDimAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
@@ -654,6 +701,9 @@ namespace Abyss
                 Brightness = 0.01,
                 Bridges = MakeList(bridge)
             };
+            sp_lightLoseDimAll.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseDimAll);
+
             SPLimitlessLEDBridge sp_lightLoseOffAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
@@ -661,7 +711,9 @@ namespace Abyss
                 Brightness = 0.01,
                 Bridges = MakeList(bridge)
             };
-            
+            sp_lightLoseOffAll.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseOffAll);
+
             SPLimitlessLEDBridge sp_lightLoseWhiteAll = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
@@ -669,6 +721,9 @@ namespace Abyss
                 Brightness = 0.01,
                 Bridges = MakeList(bridge)
             };
+            sp_lightLoseWhiteAll.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseWhiteAll);
+
 
             SPLimitlessLEDBridge sp_lightLoseLightenAll = new SPLimitlessLEDBridge()
             {
@@ -677,33 +732,45 @@ namespace Abyss
                 Brightness = 0.6,
                 Bridges = MakeList(bridge)
             };
+            sp_lightLoseLightenAll.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseLightenAll);
 
             SPDelay sp_delayLoseWaitForSoundStop = new SPDelay()
             {
                 DurationMs = 1 * 1000
             };
+            sp_delayLoseWaitForSoundStop.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForSoundStop);
 
             // 52s is just before Nox laughing
             SPDelay sp_delayLoseWaitForNox = new SPDelay()
             {
                 DurationMs = 52 * 1000
             };
+            sp_delayLoseWaitForNox.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForNox);
 
             SPDelay sp_delayLoseWaitForDim = new SPDelay()
             {
                 DurationMs = 500
             };
+            sp_delayLoseWaitForDim.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForDim);
 
             SPDelay sp_delayLoseWaitForOff = new SPDelay()
             {
                 DurationMs = 7 * 1000
             };
+            sp_delayLoseWaitForOff.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForOff);
 
             SPDelay sp_delayLoseWaitForWhite = new SPDelay()
             {
                 DurationMs = 100
             };
-            
+            sp_delayLoseWaitForWhite.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForWhite);
+
             // When the game is lost, turn off all sounds, 
             // TODO: currently leaving wind effects playing, maybe should change
             sp_gameController.GameLost += sp_soundDressingRoom01.Stop;

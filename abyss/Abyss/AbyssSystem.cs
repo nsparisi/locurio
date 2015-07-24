@@ -80,5 +80,21 @@ namespace Abyss
             CleanSystem();
             runner.Run();
         }
+
+        public void DisableAllSubProcessors()
+        {
+            foreach (var subProcessor in SubProcessors)
+            {
+                subProcessor.Disable(null, EventArgs.Empty);
+            }
+        }
+
+        public void EnableAllSubProcessors()
+        {
+            foreach (var subProcessor in SubProcessors)
+            {
+                subProcessor.Enable(null, EventArgs.Empty);
+            }
+        }
     }
 }

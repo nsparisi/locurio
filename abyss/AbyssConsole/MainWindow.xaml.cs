@@ -153,7 +153,10 @@ namespace AbyssConsole
             App app = (App)Application.Current;
             app.Controller.ExitProgram();
 
-            isExiting = true;
+            if (!e.Cancel)
+            {
+                isExiting = true;
+            }
         }
 
         private void Home_Click(object sender, RoutedEventArgs e)

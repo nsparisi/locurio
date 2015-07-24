@@ -10,5 +10,12 @@ namespace AbyssLibrary
     {
         Guid ID { get; }
         string Name { get; set; }
+        bool IsDisabled { get; }
+
+        [AbyssInput]
+        void Disable(object sender, EventArgs e);
+
+        [AbyssInput]
+        void Enable(object sender, EventArgs e);
     }
 }

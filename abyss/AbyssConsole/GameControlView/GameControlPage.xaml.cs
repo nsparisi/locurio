@@ -1,4 +1,5 @@
-﻿using AbyssLibrary;
+﻿using Abyss;
+using AbyssLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -127,6 +128,9 @@ namespace AbyssConsole
 
                 if (messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes)
                 {
+                    // reset all processors, stop them if they are running
+                    AbyssSystem.Instance.DisableAllSubProcessors();
+                    AbyssSystem.Instance.EnableAllSubProcessors();
                     SetClockUsingMinutesBox();
                     gameController.Start();
                 }
@@ -147,6 +151,10 @@ namespace AbyssConsole
                 {
                     Debug.Log("Countdown timer was stopped at {0} ",
                         ClockController.GetPrettyTimeText(clockController.GetTimeRemaining()));
+
+                    // reset all processors, stop them if they are running
+                    AbyssSystem.Instance.DisableAllSubProcessors();
+                    AbyssSystem.Instance.EnableAllSubProcessors();
                     gameController.Stop();
                 }
             }
