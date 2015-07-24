@@ -1,11 +1,13 @@
 package com.locurio.abysstexting;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.Trace;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -184,6 +186,13 @@ public class MessageService extends Service
                     {
                         e.printStackTrace();
                     }
+
+                    // wake up screen
+                    Debug.log("********Waking up screen");
+                    PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+                    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WakeUpScreenTag");
+                    wakeLock.acquire();
+                    wakeLock.release();
                 }
 
                 Debug.log("********CommunicationThread closing");

@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v7.app.ActionBarActivity;
@@ -51,6 +52,11 @@ public class MainActivity extends Activity {
         PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WakeLockTag");
         wakeLock.acquire();
+
+        // Similar to wakelock. Aquire a Wifi Lock to prevent Wifi from disconnecting.
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager.WifiLock wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "WifiLockTag");
+        wifiLock.acquire();
     }
 
     @Override
