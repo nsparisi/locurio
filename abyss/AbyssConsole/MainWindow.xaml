@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:AbyssConsole" x:Class="AbyssConsole.MainWindow"
-        Title="Abyss Console" Width="1600" Height="900" >
+        Title="Abyss Console" Width="1600" Height="900" 
+        Icon="logo.ico">
 
     <Window.Resources>
         <Style x:Key="ClockFontStyle" TargetType="{x:Type Label}">
