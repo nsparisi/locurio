@@ -54,6 +54,9 @@ namespace AbyssLibrary
             StartProcess();
         }
 
+        [AbyssOutput]
+        public event AbyssEvent RequestFinishedSending;
+
         public SPSoundControl()
             : base()
         {
@@ -103,6 +106,7 @@ namespace AbyssLibrary
         {
             Debug.Log("SPSoundControl Ended [{0}]", Name);
             ResetFlags();
+            OnRequestFinished(this, EventArgs.Empty);
         }
 
         private void ResetFlags()
@@ -111,6 +115,14 @@ namespace AbyssLibrary
             calledPause = false;
             calledSetVolume = false;
             calledStop = false;
+        }
+
+        private void OnRequestFinished(object sender, EventArgs e)
+        {
+            if (RequestFinishedSending != null)
+            {
+                RequestFinishedSending(sender, e);
+            }
         }
     }
 }

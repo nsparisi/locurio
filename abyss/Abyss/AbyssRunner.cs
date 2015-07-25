@@ -15,7 +15,7 @@ namespace Abyss
         public const string SoundNoxSuccessNarrationFileName = "endgame_win.mp3";
         public const string SoundNoxFailureNarrationFileName = "EndgameLoseNew.mp3";
 
-        public const float SoundDressingRoomBGMVolume = 400f;
+        public const float SoundDressingRoomBGMVolume = 450f;
         public const float SoundSecretRoomBGMVolume = 0f;
         public const float SoundAltarTouchVolume = 120f;
         public const float SoundAltarWindSFXVolume = 200f;
@@ -65,7 +65,7 @@ namespace Abyss
             // ***********************
             VLCServerControl vlc01 = new VLCServerControl(
                 "RPi Dress:50000",
-                "74-DA-38-41-93-74",
+                "7C-DD-90-8F-C2-3A",
                 VLCServerControl.OSType.Linux,
                 "50000");
 
@@ -426,7 +426,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
-                Color = LimitlessLEDBridge.ColorType.Red,
+                Color = LimitlessLEDBridge.ColorType.Green,
                 Bridges = MakeList(bridge)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightTouchAltarWordBefore);
@@ -451,6 +451,8 @@ namespace Abyss
 
             // turn on back lights when game is started
             sp_gameController.GameStarted += sp_lightGameStart.Run;
+            sp_gameController.GameStarted += sp_lightGameStart.Run;
+            sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
             sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
 
             // turn on light when top is solved
@@ -742,10 +744,10 @@ namespace Abyss
             sp_delayLoseWaitForSoundStop.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForSoundStop);
 
-            // 52s is just before Nox laughing
+            // 43s is just before Nox laughing
             SPDelay sp_delayLoseWaitForNox = new SPDelay()
             {
-                DurationMs = 52 * 1000
+                DurationMs = 43 * 1000
             };
             sp_delayLoseWaitForNox.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForNox);
@@ -759,7 +761,7 @@ namespace Abyss
 
             SPDelay sp_delayLoseWaitForOff = new SPDelay()
             {
-                DurationMs = 7 * 1000
+                DurationMs = 11 * 1000
             };
             sp_delayLoseWaitForOff.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForOff);
@@ -785,8 +787,11 @@ namespace Abyss
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseRedAll.Run;
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseHalfDimAll.Run;
 
-            // wait for the Nox narration
-            sp_delayLoseWaitForSoundStop.Finished += sp_delayLoseWaitForNox.Start;
+            // Wait for the Nox narration to reach an appropriate timing
+            // RequestFinishedSending will ensure the raspberry pi had acknowleged the request
+            // first, before starting this timer. This will hopefully keep this sequence in sync, 
+            // if there is a delay in starting the narration.
+            sp_soundNoxFailureNarration.RequestFinishedSending += sp_delayLoseWaitForNox.Start;
 
             // dim the lights to as low as possible
             // then turn off the lights (hacky transition)

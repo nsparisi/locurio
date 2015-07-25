@@ -60,13 +60,13 @@ namespace AbyssLibrary
 
             lock (scanLock)
             {
-                Debug.Log("Scanning network for IPs... ");
-                IsScanning = true;
-
-                macToIpTable.Clear();
-
                 string gateway = GetDefaultGatewayOrBestGuess();
+                Debug.Log("Scanning network for IPs... ({0})", gateway);
+
+                IsScanning = true;
+                macToIpTable.Clear();
                 string baseip = gateway.Substring(0, gateway.LastIndexOf('.') + 1);
+
                 List<Thread> threads = new List<Thread>();
                 for (int i = 1; i <= 254; i++)
                 {
