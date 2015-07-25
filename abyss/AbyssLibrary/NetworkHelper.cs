@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AbyssLibrary
@@ -66,16 +67,18 @@ namespace AbyssLibrary
 
                 string gateway = GetDefaultGatewayOrBestGuess();
                 string baseip = gateway.Substring(0, gateway.LastIndexOf('.') + 1);
-                string[] ipAddresses = new string[254];
+                List<Thread> threads = new List<Thread>();
                 for (int i = 1; i <= 254; i++)
                 {
-                    ipAddresses[i - 1] = baseip + i.ToString();
+                    Thread t = new Thread(SendArp);
+                    t.Start(baseip + i.ToString());
+                    threads.Add(t);
                 }
 
-                Parallel.ForEach(ipAddresses, ipAddress =>
-                    {
-                        SendArp(ipAddress);
-                    });
+                foreach(Thread t in threads)
+                {
+                    t.Join();
+                }
 
                 IsScanning = false;
                 isInitialized = true;
@@ -130,6 +133,18 @@ namespace AbyssLibrary
 
             Debug.Log("Could not find MAC {0} on the network.", macAddress);
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Send ARP function used for thread objects.
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        private void SendArp(object ipAddress)
+        {
+            if(ipAddress != null && ipAddress is string)
+            {
+                SendArp((string)ipAddress);
+            }
         }
 
         /// <summary>
