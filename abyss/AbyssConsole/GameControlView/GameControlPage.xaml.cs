@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -130,6 +131,7 @@ namespace AbyssConsole
                 {
                     // reset all processors, stop them if they are running
                     AbyssSystem.Instance.DisableAllSubProcessors();
+                    Thread.Sleep(500);
                     AbyssSystem.Instance.EnableAllSubProcessors();
                     SetClockUsingMinutesBox();
                     gameController.Start();
@@ -154,6 +156,7 @@ namespace AbyssConsole
 
                     // reset all processors, stop them if they are running
                     AbyssSystem.Instance.DisableAllSubProcessors();
+                    Thread.Sleep(500);
                     AbyssSystem.Instance.EnableAllSubProcessors();
                     gameController.Stop();
                 }
