@@ -8,13 +8,14 @@
         <BitmapImage x:Key="Icon" UriSource="Images/LBIcon.png"/>
     </UserControl.Resources>
     <Grid Style="{StaticResource SecondaryBGColor}" Height="300" Width="300">
-        <Image Name="Icon" Height="32" Width="32" Margin="0,-2,83,88" Source="{StaticResource Icon}" IsEnabled="True"/>
-        <Label Content="Light Bulb" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="83" Margin="32,0,0,0"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="0,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>
-        <Label Name="NameText" Content="UnNamed" HorizontalAlignment="Left" Margin="47,30,0,0" VerticalAlignment="Top" Width="68"/>
-        <Label Content="State" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>
-        <Label Name="StateText" Content="Default" HorizontalAlignment="Left" Margin="47,56,0,0" VerticalAlignment="Top" Width="68"/>
-        <Button Content="On" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" Width="42" Click="On_Click"/>
-        <Button Content="Off" HorizontalAlignment="Left" Margin="58,98,0,0" VerticalAlignment="Top" Width="42" Click="Off_Click"/>
+        <Image Name="Icon" Height="32" Width="32" Margin="0,0,268,268" Source="{StaticResource Icon}" IsEnabled="True"/>
+        <Label Content="MiLight Bridge" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="42" Margin="0,0,0,0"/>
+        <Label Content="Name" HorizontalAlignment="Left" Margin="0,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.289,-0.346"/>
+        <Label Name="NameText" Content="UnNamed" HorizontalAlignment="Stretch" Margin="75,47,0,0" VerticalAlignment="Top"/>
+        <Button Content="Retry IP" HorizontalAlignment="Left" Margin="242,87,0,0" VerticalAlignment="Top" Width="48" Height="35" Click="IPRefresh_Click"/>
+        <Button Content="All On" HorizontalAlignment="Left" Margin="54,154,0,0" VerticalAlignment="Top" Width="89" Height="35" Click="AllOn_Click"/>
+        <Button Content="All Off" HorizontalAlignment="Left" Margin="148,154,0,0" VerticalAlignment="Top" Width="89" Height="35" Click="AllOff_Click"/>
+        <Label Content="IP:" HorizontalAlignment="Left" Margin="38,87,0,0" VerticalAlignment="Top" Width="32"/>
+        <Label Name="IPAddressField" Content="Disconnected" HorizontalAlignment="Left" Margin="75,87,0,0" VerticalAlignment="Top" Width="162"/>
     </Grid>
 </AbyssConsole:AbstractPhysicalObjectUserControl>

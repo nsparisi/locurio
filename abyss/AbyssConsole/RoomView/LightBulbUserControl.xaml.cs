@@ -21,42 +21,58 @@ namespace AbyssConsole
     /// </summary>
     public partial class LightBulbUserControl : AbstractPhysicalObjectUserControl
     {
-        TestLightBulb light;
+        LimitlessLEDBridge ledBridge;
 
         public LightBulbUserControl()
         {
             InitializeComponent();
         }
 
-        public LightBulbUserControl(TestLightBulb light)
+        public LightBulbUserControl(LimitlessLEDBridge ledBridge)
             : this()
         {
-            this.light = light;
+            this.ledBridge = ledBridge;
             Refresh();
         }
 
         public override void Refresh()
         {
-            if (this.light != null)
+            if (this.ledBridge != null)
             {
-                this.NameText.Content = this.light.Name;
-                this.StateText.Content = this.light.State.ToString();
+                this.NameText.Content = this.ledBridge.Name;
+
+                if (this.ledBridge.IsConnected)
+                {
+                    this.IPAddressField.Content = this.ledBridge.IpAddress;
+                }
+            }
+        }
+        
+        private void IPRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.ledBridge != null)
+            {
+                // hard refresh IP address if non-existent
+                if (!this.ledBridge.IsConnected)
+                {
+                    this.ledBridge.RefreshIpAddress(true);
+                }
             }
         }
 
-        private void On_Click(object sender, RoutedEventArgs e)
+        private void AllOn_Click(object sender, RoutedEventArgs e)
         {
-            if(this.light != null)
+            if (this.ledBridge != null)
             {
-                this.light.TurnOn();
+                ledBridge.TurnOn(LimitlessLEDBridge.ZoneType.All);
             }
         }
 
-        private void Off_Click(object sender, RoutedEventArgs e)
+        private void AllOff_Click(object sender, RoutedEventArgs e)
         {
-            if (this.light != null)
+            if (this.ledBridge != null)
             {
-                this.light.TurnOff();
+                ledBridge.TurnOff(LimitlessLEDBridge.ZoneType.All);
             }
         }
     }

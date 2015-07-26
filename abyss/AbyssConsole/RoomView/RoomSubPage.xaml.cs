@@ -55,9 +55,9 @@ namespace AbyssConsole
 
             AbstractPhysicalObjectUserControl uiItem = null;
 
-            if (physicalObject is TestLightBulb)
+            if (physicalObject is LimitlessLEDBridge)
             {
-                uiItem = new LightBulbUserControl((TestLightBulb)physicalObject);
+                uiItem = new LightBulbUserControl((LimitlessLEDBridge)physicalObject);
             }
             else if (physicalObject is XBeeEndpoint)
             {
@@ -67,13 +67,28 @@ namespace AbyssConsole
             {
                 uiItem = new SoundUserControl((VLCServerControl)physicalObject);
             }
+            else if (physicalObject is TextingController)
+            {
+                // ignore
+            }
+            else if (physicalObject is AbyssScreenController)
+            {
+                // ignore
+            }
+            else if (physicalObject is AbyssGameController)
+            {
+                // ignore   
+            }
             else
             {
                 uiItem = new PhysicalObjectUserControl(physicalObject);
             }
 
-            this.WrapPanel.Children.Add(uiItem);
-            uiMappings.Add(physicalObject, uiItem);
+            if (uiItem != null)
+            {
+                this.WrapPanel.Children.Add(uiItem);
+                uiMappings.Add(physicalObject, uiItem);
+            }
         }
     }
 }

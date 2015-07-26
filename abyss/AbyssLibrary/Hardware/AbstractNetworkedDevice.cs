@@ -76,6 +76,8 @@ namespace AbyssLibrary
                 isRefreshing = true;
                 ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, false);
                 isRefreshing = false;
+
+                LogConnectionStatus();
             }
         }
 
@@ -86,6 +88,20 @@ namespace AbyssLibrary
                 isRefreshing = true;
                 ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, true);
                 isRefreshing = false;
+
+                LogConnectionStatus();
+            }
+        }
+
+        private void LogConnectionStatus()
+        {
+            if (IsConnected)
+            {
+                Debug.Log("Connected to {0} ({1}) at {2}", Name, macAddress, ipAddress);
+            }
+            else
+            {
+                Debug.Log("Failed to connect to {0} ({1})", Name, macAddress);
             }
         }
     }

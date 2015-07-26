@@ -109,7 +109,6 @@ namespace AbyssLibrary
                 macAddress = macAddress.ToUpper();
                 if (macToIpTable.ContainsKey(macAddress))
                 {
-                    Debug.Log("Found MAC {0} mapped to IP {1}.", macAddress, macToIpTable[macAddress]);
                     return macToIpTable[macAddress];
                 }
 
@@ -118,7 +117,6 @@ namespace AbyssLibrary
                 // then refresh the cache and try again
                 if (!shouldScanNetwork)
                 {
-                    Debug.Log("Could not find MAC {0} on the network.", macAddress);
                     return string.Empty;
                 }
 
@@ -126,12 +124,10 @@ namespace AbyssLibrary
 
                 if (macToIpTable.ContainsKey(macAddress))
                 {
-                    Debug.Log("Found MAC {0} mapped to IP {1}.", macAddress, macToIpTable[macAddress]);
                     return macToIpTable[macAddress];
                 }
             }
 
-            Debug.Log("Could not find MAC {0} on the network.", macAddress);
             return string.Empty;
         }
 
@@ -193,7 +189,7 @@ namespace AbyssLibrary
                     }
                     if (!string.IsNullOrEmpty(resultantMac2) && !macToIpTable.ContainsKey(resultantMac2))
                     {
-                        Debug.Log("Matched MAC: '{0}'to IP: {1}", resultantMac2, ipAddress);
+                        // Debug.Log("Matched MAC: '{0}'to IP: {1}", resultantMac2, ipAddress);
                         macToIpTable.Add(resultantMac2, ipAddress);
                     }
                 }
@@ -224,7 +220,7 @@ namespace AbyssLibrary
             }
             catch (Exception e)
             {
-                Debug.Log("There was an error getting the default gateway. Make sure we're connected to the network.", e);
+                Debug.Log("There was an error getting the default gateway. Make sure you're connected to the network.", e);
             }
 
             return defaultGateway;

@@ -53,7 +53,11 @@ namespace AbyssConsole
             if (this.soundController != null)
             {
                 this.NameText.Content = this.soundController.Name;
-                this.IPAddressField.Content = this.soundController.IpAddress;
+
+                if(this.soundController.IsConnected)
+                {
+                    this.IPAddressField.Content = this.soundController.IpAddress;
+                }
             }
         }
 

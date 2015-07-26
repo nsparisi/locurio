@@ -27,8 +27,8 @@
         <Button Content="Send Hint" HorizontalAlignment="Right" Margin="0,218,62,0" VerticalAlignment="Top" Width="258" Height="40" Click="SendHint_Click"/>
         <Label Content="Message To Send" HorizontalAlignment="Right" HorizontalContentAlignment="Left" Margin="0,79,10,0" VerticalAlignment="Top" Width="310"/>
         <TextBox Name="TextBox" HorizontalAlignment="Right" Height="109" Margin="0,104,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="310"/>
-        <Label Name="DeviceField" Content="Not Connected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="196,42,407,0" Height="26" />
-        <Label Content="Connected Device:" HorizontalAlignment="Center" HorizontalContentAlignment="Right" Margin="63,42,1009,0" VerticalAlignment="Top" Width="128"/>
+        <Label Name="DeviceField" Content="Disconnected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="196,42,407,0" Height="26" />
+        <Label Content="Connected Device:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="63,42,1009,0" VerticalAlignment="Top" Width="128"/>
         <ListBox Name="SentHistory" HorizontalAlignment="Right" Margin="0,288,10,10" Width="312" VerticalAlignment="Stretch"/>
         <Label Content="Sent History" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Margin="0,263,10,0" VerticalAlignment="Top" Width="310"/>
         <Label Content="Suggested Hints" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10,79,332,0" VerticalAlignment="Top"/>
