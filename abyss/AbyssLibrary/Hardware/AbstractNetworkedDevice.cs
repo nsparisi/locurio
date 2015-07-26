@@ -22,7 +22,7 @@ namespace AbyssLibrary
             : base(name)
         {
             this.macAddress = macAddress;
-            RefreshIpAddress();
+            RefreshIpAddress(true);
         }
 
         public string MacAddress
@@ -85,11 +85,20 @@ namespace AbyssLibrary
         {
             lock (lockObj)
             {
-                isRefreshing = true;
-                ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, true);
-                isRefreshing = false;
+                for (int i = 0; i < 5; i++)
+                {
+                    isRefreshing = true;
+                    ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, true);
+                    isRefreshing = false;
 
-                LogConnectionStatus();
+                    LogConnectionStatus();
+
+                    if (IsConnected)
+                    {
+                        break;
+                    }
+
+                }
             }
         }
 
