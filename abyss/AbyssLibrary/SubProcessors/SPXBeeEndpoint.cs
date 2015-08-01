@@ -67,6 +67,11 @@ namespace AbyssLibrary
 
         private void OnReceivedData(object sender, EventArgs args)
         {
+            if(this.IsDisabled)
+            {
+                return;
+            }
+
             if (DataReceived != null)
             {
                 DataReceived(sender, args);

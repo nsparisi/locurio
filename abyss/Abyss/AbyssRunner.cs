@@ -323,8 +323,8 @@ namespace Abyss
             // TODO:
             // when the altar-side word game is started, ramp up spooky whispers
             // when the altar-side word game is failed, turn off the whipsers.
-            sp_altarWordBegin.ExpectedMessageReceived += sp_soundAltarWhispers.Play;
-            sp_altarWordFailed.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
+            // sp_altarWordBegin.ExpectedMessageReceived += sp_soundAltarWhispers.Play;
+            // sp_altarWordFailed.ExpectedMessageReceived += sp_soundAltarWhispers.Stop;
 
             //--------------------
             // WIN CONDITION
@@ -450,8 +450,11 @@ namespace Abyss
             sp_touchAltarWordDelay.Initialize();
 
             // turn on back lights when game is started
+            // super redundancy here just in case. (lightbulbs may miss messages)
             sp_gameController.GameStarted += sp_lightGameStart.Run;
             sp_gameController.GameStarted += sp_lightGameStart.Run;
+            sp_gameController.GameStarted += sp_lightGameStart.Run;
+            sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
             sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
             sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
 
