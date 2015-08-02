@@ -26,6 +26,7 @@ namespace AbyssConsole
     {
         public ClockController clockController;
         public AbyssGameController gameController;
+        public XBeeEndpoint altarXbeeEndpoint;
 
         bool shouldPrintPreviousTime = false;
 
@@ -42,6 +43,11 @@ namespace AbyssConsole
         public void AddGame(AbyssGameController gameController)
         {
             this.gameController = gameController;
+        }
+
+        public void AddAltarXbee(XBeeEndpoint xbeeEndpoint)
+        {
+            this.altarXbeeEndpoint = xbeeEndpoint;
         }
 
         public void Refresh()
@@ -80,6 +86,7 @@ namespace AbyssConsole
                 this.PauseButton.Opacity = gameController.CanPause ? 1 : 0.2;
                 this.UnPauseButton.Opacity = gameController.CanUnPause? 1 : 0.2;
                 this.TestButton.Opacity = gameController.CanEnterTestMode ? 1 : 0.2;
+                this.AltarTopButton.Opacity = gameController.CanWin ? 1 : 0.2;
             }
         }
 
@@ -240,10 +247,28 @@ namespace AbyssConsole
                     "Are you sure you want to start test mode? This will play test audio on all media servers, and change the color of lights.",
                     "Confirm Test Mode",
                     System.Windows.MessageBoxButton.OKCancel);
-                
+
                 if (messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes)
                 {
                     gameController.EnterTestMode();
+                }
+            }
+        }
+
+        // todo: this is a hacky fix for handling lost Altar communication
+        private void AltarTopSolved_Click(object sender, RoutedEventArgs e)
+        {
+            if (altarXbeeEndpoint != null && gameController.CanWin)
+            {
+                MessageBoxResult messageBoxResult =
+                    System.Windows.MessageBox.Show(
+                    "Are you sure you want to run the Altar Top Solve event? This will play the wind effects and change the lights in the secret room.",
+                    "Confirm Altar Top Solve",
+                    System.Windows.MessageBoxButton.OKCancel);
+
+                if (messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes)
+                {
+                    altarXbeeEndpoint.DebugImpersonateMessage("TOPSOLVED");
                 }
             }
         }

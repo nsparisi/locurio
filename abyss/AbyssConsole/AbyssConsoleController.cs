@@ -38,6 +38,12 @@ namespace AbyssConsole
                     abyssConsoleApp.RootWindow.AddGameController((AbyssGameController)physicalObject);
                 }
 
+                if(physicalObject is XBeeEndpoint)
+                {
+                    // todo: hacky fix for handling lost altar message
+                    abyssConsoleApp.RootWindow.GameControlView.AddAltarXbee((XBeeEndpoint)physicalObject);
+                }
+
                 if(physicalObject is TextingController)
                 {
                     abyssConsoleApp.RootWindow.HintView.AddTextingController((TextingController)physicalObject);

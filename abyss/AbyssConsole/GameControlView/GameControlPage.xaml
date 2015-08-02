@@ -17,6 +17,7 @@
         <Button Name="StartButton" Content="Start Game" HorizontalAlignment="center" Margin="272,91,145,214" VerticalAlignment="Center" Width="108" Height="45" Click="GameStart_Click"/>
         <Button Name="WinButton"  Content="Win Game" HorizontalAlignment="center" Margin="272,221,145,107" VerticalAlignment="Center" Width="108" Height="22" Click="GameWin_Click"/>
         <Button Name="LoseButton"  Content="Lose Game" HorizontalAlignment="center" Margin="272,251,145,77" VerticalAlignment="Center" Width="108" Height="22" Click="GameLose_Click"/>
+        <Button Name="AltarTopButton"  Content="Altar Top" HorizontalAlignment="center" Margin="272,278,145.333,50" VerticalAlignment="Center" Width="108" Height="22" Click="AltarTopSolved_Click"/>
         <Button Name="PauseButton"  Content="Pause Game" HorizontalAlignment="center" Margin="163,221,263,107" VerticalAlignment="Center" Width="99" Height="22" Click="GamePause_Click"/>
         <Button Name="UnPauseButton"  Content="UnPause Game" HorizontalAlignment="center" Margin="163,251,263,77" VerticalAlignment="Center" Width="99" Height="22" Click="GameUnPause_Click"/>
         <Button Name="StopButton"  Content="All Stop" HorizontalAlignment="center" Margin="272,147,145,158" VerticalAlignment="Center" Width="108" Height="45" Click="GameStop_Click"/>

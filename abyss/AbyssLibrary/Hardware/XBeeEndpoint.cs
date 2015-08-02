@@ -33,5 +33,11 @@ namespace AbyssLibrary
                 DataReceived(this, new XBeeReceivedEvent(EndpointID, message));
             }
         }
+
+        public void DebugImpersonateMessage(string message)
+        {
+            Debug.Log("Impersonating message delivery: {0}", message);
+            ReceivedMessage(message);
+        }
     }
 }
