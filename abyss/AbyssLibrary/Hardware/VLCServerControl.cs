@@ -16,8 +16,20 @@ namespace AbyssLibrary
 
         public enum OSType { Linux, Windows }
 
-        const string BaseURLFormat = "http://{0}:{1}/requests/status.xml";
-        const string soundfile = @"08 Breaking Out.mp3";
+        const string RequestURLFormat = "http://{0}:{1}/requests/status.xml";
+
+        public string ServerURL
+        {
+            get
+            {
+                if (IsConnected)
+                {
+                    return string.Format("http://{0}:{1}", IpAddress, DevicePort);
+                }
+
+                return string.Empty;
+            }
+        }
 
         string AudioDirectory
         {
@@ -84,7 +96,7 @@ namespace AbyssLibrary
             Stream receiveStream = null;
             try
             {
-                string urlBase = string.Format(BaseURLFormat, this.IpAddress, this.DevicePort);
+                string urlBase = string.Format(RequestURLFormat, this.IpAddress, this.DevicePort);
                 HttpWebRequest request = WebRequest.CreateHttp(urlBase + command);
                 request.Proxy = WebRequest.DefaultWebProxy;
                 response = (HttpWebResponse)request.GetResponse();

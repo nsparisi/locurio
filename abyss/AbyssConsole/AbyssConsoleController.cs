@@ -43,6 +43,11 @@ namespace AbyssConsole
                     abyssConsoleApp.RootWindow.HintView.AddTextingController((TextingController)physicalObject);
                 }
 
+                if(physicalObject is VLCServerControl)
+                {
+                    abyssConsoleApp.RootWindow.SoundView.AddVlcServer((VLCServerControl)physicalObject);
+                }
+
                 abyssConsoleApp.RootWindow.RoomView.AddPhysicalObject(physicalObject);
             }
 

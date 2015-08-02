@@ -84,6 +84,9 @@
     <Compile Include="GameControlView\GameControlPage.xaml.cs">
       <DependentUpon>GameControlPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SoundView\SoundSubPage.xaml.cs">
+      <DependentUpon>SoundSubPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="HintView\HintSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -130,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameControlView\GameControlPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SoundView\SoundSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

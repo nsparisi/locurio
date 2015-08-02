@@ -47,13 +47,12 @@ namespace AbyssConsole
 
             soundDashboard = new DashboardUserControl();
             soundDashboard.SetupTile(DashboardUserControl.IconType.SoundIcon, "SOUND");
-            //soundDashboard.MouseDown += Sound_Click;
-            soundDashboard.FadeTile();
+            soundDashboard.MouseDown += Sound_Click;
             this.WrapPanel.Children.Add(soundDashboard);
 
             lightDashboard = new DashboardUserControl();
             lightDashboard.SetupTile(DashboardUserControl.IconType.LightsIcon, "LIGHTING");
-            //lightDashboard.MouseDown += Lighting_Click;
+            lightDashboard.MouseDown += Lighting_Click;
             lightDashboard.FadeTile();
             this.WrapPanel.Children.Add(lightDashboard);
 
@@ -107,6 +106,8 @@ namespace AbyssConsole
 
         private void Sound_Click(object sender, RoutedEventArgs e)
         {
+            App app = (App)Application.Current;
+            app.RootWindow.SwapToSoundView();
         }
 
         private void Lighting_Click(object sender, RoutedEventArgs e)

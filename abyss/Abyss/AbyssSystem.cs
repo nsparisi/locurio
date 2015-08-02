@@ -35,6 +35,7 @@ namespace Abyss
             Clients = new List<IClientConsole>();
 
             Directory.CreateDirectory(AbyssUtils.AbyssSoundDirectory);
+            AbyssUtils.CreateBrowserCompatibilityRegistryKey();
         }
 
         public void RegisterSubProcessor(ISubProcessor subProcessor)
