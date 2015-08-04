@@ -187,6 +187,11 @@ namespace Abyss
 
             AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
 
+            TextingController textingAlcatel =
+                new TextingController("Alcatel One Touch", "60-51-2C-B3-F1-46");
+
+            AbyssSystem.Instance.RegisterPhysicalObject(textingAlcatel);
+
             // ***********************
             // ALTAR
             // ***********************
