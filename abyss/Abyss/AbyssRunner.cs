@@ -421,7 +421,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
-                Color = LimitlessLEDBridge.ColorType.Royal_Blue,
+                Color = LimitlessLEDBridge.ColorType.Lilac,
                 Bridges = MakeList(bridge)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightSolveAltarTop);
