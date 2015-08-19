@@ -1,26 +1,13 @@
 package com.locurio.abysstexting;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.net.wifi.WifiManager;
-import android.os.IBinder;
-import android.os.PowerManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.PowerManager;
 import android.widget.ListView;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -28,6 +15,9 @@ public class MainActivity extends Activity {
     private ListView messagesList;
     private MessageAdapter messageAdapter;
     MessageListener messageListener = new MessageListener();
+
+    private MessageTimer messageTimer;
+    private TextView timerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +47,22 @@ public class MainActivity extends Activity {
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiManager.WifiLock wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "WifiLockTag");
         wifiLock.acquire();
+
+        // setup a timer which will be used to update the app's clock
+        timerText = (TextView) findViewById(R.id.TimerText);
+        messageTimer = new MessageTimer(this);
+        messageTimer.setTime(1 * 1000 * 65);
+        messageTimer.start();
+    }
+
+    public void updateTimer(final String text)
+    {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                timerText.setText(text);
+            }
+        });
     }
 
     @Override
