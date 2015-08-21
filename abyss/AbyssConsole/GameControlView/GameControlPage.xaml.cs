@@ -24,15 +24,27 @@ namespace AbyssConsole
     /// </summary>
     public partial class GameControlPage : UserControl
     {
+        private const int DefaultTime70Minutes = 70;
+
         public ClockController clockController;
         public AbyssGameController gameController;
         public XBeeEndpoint altarXbeeEndpoint;
+
+        private SPTimerController controllerSubProcessor;
+        bool shouldRefreshDevice;
 
         bool shouldPrintPreviousTime = false;
 
         public GameControlPage()
         {
+            this.controllerSubProcessor = new SPTimerController();
             InitializeComponent();
+        }
+
+        public void AddTimerController(TimerController timerController)
+        {
+            this.controllerSubProcessor.TimerControllers.Add(timerController);
+            RefreshDeviceField();
         }
 
         public void AddClock(AbyssScreenController screenController)
@@ -88,26 +100,49 @@ namespace AbyssConsole
                 this.TestButton.Opacity = gameController.CanEnterTestMode ? 1 : 0.2;
                 this.AltarTopButton.Opacity = gameController.CanWin ? 1 : 0.2;
             }
+
+            if (shouldRefreshDevice)
+            {
+                shouldRefreshDevice = false;
+                RefreshDeviceField();
+            }
         }
 
         private void SetClockUsingMinutesBox()
         {
+            // try to read the value in the minutes box and use that
+            // otherwise default
+            int minutes = TryParseMinutesBox();
+
             if (clockController != null)
             {
-                // try to read the value in the minutes box and use that
-                // otherwise default
-                int minutes;
-                string minutesString = this.MinutesBox.Text;
-                if (int.TryParse(minutesString, out minutes))
-                {
-                    Debug.Log("Setting time as: m {0}", minutes);
-                    clockController.SetTime(minutes);
-                }
-                else
-                {
-                    Debug.Log("Please specify a valid number. {0} is invalid.", minutesString);
-                }
+                Debug.Log("Setting time as: m {0}", minutes);
+                clockController.SetTime(minutes);
             }
+
+            if (controllerSubProcessor != null)
+            {
+                controllerSubProcessor.TimeInMilliseconds = minutes * 60 * 1000;
+                controllerSubProcessor.SetTime(this, EventArgs.Empty);
+            }
+        }
+
+        private int TryParseMinutesBox()
+        {
+            // try to read the value in the minutes box and use that
+            // otherwise default
+            int minutes;
+            string minutesString = this.MinutesBox.Text;
+            if (int.TryParse(minutesString, out minutes))
+            {
+                return minutes;
+            }
+            else
+            {
+                Debug.Log("Please specify a valid number. {0} is invalid.", minutesString);
+            }
+
+            return DefaultTime70Minutes;
         }
 
         private void SetClock_Click(object sender, RoutedEventArgs e)
@@ -166,6 +201,14 @@ namespace AbyssConsole
                     Thread.Sleep(500);
                     AbyssSystem.Instance.EnableAllSubProcessors();
                     gameController.Stop();
+
+                    // reset the clock
+                    if (controllerSubProcessor != null)
+                    {
+                        int minutes = TryParseMinutesBox();
+                        controllerSubProcessor.TimeInMilliseconds = minutes * 60 * 1000;
+                        controllerSubProcessor.SetTime(this, EventArgs.Empty);
+                    }
                 }
             }
         }
@@ -269,6 +312,45 @@ namespace AbyssConsole
                 if (messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes)
                 {
                     altarXbeeEndpoint.DebugImpersonateMessage("TOPSOLVED");
+                }
+            }
+        }
+
+        private void RefreshDeviceField()
+        {
+            string devices = "";
+            for (int i = 0; i < this.controllerSubProcessor.TimerControllers.Count; i++)
+            {
+                if (!this.controllerSubProcessor.TimerControllers[i].IsConnected)
+                {
+                    shouldRefreshDevice = true;
+                }
+
+                if (i > 0)
+                {
+                    devices += ", ";
+                }
+
+                devices += string.Format(
+                    "{0} ({1})",
+                    this.controllerSubProcessor.TimerControllers[i].Name,
+                    this.controllerSubProcessor.TimerControllers[i].IpAddress);
+            }
+
+            this.DeviceField.Content = devices;
+        }
+
+        private void IPRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.controllerSubProcessor != null)
+            {
+                foreach (var timerDevice in this.controllerSubProcessor.TimerControllers)
+                {
+                    // hard refresh IP address if non-existent
+                    if (!timerDevice.IsConnected)
+                    {
+                        timerDevice.RefreshIpAddress(true);
+                    }
                 }
             }
         }

@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
 
     private MessageTimer messageTimer;
     private TextView timerText;
+    TimerListener timerListener = new TimerListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,7 @@ public class MainActivity extends Activity {
         // setup a timer which will be used to update the app's clock
         timerText = (TextView) findViewById(R.id.TimerText);
         messageTimer = new MessageTimer(this);
-        messageTimer.setTime(1 * 1000 * 65);
-        messageTimer.start();
+        messageTimer.setTime(70 * 1000 * 60);
     }
 
     public void updateTimer(final String text)
@@ -88,6 +88,7 @@ public class MainActivity extends Activity {
     {
         if(MessageService.instance != null) {
             MessageService.instance.unregisterMessageListener(messageListener);
+            MessageService.instance.unregisterTimerListener(timerListener);
         }
     }
 
@@ -95,6 +96,7 @@ public class MainActivity extends Activity {
     {
         if(MessageService.instance != null) {
             MessageService.instance.registerMessageListener(messageListener);
+            MessageService.instance.registerTimerListener(timerListener);
         }
     }
 
@@ -117,6 +119,28 @@ public class MainActivity extends Activity {
                     messageAdapter.clearMessages();
                 }
             });
+        }
+    }
+
+    public class TimerListener{
+        public void onTimerStart()
+        {
+            messageTimer.start();
+        }
+
+        public void onTimerSuspend()
+        {
+            messageTimer.suspend();
+        }
+
+        public void onTimerSetTime(long milliseconds)
+        {
+            messageTimer.setTime(milliseconds);
+        }
+
+        public void onTimerReset()
+        {
+            messageTimer.reset();
         }
     }
 

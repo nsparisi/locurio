@@ -2,8 +2,6 @@ package com.locurio.abysstexting;
 
 import android.widget.TextView;
 
-import org.apache.commons.lang3.time.StopWatch;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,7 +17,9 @@ public class MessageTimer {
     StopWatch stopWatch;
 
     long resetTime;
-    DateFormat dateFormatter;
+    Calendar calendar;
+
+    Date startDate = null;
 
     public MessageTimer(MainActivity mainActivity)
     {
@@ -27,7 +27,7 @@ public class MessageTimer {
         this.schedule = new TimerSchedule(this);
         this.mainActivity = mainActivity;
         this.stopWatch = new StopWatch();
-        this.dateFormatter = new SimpleDateFormat("mm:ss");
+        this.calendar = Calendar.getInstance();
 
         timer.scheduleAtFixedRate(schedule, 0, 200);
     }
@@ -39,26 +39,12 @@ public class MessageTimer {
 
     public void start()
     {
-        if(stopWatch.isStopped())
-        {
-            stopWatch.start();
-        }
+        stopWatch.start();
     }
 
     public void suspend()
     {
-        if(stopWatch.isStarted())
-        {
-            stopWatch.suspend();
-        }
-    }
-
-    public void resume()
-    {
-        if(stopWatch.isSuspended())
-        {
-            stopWatch.resume();
-        }
+        stopWatch.suspend();
     }
 
     public void reset()
@@ -74,20 +60,17 @@ public class MessageTimer {
     void updateTimerText()
     {
         long milliseconds = getTimeRemaining();
-        Debug.log("********milliseconds : " + milliseconds);
-        //long minutes = milliseconds / (60 * 1000);
-        //long seconds = ceiling(milliseconds, 1000);
 
         Date date = new Date(milliseconds);
-        String prettyTime = dateFormatter.format(date);
-
-        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int hours = calendar.get(Calendar.HOUR);
         int minutes = calendar.get(Calendar.MINUTE);
         int seconds = calendar.get(Calendar.SECOND);
 
-        prettyTime = String.format("%02d:%02d", (hours * 60) + minutes, seconds);
+        long m = milliseconds / (60 * 1000);
+        long s = (milliseconds / 1000) % 60;
+
+        String prettyTime = String.format("%02d:%02d", m, s);
         mainActivity.updateTimer(prettyTime);
     }
 
@@ -117,8 +100,46 @@ public class MessageTimer {
 
         @Override
         public void run() {
-            Debug.log("********Run!");
             messageTimer.updateTimerText();
+        }
+    }
+
+    private class StopWatch
+    {
+        private long start = 0;
+        private long suspendedTime = 0;
+        private boolean isSuspended = true;
+
+        public void start()
+        {
+            if(isSuspended) {
+                isSuspended = false;
+                long oldTime = suspendedTime - start;
+                start = System.currentTimeMillis() - oldTime;
+            }
+        }
+
+        public void suspend()
+        {
+            if(!isSuspended) {
+                isSuspended = true;
+                suspendedTime = System.currentTimeMillis();
+            }
+        }
+
+        public void reset()
+        {
+            suspend();
+            start = System.currentTimeMillis();
+        }
+
+        public long getTime() {
+            long now = System.currentTimeMillis();
+            if(isSuspended)
+            {
+                now = suspendedTime;
+            }
+            return now - start;
         }
     }
 }

@@ -226,10 +226,11 @@ namespace AbyssLibrary
             return defaultGateway;
         }
 
-        private void SendPing(string ipAddress)
+        public void SendPing(string ipAddress)
         {
             try
             {
+                Debug.Log("Pinging.. {0}", ipAddress);
                 Ping pingSender = new Ping();
                 PingOptions pingOptions = new PingOptions();
 

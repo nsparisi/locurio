@@ -10,27 +10,46 @@ using System.Xml;
 
 namespace AbyssLibrary
 {
-    public class TextingController : AbstractNetworkedDevice
+    public class TimerController : AbstractNetworkedDevice
     {
         // port the android texting app is listening on
         private const int ServerPort = 6000;
-        private const string Clear_Message_History = "CLEAR_MESSAGE_HISTORY";
-        
-        public TextingController(string name, string deviceMacAddress)
+
+        private const string Timer_Start = "TIMER_START";
+        private const string Timer_Suspend = "TIMER_SUSPEND";
+        private const string Timer_Reset = "TIMER_RESET";
+        private const string Timer_Set_Time = "TIMER_SET_TIME";
+
+        public TimerController(string name, string deviceMacAddress)
             : base(name, deviceMacAddress)
         {
         }
 
-        public void ClearHistory()
+        public void Start()
         {
-            SendTextMessage(Clear_Message_History);
+            SendMessageToDevice(Timer_Start);
         }
 
-        public void SendTextMessage(string toSend)
+        public void Suspend()
+        {
+            SendMessageToDevice(Timer_Suspend);
+        }
+
+        public void Reset()
+        {
+            SendMessageToDevice(Timer_Reset);
+        }
+
+        public void SetTime(long milliseconds)
+        {
+            SendMessageToDevice(Timer_Set_Time + milliseconds);
+        }
+
+        private void SendMessageToDevice(string toSend)
         {
             if (!this.IsConnected)
             {
-                Debug.Log("Cannot send text message. Texting controller '{0}' is not connected to text device at '{1}'.", this.Name, this.MacAddress);
+                Debug.Log("Cannot send message to timer. TimerController '{0}' is not connected to device at '{1}'.", this.Name, this.MacAddress);
                 return;
             }
 

@@ -24,8 +24,13 @@ public class MessageService extends Service
 
     public static final int SERVER_PORT = 6000;
     private static final String CLEAR_MESSAGE_HISTORY = "CLEAR_MESSAGE_HISTORY";
+    private static final String TIMER_START = "TIMER_START";
+    private static final String TIMER_SUSPEND = "TIMER_SUSPEND";
+    private static final String TIMER_RESET = "TIMER_RESET";
+    private static final String TIMER_SET_TIME = "TIMER_SET_TIME";
 
     MainActivity.MessageListener messageListener;
+    MainActivity.TimerListener timerListener;
     ArrayList<MessageData> allMessages;
 
     ServerSocket serverSocket;
@@ -87,6 +92,23 @@ public class MessageService extends Service
     {
         Debug.log("********MessageService unregisterMessageListener");
         messageListener = null;
+    }
+
+    public void registerTimerListener(MainActivity.TimerListener listener)
+    {
+        Debug.log("********MessageService registerTimerListener");
+        if(timerListener != null)
+        {
+            Debug.log("********MessageService WARNING timerListener already exists");
+        }
+
+        timerListener = listener;
+    }
+
+    public void unregisterTimerListener(MainActivity.TimerListener listener)
+    {
+        Debug.log("********MessageService unregisterTimerListener");
+        timerListener = null;
     }
 
     private void clearMessageHistory()
@@ -155,11 +177,41 @@ public class MessageService extends Service
 
                 String line = input.readLine();
 
-                if(line != null && line.equals(CLEAR_MESSAGE_HISTORY))
+                if(line == null)
+                {
+                    Debug.log("********received null message. Exiting");
+                }
+                else if(line.equals(CLEAR_MESSAGE_HISTORY))
                 {
                     clearMessageHistory();
                 }
-                else if(line != null)
+                else if(line.equals(TIMER_START))
+                {
+                    Debug.log("********TIMER_START");
+                    timerListener.onTimerStart();
+                }
+                else if(line.equals(TIMER_SUSPEND))
+                {
+                    Debug.log("********TIMER_SUSPEND");
+                    timerListener.onTimerSuspend();
+                }
+                else if(line.equals(TIMER_RESET))
+                {
+                    Debug.log("********TIMER_RESET");
+                    timerListener.onTimerReset();
+                }
+                else if(line.startsWith(TIMER_SET_TIME))
+                {
+                    // todo
+                    Debug.log("********TIMER_SET_TIME");
+                    String time = line.substring(TIMER_SET_TIME.length());
+                    Debug.log("********time " + time);
+                    long milliseconds = Long.parseLong(time);
+                    Debug.log("********milliseconds " + milliseconds);
+
+                    timerListener.onTimerSetTime(milliseconds);
+                }
+                else
                 {
                     // todo, split message into parts
                     MessageData data = new MessageData();

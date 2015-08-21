@@ -44,9 +44,14 @@ namespace AbyssConsole
                     abyssConsoleApp.RootWindow.GameControlView.AddAltarXbee((XBeeEndpoint)physicalObject);
                 }
 
-                if(physicalObject is TextingController)
+                if (physicalObject is TextingController)
                 {
                     abyssConsoleApp.RootWindow.HintView.AddTextingController((TextingController)physicalObject);
+                }
+
+                if (physicalObject is TimerController)
+                {
+                    abyssConsoleApp.RootWindow.GameControlView.AddTimerController((TimerController)physicalObject);
                 }
 
                 if(physicalObject is VLCServerControl)

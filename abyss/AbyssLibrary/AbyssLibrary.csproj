@@ -55,6 +55,7 @@
     <Compile Include="Hardware\IPhysicalObject.cs" />
     <Compile Include="AbyssUtils.cs" />
     <Compile Include="Hardware\LimitlessLEDBridge.cs" />
+    <Compile Include="Hardware\TimerController.cs" />
     <Compile Include="Hardware\TextingController.cs" />
     <Compile Include="Hardware\AbstractNetworkedDevice.cs" />
     <Compile Include="Hardware\VLCServerControl.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="SubProcessors\SPGame.cs" />
     <Compile Include="SubProcessors\SPDelay.cs" />
     <Compile Include="SubProcessors\SPLimitlessLEDBridge.cs" />
+    <Compile Include="SubProcessors\SPTimerController.cs" />
     <Compile Include="SubProcessors\SPTextingController.cs" />
     <Compile Include="SubProcessors\SPSoundControl.cs" />
     <Compile Include="SubProcessors\SPXBeeEndpoint.cs" />
