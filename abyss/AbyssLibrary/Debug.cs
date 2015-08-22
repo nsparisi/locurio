@@ -68,7 +68,17 @@ namespace AbyssLibrary
             {
                 Initialize();
                 Console.Out.WriteLine(message);
-                File.AppendAllText(logFile, FormatLine(message));
+
+                // ignore errors if writing to the log.
+                // i've seen this happen with "no permission" error before. ??
+                try
+                {
+                    File.AppendAllText(logFile, FormatLine(message));
+                }
+                catch
+                {
+                    
+                }
 
                 if(LogMessageEvent != null)
                 {
