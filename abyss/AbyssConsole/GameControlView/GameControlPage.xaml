@@ -1,22 +1,22 @@
 ﻿<UserControl x:Class="AbyssConsole.GameControlPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="350" Width="525">
+        Height="400" Width="700">
     <Grid>
-        <TextBlock Text="Game Minutes: " TextWrapping="Wrap" TextAlignment="Left" Margin="163,103,312,0" VerticalAlignment="Top" Height="44"/>
-        <TextBox Name="MinutesBox" Text="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="218,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="44"/>
+        <TextBlock Text="Game Minutes: " TextWrapping="Wrap" TextAlignment="Left" Margin="250,123,399,0" VerticalAlignment="Top" Height="44"/>
+        <TextBox Name="MinutesBox" Text="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="306,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="44"/>
         <Button Name="UpdateClockButton"  Content="Update Clock" HorizontalAlignment="center" Margin="163,147,263,184" VerticalAlignment="Center" Width="99" Height="19" Click="SetClock_Click"/>
 
         <Button Name="StartButton" Content="Start Game" HorizontalAlignment="center" Margin="272,91,145,214" VerticalAlignment="Center" Width="108" Height="45" Click="GameStart_Click"/>
         <Button Name="WinButton"  Content="Win Game" HorizontalAlignment="center" Margin="272,221,145,107" VerticalAlignment="Center" Width="108" Height="22" Click="GameWin_Click"/>
         <Button Name="LoseButton"  Content="Lose Game" HorizontalAlignment="center" Margin="272,251,145,77" VerticalAlignment="Center" Width="108" Height="22" Click="GameLose_Click"/>
-        <Button Name="AltarTopButton"  Content="Altar Top" HorizontalAlignment="center" Margin="272,278,145.333,50" VerticalAlignment="Center" Width="108" Height="22" Click="AltarTopSolved_Click"/>
+        <Button Name="AltarTopButton"  Content="Altar Top" HorizontalAlignment="center" Margin="360,303,232,75" VerticalAlignment="Center" Width="108" Height="22" Click="AltarTopSolved_Click"/>
         <Button Name="PauseButton"  Content="Pause Game" HorizontalAlignment="center" Margin="163,221,263,107" VerticalAlignment="Center" Width="99" Height="22" Click="GamePause_Click"/>
         <Button Name="UnPauseButton"  Content="UnPause Game" HorizontalAlignment="center" Margin="163,251,263,77" VerticalAlignment="Center" Width="99" Height="22" Click="GameUnPause_Click"/>
         <Button Name="StopButton"  Content="All Stop" HorizontalAlignment="center" Margin="272,147,145,158" VerticalAlignment="Center" Width="108" Height="45" Click="GameStop_Click"/>
         <Button Name="TestButton"  Content="Test Mode" HorizontalAlignment="center" Margin="163,173,263,158" VerticalAlignment="Center" Width="99" Height="19" Click="TestMode_Click"/>
 
-        <Label Name="StatusLabel" Content="No Game is Running" Foreground="Black" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="525"/>
+        <Label Name="StatusLabel" Content="No Game is Running" Foreground="Black" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
         <Label Name="PreviousTime" Content="" Foreground="Black" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,315,0,0" VerticalAlignment="Top" Width="525"/>
 
         <Label Name="DeviceField" Content="Disconnected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="196,42,10,0" Height="26" Foreground="Black" FontFamily="Century Gothic" FontSize="12"/>
