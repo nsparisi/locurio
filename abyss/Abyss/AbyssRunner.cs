@@ -200,17 +200,22 @@ namespace Abyss
 
             AbyssSystem.Instance.RegisterPhysicalObject(timerMotorola);
 
+            SPTimerController sp_timerControllerMotorola = new SPTimerController()
+            {
+                TimerControllers = MakeList(timerMotorola)
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerMotorola);
+
             TimerController timerAlcatel =
                 new TimerController("Alcatel One Touch", "60-51-2C-B3-F1-46");
 
             AbyssSystem.Instance.RegisterPhysicalObject(timerAlcatel);
 
-            SPTimerController sp_timerController = new SPTimerController()
+            SPTimerController sp_timerControllerAlcatel = new SPTimerController()
                 {
-                    TimerControllers = MakeList(timerMotorola, timerAlcatel)
+                    TimerControllers = MakeList(timerAlcatel)
                 };
-
-            AbyssSystem.Instance.RegisterSubProcessor(sp_timerController);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerAlcatel);
 
             // ***********************
             // ALTAR
@@ -336,7 +341,8 @@ namespace Abyss
             sp_gameController.GameStarted += sp_soundSecretRoom01.Stop;
             sp_gameController.GameStarted += sp_soundSecretRoom02.Stop;
             sp_gameController.GameStarted += sp_countdownScreen.Start;
-            sp_gameController.GameStarted += sp_timerController.StartTimer;
+            sp_gameController.GameStarted += sp_timerControllerMotorola.StartTimer;
+            sp_gameController.GameStarted += sp_timerControllerAlcatel.StartTimer;
 
             // when the top of the altar is solved
             // play some spooky MYST wind effects
@@ -366,7 +372,8 @@ namespace Abyss
             sp_gameController.GameWon += sp_countdownScreen.Stop;
             sp_gameController.GameWon += sp_soundDressingRoom01.Stop;
             sp_gameController.GameWon += sp_soundNoxSuccessNarration.Play;
-            sp_gameController.GameWon += sp_timerController.SuspendTimer;
+            sp_gameController.GameWon += sp_timerControllerMotorola.SuspendTimer;
+            sp_gameController.GameWon += sp_timerControllerAlcatel.SuspendTimer;
 
             //--------------------
             // LOSE CONDITION
@@ -391,7 +398,8 @@ namespace Abyss
             sp_gameController.GameStopped += sp_countdownScreen.Stop;
             sp_gameController.GameStopped += sp_lightAllWhite.Run;
             sp_gameController.GameStopped += sp_lightAllFullBrightness.Run;
-            sp_gameController.GameStopped += sp_timerController.ResetTimer;
+            sp_gameController.GameStopped += sp_timerControllerMotorola.ResetTimer;
+            sp_gameController.GameStopped += sp_timerControllerAlcatel.ResetTimer;
 
             //--------------------
             // SOFT PAUSE
@@ -400,7 +408,8 @@ namespace Abyss
             sp_gameController.GamePaused += sp_soundSecretRoom01.Pause;
             sp_gameController.GamePaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GamePaused += sp_countdownScreen.Stop;
-            sp_gameController.GamePaused += sp_timerController.SuspendTimer;
+            sp_gameController.GamePaused += sp_timerControllerMotorola.SuspendTimer;
+            sp_gameController.GamePaused += sp_timerControllerAlcatel.SuspendTimer;
 
             //--------------------
             // RESUME FROM PAUSE
@@ -409,7 +418,8 @@ namespace Abyss
             sp_gameController.GameUnPaused += sp_soundSecretRoom01.Pause;
             sp_gameController.GameUnPaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GameUnPaused += sp_countdownScreen.Start;
-            sp_gameController.GameUnPaused += sp_timerController.StartTimer;
+            sp_gameController.GameUnPaused += sp_timerControllerMotorola.StartTimer;
+            sp_gameController.GameUnPaused += sp_timerControllerAlcatel.StartTimer;
 
             //--------------------
             // TEST MODE

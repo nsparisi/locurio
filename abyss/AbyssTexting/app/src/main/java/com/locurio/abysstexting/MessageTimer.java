@@ -130,7 +130,7 @@ public class MessageTimer {
         public void reset()
         {
             suspend();
-            start = System.currentTimeMillis();
+            start = suspendedTime;
         }
 
         public long getTime() {

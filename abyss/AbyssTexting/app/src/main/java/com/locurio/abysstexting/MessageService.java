@@ -224,9 +224,17 @@ public class MessageService extends Service
                         messageListener.onIncomingMessage(data);
                     }
 
+                    // wake up screen
+                    Debug.log("********Waking up screen");
+                    PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+                    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WakeUpScreenTag");
+                    wakeLock.acquire();
+                    wakeLock.release();
+
                     // play a sound
                     try
                     {
+                        Thread.sleep(1000);
                         Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                         RingtoneManager.getRingtone(getApplicationContext(), notificationUri).play();
                     }
@@ -234,13 +242,6 @@ public class MessageService extends Service
                     {
                         e.printStackTrace();
                     }
-
-                    // wake up screen
-                    Debug.log("********Waking up screen");
-                    PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
-                    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WakeUpScreenTag");
-                    wakeLock.acquire();
-                    wakeLock.release();
                 }
 
                 Debug.log("********CommunicationThread closing");

@@ -22,12 +22,12 @@ namespace AbyssConsole
     /// </summary>
     public partial class HintSubPage : UserControl
     {
-        private SPTextingController controllerSubProcessor;
+        private List<SPTextingController> controllerSubProcessors;
         private List<string> messageHistory;
 
         public HintSubPage()
         {
-            this.controllerSubProcessor = new SPTextingController();
+            this.controllerSubProcessors = new List<SPTextingController>();
             this.messageHistory = new List<string>();
             InitializeComponent();
             PopulateHints();
@@ -50,7 +50,10 @@ namespace AbyssConsole
         bool shouldRefreshDevice;
         public void AddTextingController(TextingController textingController)
         {
-            this.controllerSubProcessor.TextingControllers.Add(textingController);
+            SPTextingController newController = new SPTextingController();
+            newController.TextingControllers = new List<TextingController>(new[] { textingController });
+            this.controllerSubProcessors.Add(newController);
+
             RefreshDeviceField();
         }
 
@@ -66,9 +69,10 @@ namespace AbyssConsole
         private void RefreshDeviceField()
         {
             string devices = "";
-            for (int i = 0; i < this.controllerSubProcessor.TextingControllers.Count; i++)
+            for (int i = 0; i < this.controllerSubProcessors.Count; i++)
             {
-                if (!this.controllerSubProcessor.TextingControllers[i].IsConnected)
+                TextingController controller = this.controllerSubProcessors[i].TextingControllers.First();
+                if (!controller.IsConnected)
                 {
                     shouldRefreshDevice = true;
                 }
@@ -80,8 +84,8 @@ namespace AbyssConsole
 
                 devices += string.Format(
                     "{0} ({1})",
-                    this.controllerSubProcessor.TextingControllers[i].Name,
-                    this.controllerSubProcessor.TextingControllers[i].IpAddress);
+                    controller.Name,
+                    controller.IpAddress);
             }
 
             this.DeviceField.Content = devices;
@@ -101,11 +105,15 @@ namespace AbyssConsole
 
         private void SendHint_Click(object sender, RoutedEventArgs e)
         {
-            if (controllerSubProcessor != null && !string.IsNullOrWhiteSpace(this.TextBox.Text))
+            if (controllerSubProcessors != null && !string.IsNullOrWhiteSpace(this.TextBox.Text))
             {
-                controllerSubProcessor.TextMessage = this.TextBox.Text;
-                controllerSubProcessor.SendTextMessage(this, EventArgs.Empty);
-                messageHistory.Add(controllerSubProcessor.TextMessage);
+                foreach (SPTextingController controller in controllerSubProcessors)
+                {
+                    controller.TextMessage = this.TextBox.Text;
+                    controller.SendTextMessage(this, EventArgs.Empty);
+                }
+
+                messageHistory.Add(this.TextBox.Text);
                 this.TextBox.Clear();
                 UpdateHistory();
             }
@@ -113,9 +121,12 @@ namespace AbyssConsole
 
         private void ClearMessageHistory_Click(object sender, RoutedEventArgs e)
         {
-            if (controllerSubProcessor != null)
+            if (controllerSubProcessors != null)
             {
-                controllerSubProcessor.ClearHistory(this, EventArgs.Empty);
+                foreach (SPTextingController controller in controllerSubProcessors)
+                {
+                    controller.ClearHistory(this, EventArgs.Empty);
+                }
             }
 
             messageHistory.Clear();
@@ -130,14 +141,14 @@ namespace AbyssConsole
 
         private void IPRefresh_Click(object sender, RoutedEventArgs e)
         {
-            if (this.controllerSubProcessor != null)
+            if (this.controllerSubProcessors != null)
             {
-                foreach (var textDevice in this.controllerSubProcessor.TextingControllers)
+                foreach (SPTextingController controller in controllerSubProcessors)
                 {
                     // hard refresh IP address if non-existent
-                    if (!textDevice.IsConnected)
+                    if (!controller.TextingControllers.First().IsConnected)
                     {
-                        textDevice.RefreshIpAddress(true);
+                        controller.TextingControllers.First().RefreshIpAddress(true);
                     }
                 }
             }
