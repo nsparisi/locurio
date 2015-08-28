@@ -4,7 +4,7 @@
         Height="350" Width="525">
     <Grid>
         <TextBlock Text="Game Minutes: " TextWrapping="Wrap" TextAlignment="Left" Margin="163,103,312,0" VerticalAlignment="Top" Height="44"/>
-        <TextBox Name="MinutesBox" Text="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="218,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="44"/>
+        <TextBox Name="MinutesBox" Text="70" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="218,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="44"/>
         <Button Name="UpdateClockButton"  Content="Update Clock" HorizontalAlignment="center" Margin="163,147,263,184" VerticalAlignment="Center" Width="99" Height="19" Click="SetClock_Click"/>
 
         <Button Name="StartButton" Content="Start Game" HorizontalAlignment="center" Margin="272,91,145,214" VerticalAlignment="Center" Width="108" Height="45" Click="GameStart_Click"/>

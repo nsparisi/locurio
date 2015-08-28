@@ -38,12 +38,16 @@
         <TreeView Name="SuggestionList" HorizontalAlignment="Stretch" Margin="10,104,332,10" VerticalAlignment="Stretch">
             <TreeViewItem Header="The Vanishing Act">
                 <TreeViewItem Header="DRESSING ROOM:">
+                    <TreeViewItem Header="GENERAL:">
+                        <TreeViewItem Header="Good luck - please hurry!" />
+                    </TreeViewItem>
                     <TreeViewItem Header="RINGS:">
                         <TreeViewItem Header="I've seen Nox use many different rings in his linking ring act, even very small ones." />
                     </TreeViewItem>
                     <TreeViewItem Header="PLAYING CARDS:">
-                        <TreeViewItem Header="Nox says that when he designs a playing card trick, it's important to view it through the eyes of the audience." />
+                        <TreeViewItem Header="Nox says that when he designs a playing card trick, it's important to view it through the eyes of others." />
                         <TreeViewItem Header="Nox doesn't believe in waste – when it comes to his playing card act, he even uses the box!" />
+                        <TreeViewItem Header="When it comes to Nox's playing card act, he says I'll know what to do if I think outside of the box and follow his lines." />
                         <TreeViewItem Header="I believe that if you play your cards right, life imitates art." />
                     </TreeViewItem>
                     <TreeViewItem Header="TAROT:">
@@ -52,23 +56,25 @@
                     </TreeViewItem>
                     <TreeViewItem Header="HANDKERCHIEFS:">
                         <TreeViewItem Header="Nox likes to color-coordinate his handkerchief collection." />
+                        <TreeViewItem Header="In Nox's handkerchief act, he always uses every color." />
                         <TreeViewItem Header="In regards to his handkerchief act, Nox says the first handkerchief is always the start to every other part of the trick." />
                         <TreeViewItem Header="When Nox has trouble coming up with magic words, he says that putting something in front of them is often the answer." />
                     </TreeViewItem>
                     <TreeViewItem Header="BOOKS:">
                         <TreeViewItem Header="Nox should really keep his library in order!" />
-                        <TreeViewItem Header="When it comes to the marquee at the theater, Nox demands that the show's title be in the right place." />
                         <TreeViewItem Header="I like the old saying, 'sometimes all you have to do is turn around, and the answer is right in front of you!'" />
-                        <TreeViewItem Header="Nox is a big fan of Eastern proverbs. He says he appreciates that they're always very literal." />
+                        <TreeViewItem Header="Nox is a big fan of Eastern phrases. He says he appreciates that they're always very literal." />
                         <TreeViewItem Header="Nox loves that Chinese mirror of his." />
                     </TreeViewItem>
                     <TreeViewItem Header="POSTERS:">
+                        <TreeViewItem Header="Nox is so vain - I can't believe how many old show posters he keeps around." />
                         <TreeViewItem Header="It's well-known that Nox often likes to add and subtract numbers from his show." />
-                        <TreeViewItem Header="Nox thinks it's important that each and every show be unique. He never carries over numbers from one to the next." />
+                        <TreeViewItem Header="Nox thinks it's important that each and every show be unique. He never carries over numbers from one to the next." />                        
                     </TreeViewItem>
                     <TreeViewItem Header="CABINET:">
                         <TreeViewItem Header="Some people don't like enclosed spaces, but Nox says he finds it comforting to be in small, dark places." />
                         <TreeViewItem Header="Nox refuses to perform magic without his wand. Even his back-up wand will do!" />
+                        <TreeViewItem Header="Some magicians like to wave their wand, Nox prefers to tap his." />
                         <TreeViewItem Header="Sometimes magic is as easy as 1-2-3." />
                     </TreeViewItem>
                 </TreeViewItem>
@@ -90,6 +96,7 @@
                         <TreeViewItem Header="The first thing Nox ever told me is that you have to listen closely or else you might miss a few things." />
                         <TreeViewItem Header="When it comes to illusions, Nox says if you just equate what you hear to what you see, everything becomes clear." />
                         <TreeViewItem Header="Eight is Nox's lucky number. That's how many columns he's been featured in." />
+                        <TreeViewItem Header="In rehearsals, Nox usually makes me double-check my work, since I always seem to have trouble in the - and - acts." />
                         <TreeViewItem Header="Nox is fluent in many languages, but he says he prefers the ones that read from left to right." />
                     </TreeViewItem>
                     <TreeViewItem Header="ALTAR:">
