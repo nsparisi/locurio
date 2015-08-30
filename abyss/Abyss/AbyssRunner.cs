@@ -431,11 +431,25 @@ namespace Abyss
 
             // ***********************
             // Script Event Logic for LIGHTS
+            // WIN logic for lights 
+            // LOSE logic for lights
             // ***********************
+            List<LimitlessLEDBridge.ZoneType> secretRoomZones = new List<LimitlessLEDBridge.ZoneType>
+            {
+                LimitlessLEDBridge.ZoneType.Zone2,
+                LimitlessLEDBridge.ZoneType.Zone3,
+                LimitlessLEDBridge.ZoneType.Zone4
+            };
+
+            List<LimitlessLEDBridge.ZoneType> dressingRoomZones = new List<LimitlessLEDBridge.ZoneType>
+            {
+                LimitlessLEDBridge.ZoneType.Zone1
+            };
+
             SPLimitlessLEDBridge sp_lightGameStart = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
-                Zone = LimitlessLEDBridge.ZoneType.All,
+                Zones = secretRoomZones,
                 Color = LimitlessLEDBridge.ColorType.Green,
                 Bridges = MakeList(bridge)
             };
@@ -455,7 +469,7 @@ namespace Abyss
             SPLimitlessLEDBridge sp_lightSolveAltarTop = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
-                Zone = LimitlessLEDBridge.ZoneType.All,
+                Zones = secretRoomZones,
                 Color = LimitlessLEDBridge.ColorType.Lilac,
                 Bridges = MakeList(bridge)
             };
@@ -465,7 +479,7 @@ namespace Abyss
             SPLimitlessLEDBridge sp_lightTouchAltarWordBefore = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
-                Zone = LimitlessLEDBridge.ZoneType.All,
+                Zones = secretRoomZones,
                 Color = LimitlessLEDBridge.ColorType.Green,
                 Bridges = MakeList(bridge)
             };
@@ -475,7 +489,7 @@ namespace Abyss
             SPLimitlessLEDBridge sp_lightTouchAltarWordAfter = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
-                Zone = LimitlessLEDBridge.ZoneType.All,
+                Zones = secretRoomZones,
                 Color = LimitlessLEDBridge.ColorType.Violet,
                 Bridges = MakeList(bridge)
             };
@@ -507,55 +521,18 @@ namespace Abyss
             sp_touchAltarWordDelay.Finished += sp_lightTouchAltarWordAfter.Run;
 
             // ****************************
-            // ZONE 1
-            SPLimitlessLEDBridge sp_lightWinZ1_Color = new SPLimitlessLEDBridge()
+            // DRESSING ROOM
+            SPLimitlessLEDBridge sp_lightLoseDress_Brightness = new SPLimitlessLEDBridge()
             {
-                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
-                Zone = LimitlessLEDBridge.ZoneType.Zone1,
-                Color = LimitlessLEDBridge.ColorType.Green,
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
+                Zones = dressingRoomZones,
+                Brightness = 0.1,
                 Bridges = MakeList(bridge)
             };
-            sp_lightWinZ1_Color.Initialize();
-            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ1_Color);
-
-            SPLimitlessLEDBridge sp_lightWinZ1_On = new SPLimitlessLEDBridge()
-            {
-                Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOn,
-                Zone = LimitlessLEDBridge.ZoneType.Zone1,
-                Bridges = MakeList(bridge)
-            };
-            sp_lightWinZ1_On.Initialize();
-            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ1_On);
-
-            SPLimitlessLEDBridge sp_lightWinZ1_Off = new SPLimitlessLEDBridge()
-            {
-                Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
-                Zone = LimitlessLEDBridge.ZoneType.Zone1,
-                Bridges = MakeList(bridge)
-            };
-            sp_lightWinZ1_Off.Initialize();
-            AbyssSystem.Instance.RegisterSubProcessor(sp_lightWinZ1_Off);
-
-            SPDelay sp_winZone1_delay1 = new SPDelay()
-            {
-                DurationMs = 200
-            };
-            sp_winZone1_delay1.Initialize();
-            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone1_delay1);
-
-            SPDelay sp_winZone1_delay2 = new SPDelay()
-            {
-                DurationMs = 200
-            };
-            sp_winZone1_delay2.Initialize();
-            AbyssSystem.Instance.RegisterSubProcessor(sp_winZone1_delay2);
-
-            sp_gameController.GameWon += sp_winZone1_delay1.Start;
-            sp_gameController.GameWon += sp_lightWinZ1_Color.Run;
-            sp_winZone1_delay1.Finished += sp_winZone1_delay2.Start;
-            sp_winZone1_delay1.Finished += sp_lightWinZ1_Off.Run;
-            sp_winZone1_delay2.Finished += sp_winZone1_delay1.Start;
-            sp_winZone1_delay2.Finished += sp_lightWinZ1_On.Run;
+            sp_lightLoseDress_Brightness.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseDress_Brightness);
+            
+            //sp_gameController.GameLost += sp_lightLoseDress_Brightness.Run;
 
             // ****************************
             // ZONE 2
@@ -616,7 +593,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.Zone3,
-                Color = LimitlessLEDBridge.ColorType.Red,
+                Color = LimitlessLEDBridge.ColorType.Aqua,
                 Bridges = MakeList(bridge)
             };
             sp_lightWinZ3_Color.Initialize();

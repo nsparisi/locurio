@@ -15,6 +15,7 @@ namespace AbyssLibrary
         {
             this.Name = "SPLEDBridge";
             this.Bridges = new List<LimitlessLEDBridge>();
+            this.Zones = new List<LimitlessLEDBridge.ZoneType>();
         }
 
         [AbyssParameter]
@@ -32,7 +33,14 @@ namespace AbyssLibrary
         }
 
         [AbyssParameter]
-        public LimitlessLEDBridge.ZoneType Zone
+        public LimitlessLEDBridge.ZoneType? Zone
+        {
+            get;
+            set;
+        }
+
+        [AbyssParameter]
+        public List<LimitlessLEDBridge.ZoneType> Zones
         {
             get;
             set;
@@ -73,28 +81,31 @@ namespace AbyssLibrary
         protected override void Process()
         {
             Debug.Log("SPLightBulb Start [{0}]", Name);
-
+            
             foreach (LimitlessLEDBridge bridge in this.Bridges)
             {
-                if(Command == LEDBridgeCommand.TurnOn)
+                foreach (var eachZone in Zones)
                 {
-                    bridge.TurnOn(Zone);
-                }
-                else if (Command == LEDBridgeCommand.TurnOff)
-                {
-                    bridge.TurnOff(Zone);
-                }
-                else if (Command == LEDBridgeCommand.SetBrightness)
-                {
-                    bridge.ChangeBrightness(Brightness, Zone);
-                }
-                else if (Command == LEDBridgeCommand.SetColor)
-                {
-                    bridge.ChangeColor(Color, Zone);
-                }
-                else if (Command == LEDBridgeCommand.SetToWhite)
-                {
-                    bridge.ChangeToWhite(Zone);
+                    if (Command == LEDBridgeCommand.TurnOn)
+                    {
+                        bridge.TurnOn(eachZone);
+                    }
+                    else if (Command == LEDBridgeCommand.TurnOff)
+                    {
+                        bridge.TurnOff(eachZone);
+                    }
+                    else if (Command == LEDBridgeCommand.SetBrightness)
+                    {
+                        bridge.ChangeBrightness(Brightness, eachZone);
+                    }
+                    else if (Command == LEDBridgeCommand.SetColor)
+                    {
+                        bridge.ChangeColor(Color, eachZone);
+                    }
+                    else if (Command == LEDBridgeCommand.SetToWhite)
+                    {
+                        bridge.ChangeToWhite(eachZone);
+                    }
                 }
             }
 
@@ -113,6 +124,11 @@ namespace AbyssLibrary
                 bridge.TurnedOn += OnTurnedOn;
                 bridge.TurnedOff += OnTurnedOff;
                 bridge.Changed += OnChanged;
+            }
+
+            if (Zone != null)
+            {
+                Zones.Add(Zone.Value);
             }
         }
 
