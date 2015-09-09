@@ -466,6 +466,15 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightGameStartBrighness);
             sp_lightGameStartBrighness.Initialize();
 
+            SPLimitlessLEDBridge sp_lightDressWhite = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
+                Zones = dressingRoomZones,
+                Bridges = MakeList(bridge)
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightDressWhite);
+            sp_lightDressWhite.Initialize();
+
             SPLimitlessLEDBridge sp_lightSolveAltarTop = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
@@ -511,6 +520,9 @@ namespace Abyss
             sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
             sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
             sp_gameController.GameStarted += sp_lightGameStartBrighness.Run;
+            sp_gameController.GameStarted += sp_lightDressWhite.Run;
+            sp_gameController.GameStarted += sp_lightDressWhite.Run;
+            sp_gameController.GameStarted += sp_lightDressWhite.Run;
 
             // turn on light when top is solved
             sp_altarTopSolved.ExpectedMessageReceived += sp_lightSolveAltarTop.Run;
