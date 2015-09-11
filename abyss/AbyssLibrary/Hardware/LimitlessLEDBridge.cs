@@ -111,6 +111,8 @@ namespace AbyssLibrary
                     udpClient.Send(message, message.Length);
                     Thread.Sleep(10);
                     udpClient.Send(message, message.Length);
+
+                    Thread.Sleep(20);
                     udpClient.Close();
                 }
             }
@@ -167,6 +169,7 @@ namespace AbyssLibrary
                     Thread.Sleep(10);
                     udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
 
+                    Thread.Sleep(20);
                     udpClient.Close();
                 }
             }

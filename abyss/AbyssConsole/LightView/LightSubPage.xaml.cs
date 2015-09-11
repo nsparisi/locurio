@@ -49,16 +49,20 @@ namespace AbyssConsole
             this.WhiteButton.MouseDown += White_Click;
 
             this.AquaButton.MouseDown += Aqua_Click;
+            this.BabyBlueButton.MouseDown += BabyBlue_Click;
             this.FuchsiaButton.MouseDown += Fuchsia_Click;
             this.GreenButton.MouseDown += Green_Click;
             this.LimeGreenButton.MouseDown += LimeGreen_Click;
+            this.MintButton.MouseDown += Mint_Click;
             this.OrangeButton.MouseDown += Orange_Click;
             this.PinkButton.MouseDown += Pink_Click;
             this.RedButton.MouseDown += Red_Click;
             this.RoyalBlueButton.MouseDown += RoyalBlue_Click;
+            this.SeafoamGreenButton.MouseDown += SeafoamGreen_Click;
             this.VioletButton.MouseDown += Violet_Click;
             this.YellowButton.MouseDown += Yellow_Click;
             this.YellowOrangeButton.MouseDown += YellowOrange_Click;
+            
         }
 
         public void AddLEDBridge(LimitlessLEDBridge ledBridge)
@@ -205,6 +209,21 @@ namespace AbyssConsole
             ChangeColor(LimitlessLEDBridge.ColorType.Yellow_Orange);
         }
         
+        private void BabyBlue_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeColor(LimitlessLEDBridge.ColorType.Baby_Blue);
+        }
+        
+        private void Mint_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeColor(LimitlessLEDBridge.ColorType.Mint);
+        }
+
+        private void SeafoamGreen_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeColor(LimitlessLEDBridge.ColorType.Seafoam_Green);
+        }
+
         private void ChangeColor(LimitlessLEDBridge.ColorType color)
         {
             if (PrepareProcessor())
