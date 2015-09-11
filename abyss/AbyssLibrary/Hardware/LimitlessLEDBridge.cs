@@ -246,9 +246,16 @@ namespace AbyssLibrary
             else if (zone == ZoneType.Zone3) beforeDelayZone = Command_BeforeDelay_Zone3;
             else if (zone == ZoneType.Zone4) beforeDelayZone = Command_BeforeDelay_Zone4;
 
+            byte afterDelayZone = Command_AfterDelay_AllWhite;
+            if (zone == ZoneType.All) afterDelayZone = Command_AfterDelay_AllWhite;
+            else if (zone == ZoneType.Zone1) afterDelayZone = Command_AfterDelay_Zone1White;
+            else if (zone == ZoneType.Zone2) afterDelayZone = Command_AfterDelay_Zone2White;
+            else if (zone == ZoneType.Zone3) afterDelayZone = Command_AfterDelay_Zone3White;
+            else if (zone == ZoneType.Zone4) afterDelayZone = Command_AfterDelay_Zone4White;
+
             SendTwoCommandsWithDelay(
                 new byte[] { beforeDelayZone, Empty_Middle_Byte, Final_Byte },
-                new byte[] { Command_AfterDelay_AllWhite, Empty_Middle_Byte, Final_Byte });
+                new byte[] { afterDelayZone, Empty_Middle_Byte, Final_Byte });
 
             OnChanged(this, EventArgs.Empty);
         }

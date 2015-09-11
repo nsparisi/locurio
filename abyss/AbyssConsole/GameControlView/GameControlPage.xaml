@@ -17,7 +17,7 @@
         <Button Name="TestButton"  Content="Test Mode" HorizontalAlignment="center" Margin="163,173,263,158" VerticalAlignment="Center" Width="99" Height="19" Click="TestMode_Click"/>
 
         <Label Name="StatusLabel" Content="No Game is Running" Foreground="Black" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
-        <Label Name="PreviousTime" Content="" Foreground="Black" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,315,0,0" VerticalAlignment="Top" Width="525"/>
+        <Label Name="PreviousTime" Content="" Foreground="Black" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="0,350,0,0" VerticalAlignment="Top" Width="525"/>
 
         <Label Name="DeviceField" Content="Disconnected"  HorizontalContentAlignment="Left" VerticalAlignment="Top" Margin="196,42,10,0" Height="26" Foreground="Black" FontFamily="Century Gothic" FontSize="12"/>
         <Label Content="Connected Device:" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="58,42,0,0" VerticalAlignment="Top" Width="128" Foreground="Black" FontFamily="Century Gothic" FontSize="12" Height="26"/>
