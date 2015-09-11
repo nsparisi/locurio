@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="AbyssConsole.LightSubPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+
+    <UserControl.Resources>
+        <BitmapImage x:Key="Aqua" UriSource="Images/aqua.png"/>
+        <BitmapImage x:Key="BabyBlue" UriSource="Images/babyblue.png"/>
+        <BitmapImage x:Key="Fuchsia" UriSource="Images/fuchsia.png"/>
+        <BitmapImage x:Key="Green" UriSource="Images/green.png"/>
+        <BitmapImage x:Key="LimeGreen" UriSource="Images/limegreen.png"/>
+        <BitmapImage x:Key="Mint" UriSource="Images/mint.png"/>
+        <BitmapImage x:Key="Orange" UriSource="Images/orange.png"/>
+        <BitmapImage x:Key="Pink" UriSource="Images/pink.png"/>
+        <BitmapImage x:Key="Red" UriSource="Images/red.png"/>
+        <BitmapImage x:Key="RoyalBlue" UriSource="Images/royalblue.png"/>
+        <BitmapImage x:Key="SeafoamGreen" UriSource="Images/seafoamgreen.png"/>
+        <BitmapImage x:Key="Violet" UriSource="Images/violet.png"/>
+        <BitmapImage x:Key="White" UriSource="Images/white.png"/>
+        <BitmapImage x:Key="Yellow" UriSource="Images/yellow.png"/>
+        <BitmapImage x:Key="YellowOrange" UriSource="Images/yelloworange.png"/>
+
+        <Style x:Key="MenuFont" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Century Gothic"/>
+        </Style>
+        
+        <!-- Applies this to all labels by default-->
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource MenuFont}" />
+        
+    </UserControl.Resources>
+
+    <Grid>
+        <Label Content="Light Controls" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="BridgeListBox" HorizontalAlignment="Center" Margin="0,160,0,0" VerticalAlignment="Top" Width="300" Height="25"/>
+        <ComboBox x:Name="ZoneListBox" HorizontalAlignment="Center" Margin="0,190,0,0" VerticalAlignment="Top" Width="300" Height="25"/>
+        
+        <Button x:Name="OnButton" Content="ON" HorizontalAlignment="Center" Margin="0,260,100,0" VerticalAlignment="Top" Width="100" Height="40" Click="On_Click"/>
+        <Button x:Name="OffButton" Content="OFF" HorizontalAlignment="Center" Margin="100,260,0,0" VerticalAlignment="Top" Width="100" Height="40" Click="Off_Click"/>
+        <Image x:Name="WhiteButton"  HorizontalAlignment="Center" Margin="0,330,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource White}"/>
+        
+        <Slider x:Name="BrightnessSlider" HorizontalAlignment="Center" Margin="0,550,0,0" VerticalAlignment="Top" Width="360" 
+                Maximum="1" Minimum="0" TickPlacement="BottomRight" TickFrequency=".1" Value="0.5" IsSnapToTickEnabled="True" LargeChange="0" Focusable="False"
+                Thumb.DragCompleted="BrightnessValue_Changed" >
+            <Slider.LayoutTransform>
+                <ScaleTransform ScaleY="1.2" ScaleX="1.2"/>
+            </Slider.LayoutTransform>
+        </Slider>
+        <Label Content="Dimmer" HorizontalAlignment="Center" Margin="0,543,500,0" VerticalAlignment="Top"/>
+        <Label Content="Brighter" HorizontalAlignment="Center" Margin="500,543,0,0" VerticalAlignment="Top"/>
+        
+        <Image x:Name="VioletButton"  HorizontalAlignment="Center" Margin="0,398,300,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Violet}"/>
+        <Image x:Name="RoyalBlueButton"  HorizontalAlignment="Center" Margin="0,398,200,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource RoyalBlue}"/>
+        <Image x:Name="BabyBlueButton"  HorizontalAlignment="Center" Margin="0,398,100,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource BabyBlue}"/>
+        <Image x:Name="AquaButton"  HorizontalAlignment="Center" Margin="0,398,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Aqua}"/>
+        <Image x:Name="MintButton"  HorizontalAlignment="Center" Margin="100,398,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Mint}"/>
+        <Image x:Name="SeafoamGreenButton"  HorizontalAlignment="Center" Margin="200,398,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource SeafoamGreen}"/>
+        <Image x:Name="GreenButton"  HorizontalAlignment="Center" Margin="300,398,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Green}"/>
+        
+        <Image x:Name="LimeGreenButton"  HorizontalAlignment="Center" Margin="300,448,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource LimeGreen}"/>
+        <Image x:Name="YellowButton"  HorizontalAlignment="Center" Margin="200,448,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Yellow}"/>
+        <Image x:Name="YellowOrangeButton"  HorizontalAlignment="Center" Margin="100,448,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource YellowOrange}"/>
+        <Image x:Name="OrangeButton"  HorizontalAlignment="Center" Margin="0,448,0,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Orange}"/>
+        <Image x:Name="RedButton"  HorizontalAlignment="Center" Margin="0,448,100,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Red}"/>
+        <Image x:Name="PinkButton"  HorizontalAlignment="Center" Margin="0,448,200,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Pink}"/>
+        <Image x:Name="FuchsiaButton"  HorizontalAlignment="Center" Margin="0,448,300,0" VerticalAlignment="Top" Width="50" Height="50" Source="{StaticResource Fuchsia}"/>
+    </Grid>
+</UserControl>

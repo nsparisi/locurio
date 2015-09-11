@@ -53,7 +53,6 @@ namespace AbyssConsole
             lightDashboard = new DashboardUserControl();
             lightDashboard.SetupTile(DashboardUserControl.IconType.LightsIcon, "LIGHTING");
             lightDashboard.MouseDown += Lighting_Click;
-            lightDashboard.FadeTile();
             this.WrapPanel.Children.Add(lightDashboard);
 
             settingsDashboard = new DashboardUserControl();
@@ -112,6 +111,8 @@ namespace AbyssConsole
 
         private void Lighting_Click(object sender, RoutedEventArgs e)
         {
+            App app = (App)Application.Current;
+            app.RootWindow.SwapToLightView();
         }
 
         private void Setting_Click(object sender, RoutedEventArgs e)

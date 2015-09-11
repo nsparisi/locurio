@@ -38,9 +38,15 @@ namespace AbyssConsole
             if(!vlcServers.Contains(vlcServer))
             {
                 vlcServers.Add(vlcServer);
-
                 serverNamesList.Add(string.Format("{0}", vlcServer.Name));
                 ServerListBox.Items.Refresh();
+
+                // if this it the first item added, 
+                // go ahead and change the dropdown to select it
+                if (vlcServers.Count == 1)
+                {
+                    ServerListBox.SelectedIndex = 0;
+                }
             }
         }
 

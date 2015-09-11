@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="400" Width="700">
     <Grid>
-        <TextBlock Text="Game Minutes: " TextWrapping="Wrap" TextAlignment="Left" Margin="163,103,312,0" VerticalAlignment="Top" Height="44"/>
-            <TextBox Name="MinutesBox" Text="70" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="218,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="44"/>
+        <TextBlock Text="Game Minutes: " TextWrapping="Wrap" TextAlignment="Left" Margin="250,116,395,0" VerticalAlignment="Top" Height="44"/>
+            <TextBox Name="MinutesBox" Text="70" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="310,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="44"/>
             <Button Name="UpdateClockButton"  Content="Update Clock" HorizontalAlignment="center" Margin="163,147,263,184" VerticalAlignment="Center" Width="99" Height="19" Click="SetClock_Click"/>
 
         <Button Name="StartButton" Content="Start Game" HorizontalAlignment="center" Margin="272,91,145,214" VerticalAlignment="Center" Width="108" Height="45" Click="GameStart_Click"/>

@@ -54,9 +54,14 @@ namespace AbyssConsole
                     abyssConsoleApp.RootWindow.GameControlView.AddTimerController((TimerController)physicalObject);
                 }
 
-                if(physicalObject is VLCServerControl)
+                if (physicalObject is VLCServerControl)
                 {
                     abyssConsoleApp.RootWindow.SoundView.AddVlcServer((VLCServerControl)physicalObject);
+                }
+
+                if (physicalObject is LimitlessLEDBridge)
+                {
+                    abyssConsoleApp.RootWindow.LightView.AddLEDBridge((LimitlessLEDBridge)physicalObject);
                 }
 
                 abyssConsoleApp.RootWindow.RoomView.AddPhysicalObject(physicalObject);

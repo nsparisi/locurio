@@ -30,6 +30,7 @@ namespace AbyssConsole
         public GameControlPage GameControlView { get; private set; }
         public HintSubPage HintView { get; private set; }
         public SoundSubPage SoundView { get; private set; }
+        public LightSubPage LightView { get; private set; }
 
         CountDownTimer countdownTimer;
         AbyssGameController gameController;
@@ -53,6 +54,7 @@ namespace AbyssConsole
             this.GameControlView = new GameControlPage();
             this.HintView = new HintSubPage();
             this.SoundView = new SoundSubPage();
+            this.LightView = new LightSubPage();
 
             SwapToHomeView();
 
@@ -89,6 +91,7 @@ namespace AbyssConsole
                 GameControlView.Refresh();
                 HintView.Refresh();
                 SoundView.Refresh();
+                LightView.Refresh();
 
                 lock (lockObj)
                 {
@@ -127,6 +130,17 @@ namespace AbyssConsole
             });
         }
 
+        public string GetPrettyTimeRemaining()
+        {
+            if (countdownTimer != null && gameController != null &&
+                gameController.GameState != AbyssGameController.SPGameStateType.NotRunning)
+            {
+                return ClockController.GetPrettyTimeText(countdownTimer.GetTimeRemaining());
+            }
+
+            return GameStoppedClockString;
+        }
+
         public void SwapToHomeView()
         {
             this.SubViewGrid.Children.Clear();
@@ -155,6 +169,12 @@ namespace AbyssConsole
         {
             this.SubViewGrid.Children.Clear();
             this.SubViewGrid.Children.Add(SoundView);
+        }
+
+        public void SwapToLightView()
+        {
+            this.SubViewGrid.Children.Clear();
+            this.SubViewGrid.Children.Add(LightView);
         }
 
         void OnWindowClosing(object sender, CancelEventArgs e)

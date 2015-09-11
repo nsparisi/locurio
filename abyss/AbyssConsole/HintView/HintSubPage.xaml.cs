@@ -113,9 +113,25 @@ namespace AbyssConsole
                     controller.SendTextMessage(this, EventArgs.Empty);
                 }
 
-                messageHistory.Add(this.TextBox.Text);
+                // add a prefix to message history to show time remaining
+                string prefix = string.Empty;
+                App app = (App)Application.Current;
+                if (app != null && app.RootWindow != null)
+                {
+                    prefix = string.Format("[{0}] ", app.RootWindow.GetPrettyTimeRemaining());
+                }
+
+                messageHistory.Add(prefix + this.TextBox.Text);
                 this.TextBox.Clear();
                 UpdateHistory();
+
+                // clear current selection
+                TreeViewItem selection = (TreeViewItem)this.SuggestionList.SelectedItem;
+                if (selection != null)
+                {
+                    selection.IsSelected = false;
+                    SuggestionList.Focus();
+                }
             }
         }
 

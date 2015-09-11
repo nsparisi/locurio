@@ -67,6 +67,9 @@
     <Compile Include="HomeView\HomeSubPage.xaml.cs">
       <DependentUpon>HomeSubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LightView\LightSubPage.xaml.cs">
+      <DependentUpon>LightSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RoomView\AbstractPhysicalObjectUserControl.cs" />
     <Compile Include="RoomView\SoundUserControl.xaml.cs">
       <DependentUpon>SoundUserControl.xaml</DependentUpon>
@@ -96,6 +99,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="HomeView\HomeSubPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LightView\LightSubPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -206,6 +213,27 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LightView\Images\aqua.png" />
+    <Resource Include="LightView\Images\fuchsia.png" />
+    <Resource Include="LightView\Images\green.png" />
+    <Resource Include="LightView\Images\limegreen.png" />
+    <Resource Include="LightView\Images\orange.png" />
+    <Resource Include="LightView\Images\pink.png" />
+    <Resource Include="LightView\Images\red.png" />
+    <Resource Include="LightView\Images\royalblue.png" />
+    <Resource Include="LightView\Images\violet.png" />
+    <Resource Include="LightView\Images\yellow.png" />
+    <Resource Include="LightView\Images\yelloworange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LightView\Images\white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LightView\Images\babyblue.png" />
+    <Resource Include="LightView\Images\mint.png" />
+    <Resource Include="LightView\Images\seafoamgreen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
