@@ -42,6 +42,7 @@
                         <TreeViewItem Header="Good luck - please hurry!" />
                         <TreeViewItem Header="I'm sure Nox has secrets hidden all over his dressing room, make sure you search thoroughly." />
                         <TreeViewItem Header="Nox has a tiny end table that he keeps stuff in - make sure you check it out!" />
+                        <TreeViewItem Header="Nox often tells me what to do, but I think that life is much more fun when I'm allowed to discover things for myself." />
                     </TreeViewItem>
                     <TreeViewItem Header="RINGS:">
                         <TreeViewItem Header="I've seen Nox use many different rings in his linking ring act, even very small ones." />
@@ -67,7 +68,7 @@
                         <TreeViewItem Header="Nox likes to color-coordinate his handkerchief collection." />
                         <TreeViewItem Header="In Nox's handkerchief act, he always uses every color." />
                         <TreeViewItem Header="In regards to his handkerchief act, Nox says the first handkerchief is always the start to every other part of the trick." />
-                        <TreeViewItem Header="When Nox has trouble coming up with magic words, he says that putting something in front of them is often the answer." />
+                        <TreeViewItem Header="When Nox has trouble with the magic words in his handkerchief act, he says that putting another word in front of them is often the answer." />
                     </TreeViewItem>
                     <TreeViewItem Header="BOOKS:">
                         <TreeViewItem Header="Nox should really keep his library in order!" />
