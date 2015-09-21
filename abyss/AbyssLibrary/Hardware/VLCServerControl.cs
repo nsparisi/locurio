@@ -18,6 +18,8 @@ namespace AbyssLibrary
 
         const string RequestURLFormat = "http://{0}:{1}/requests/status.xml";
 
+        private object lockObj = new object();
+
         public string ServerURL
         {
             get
@@ -92,37 +94,40 @@ namespace AbyssLibrary
                 return;
             }
 
-            HttpWebResponse response = null;
-            Stream receiveStream = null;
-            try
+            lock (lockObj)
             {
-                string urlBase = string.Format(RequestURLFormat, this.IpAddress, this.DevicePort);
-                HttpWebRequest request = WebRequest.CreateHttp(urlBase + command);
-                request.Proxy = WebRequest.DefaultWebProxy;
-                response = (HttpWebResponse)request.GetResponse();
-
-                XmlDocument xmlDoc = new XmlDocument();
-
-                if (response != null)
+                HttpWebResponse response = null;
+                Stream receiveStream = null;
+                try
                 {
-                    receiveStream = response.GetResponseStream();
-                    xmlDoc.Load(receiveStream);
+                    string urlBase = string.Format(RequestURLFormat, this.IpAddress, this.DevicePort);
+                    HttpWebRequest request = WebRequest.CreateHttp(urlBase + command);
+                    request.Proxy = WebRequest.DefaultWebProxy;
+                    response = (HttpWebResponse)request.GetResponse();
+
+                    XmlDocument xmlDoc = new XmlDocument();
+
+                    if (response != null)
+                    {
+                        receiveStream = response.GetResponseStream();
+                        xmlDoc.Load(receiveStream);
+                    }
                 }
-            }
-            catch(Exception e)
-            {
-                Debug.Log("Ran into an error during ExecuteWebRequest for VLC server.", e);
-            }
-            finally
-            {
-                if (response != null)
+                catch (Exception e)
                 {
-                    response.Close();
+                    Debug.Log("Ran into an error during ExecuteWebRequest for VLC server.", e);
                 }
-
-                if (receiveStream != null)
+                finally
                 {
-                    receiveStream.Close();
+                    if (response != null)
+                    {
+                        response.Close();
+                    }
+
+                    if (receiveStream != null)
+                    {
+                        receiveStream.Close();
+                    }
                 }
             }
         }

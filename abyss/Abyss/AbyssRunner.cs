@@ -799,7 +799,6 @@ namespace Abyss
             // When the game is lost, turn off all sounds, 
             // TODO: currently leaving wind effects playing, maybe should change
             sp_gameController.GameLost += sp_soundDressingRoom01.Stop;
-            sp_gameController.GameLost += sp_soundSecretRoom01.Stop;
 
             // Wait for just a moment to sounds to stop
             sp_gameController.GameLost += sp_delayLoseWaitForSoundStop.Start;
