@@ -137,6 +137,17 @@ namespace AbyssConsole
 
         private void ClearMessageHistory_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult messageBoxResult =
+                System.Windows.MessageBox.Show(
+                "Are you sure you want to clear the hint history? This will clear all the hints from the HINT PHONES.",
+                "Confirm Clear History",
+                System.Windows.MessageBoxButton.OKCancel);
+
+            if (!(messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes))
+            {
+                return;
+            }
+
             if (controllerSubProcessors != null)
             {
                 foreach (SPTextingController controller in controllerSubProcessors)

@@ -79,6 +79,10 @@ namespace AbyssConsole
             {
                 // ignore   
             }
+            else if (physicalObject is TimerController)
+            {
+                // ignore   
+            }
             else
             {
                 uiItem = new PhysicalObjectUserControl(physicalObject);

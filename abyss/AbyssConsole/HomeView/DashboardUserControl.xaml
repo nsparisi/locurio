@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="270" Width="270">
+             mc:Ignorable="d" Height="220" Width="220">
     <UserControl.Resources>
         <BitmapImage x:Key="DebugIcon" UriSource="Images/DebugIcon.png"/>
         <BitmapImage x:Key="DeviceManagerIcon" UriSource="Images/DeviceManagerIcon.png"/>
@@ -14,12 +14,12 @@
         <BitmapImage x:Key="SettingsIcon" UriSource="Images/SettingsIcon.png"/>
         <BitmapImage x:Key="SoundIcon" UriSource="Images/SoundIcon.png"/>
     </UserControl.Resources>
-    <Grid Name="Grid" Style="{StaticResource SecondaryBGColor}" Width="238" Height="238" >
+    <Grid Name="Grid" Style="{StaticResource SecondaryBGColor}" Width="200" Height="200" >
         <Label>
             <!-- Labels are clickable for some reason. This label kept blank -->
         </Label>
-        <Label Name="TileLabel" Content="HINTS" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,197,0,0" Height="41"/>
-        <Image Name="TileIcon" Source="{StaticResource DebugIcon}" IsEnabled="True" Width="147" Margin="46,0,46,41"/>
+        <Label Name="TileLabel" Content="HINTS" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,0,0,0" Height="41"/>
+        <Image Name="TileIcon" Source="{StaticResource DebugIcon}" IsEnabled="True" Width="120" Height="120" Margin="0,0,0,30" HorizontalAlignment="Center"/>
         <Rectangle Name="Fade" Fill="Black" HorizontalAlignment="Stretch" Opacity="0.0" />
     </Grid>
 </AbyssConsole:AbstractThumbnailUserControl>
