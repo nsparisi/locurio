@@ -23,7 +23,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPDelay Start [{0}]", Name);
+            Debug.Log("SPDelay Start [{0}] [{1} ms]", Name, DurationMs);
             Thread.Sleep(DurationMs);
 
             ProcessEnded();

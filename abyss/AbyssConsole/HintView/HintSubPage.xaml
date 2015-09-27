@@ -43,6 +43,8 @@
                         <TreeViewItem Header="I'm sure Nox has secrets hidden all over his dressing room, make sure you search thoroughly." />
                         <TreeViewItem Header="Nox has a tiny end table that he keeps stuff in - make sure you check it out!" />
                         <TreeViewItem Header="Nox often tells me what to do, but I think that life is much more fun when I'm allowed to discover things for myself." />
+                        <TreeViewItem Header="Make sure not to climb on any furniture or pull things down off the walls. Nox will be suspicious if anything gets broken!" />
+                        <TreeViewItem Header="Make sure you're careful with Nox's stuff. He'll be suspicious if anything gets broken!" />
                     </TreeViewItem>
                     <TreeViewItem Header="RINGS:">
                         <TreeViewItem Header="I've seen Nox use many different rings in his linking ring act, even very small ones." />
@@ -97,6 +99,7 @@
                 <TreeViewItem Header="SECRET ROOM:">
                     <TreeViewItem Header="GENERAL:">
                         <TreeViewItem Header="In his darker acts, Nox often likes to use a lantern to help the audience see in the dim lighting." />
+                        <TreeViewItem Header="The audience has demanded an encore! You should have 5 extra minutes to investigate." />
                     </TreeViewItem>
                     <TreeViewItem Header="BONES:">
                         <TreeViewItem Header="Nox is very strict about dating. He says I'm a seven and should stick with other sevens - leave the sixes with the other sixes and so on. What a jerk!" />

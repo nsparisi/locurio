@@ -316,7 +316,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
-                Color = LimitlessLEDBridge.ColorType.Yellow_Orange,
+                Color = LimitlessLEDBridge.ColorType.Royal_Blue,
                 Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightTestSetAllColor);

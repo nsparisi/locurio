@@ -47,7 +47,8 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPTextingController Start [{0}]", Name);
+            string debugText = string.IsNullOrEmpty(TextMessage) ? string.Empty : TextMessage;
+            Debug.Log("SPTextingController Start [{0}] [text: {1}...]", Name, debugText.TruncateLongString(30));
 
             foreach (TextingController controller in TextingControllers)
             {

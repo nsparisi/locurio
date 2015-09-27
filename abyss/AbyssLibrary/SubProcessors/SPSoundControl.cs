@@ -71,7 +71,8 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPSoundControl Start [{0}]", Name);
+            Debug.Log("SPSoundControl Start [{0}] [play: {1}] [pause: {2}] [setvol: {3}] [stop: {4}] [file: {5}] [volume: {6}]", 
+                Name, calledPlay, calledPause, calledSetVolume, calledStop, SongFileName, Volume);
 
             foreach (VLCServerControl controller in VLCControllers)
             {

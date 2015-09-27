@@ -50,7 +50,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPXBeeEndpoint Start [{0}]", Name);
+            Debug.Log("SPXBeeEndpoint Start [{0}] [msg: {1}]", Name, SendMessage);
 
             foreach (XBeeEndpoint endpoint in Endpoints)
             {

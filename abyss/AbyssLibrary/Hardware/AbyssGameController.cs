@@ -22,12 +22,14 @@ namespace AbyssLibrary
         public event AbyssEvent GameEnteredTestMode;
 
         public bool CanStart { get { return GameState == SPGameStateType.NotRunning; } }
-        public bool CanWin { get { return GameState != SPGameStateType.NotRunning; } }
-        public bool CanLose { get { return GameState != SPGameStateType.NotRunning; } }
+        public bool CanWin { get { return true; } }
+        public bool CanLose { get { return true; } }
         public bool CanPause { get { return GameState == SPGameStateType.Running; } }
         public bool CanUnPause { get { return GameState == SPGameStateType.Paused; } }
         public bool CanStop { get { return true; } }
         public bool CanEnterTestMode { get { return GameState == SPGameStateType.NotRunning; } }
+
+        public bool PreventFromLosing {get; set;}
         
         public AbyssGameController(string name)
             : base(name)
@@ -56,7 +58,7 @@ namespace AbyssLibrary
         public void Lose()
         {
             // lose if game is running or even if paused
-            if (CanLose)
+            if (CanLose && !PreventFromLosing)
             {
                 GameState = SPGameStateType.NotRunning;
                 OnGameLost(this, EventArgs.Empty);

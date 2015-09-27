@@ -63,7 +63,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPTimerController Start [{0}]", Name);
+            Debug.Log("SPTimerController Start [{0}] [type: {1}] [time: {2}]", Name, settingType, TimeInMilliseconds);
             TimerType localType = settingType;
 
             foreach (TimerController controller in TimerControllers)

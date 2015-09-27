@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AbyssLibrary
 {
-    public class AbyssUtils
+    public static class AbyssUtils
     {
         public static string AbyssCommonDirectory
         {
@@ -55,6 +55,11 @@ namespace AbyssLibrary
             {
                 // ignore if this fails.
             }
+        }
+
+        public static string TruncateLongString(this string str, int maxLength)
+        {
+            return str.Substring(0, Math.Min(str.Length, maxLength));
         }
     }
 }

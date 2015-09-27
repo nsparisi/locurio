@@ -80,7 +80,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPLightBulb Start [{0}]", Name);
+            Debug.Log("SPLightBulb Start [{0}] [command: {1}] [brightness: {2}] [color: {3}]", Name, Command, Brightness, Color);
             
             foreach (LimitlessLEDBridge bridge in this.Bridges)
             {

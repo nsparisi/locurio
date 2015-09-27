@@ -106,7 +106,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log("SPGame Start [{0}]", Name);
+            Debug.Log("SPGame Start [{0}] [type: {1}]", Name, eventType);
 
             foreach (AbyssGameController game in Games)
             {
