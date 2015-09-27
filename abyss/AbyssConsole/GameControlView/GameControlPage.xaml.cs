@@ -175,6 +175,7 @@ namespace AbyssConsole
                     AbyssSystem.Instance.DisableAllSubProcessors();
                     Thread.Sleep(500);
                     AbyssSystem.Instance.EnableAllSubProcessors();
+                    Thread.Sleep(200);
                     SetClockUsingMinutesBox();
                     gameController.Start();
                 }

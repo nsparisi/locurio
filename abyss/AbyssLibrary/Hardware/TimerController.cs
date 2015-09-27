@@ -20,6 +20,8 @@ namespace AbyssLibrary
         private const string Timer_Reset = "TIMER_RESET";
         private const string Timer_Set_Time = "TIMER_SET_TIME";
 
+        private object lockObj = new object();
+
         public TimerController(string name, string deviceMacAddress)
             : base(name, deviceMacAddress)
         {
@@ -63,21 +65,24 @@ namespace AbyssLibrary
                 toSend += "\r\n";
             }
 
-            Socket clientSocket = null;
-
-            try
+            lock(lockObj)
             {
-                IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse(IpAddress), ServerPort);
-                byte[] toSendBytes = System.Text.Encoding.ASCII.GetBytes(toSend);
+                Socket clientSocket = null;
 
-                clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                clientSocket.Connect(serverAddress);
-                clientSocket.Send(toSendBytes);
-                clientSocket.Close();
-            }
-            catch(Exception e)
-            {
-                Debug.Log("Problem sending text message:", e);
+                try
+                {
+                    IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse(IpAddress), ServerPort);
+                    byte[] toSendBytes = System.Text.Encoding.ASCII.GetBytes(toSend);
+
+                    clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    clientSocket.Connect(serverAddress);
+                    clientSocket.Send(toSendBytes);
+                    clientSocket.Close();
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Problem sending text message:", e);
+                }
             }
         }
     }
