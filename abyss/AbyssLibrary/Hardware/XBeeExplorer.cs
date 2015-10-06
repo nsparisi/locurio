@@ -102,6 +102,7 @@ namespace AbyssLibrary
                     int delimiterIndex = data.IndexOf(Delimiter);
                     endpointID = data.Substring(0, delimiterIndex);
                     message = data.Substring(delimiterIndex + Delimiter.Length);
+                    Debug.Log("Msg: {0}", message);
                 }
 
                 if (!string.IsNullOrEmpty(endpointID) && !string.IsNullOrEmpty(message))

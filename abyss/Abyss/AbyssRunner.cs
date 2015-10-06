@@ -248,7 +248,7 @@ namespace Abyss
 
             SPXBeeEndpoint sp_altarTagPresent = new SPXBeeEndpoint()
             {
-                ExpectedMessage = "WORDTAGPRESENT",
+                ExpectedMessage = "IGNORE_WORDTAGPRESENT",
                 Endpoints = MakeList(altarArduino)
             };
 
