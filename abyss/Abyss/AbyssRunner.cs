@@ -23,7 +23,7 @@ namespace Abyss
         public const float SoundAltarWhispersVolume = 0f;
         public const float SoundNoxSuccessNarrationVolume = 280f;
         public const float SoundNoxFailureNarrationSecretVolume = 280f;
-        public const float SoundNoxFailureNarrationDressVolume = 280f;
+        public const float SoundNoxFailureNarrationDressVolume = 400f;
 
         public void Start()
         {
@@ -130,7 +130,7 @@ namespace Abyss
                 Name = "Altar Wind Effect",
                 SongFileName = SoundAltarWindSFXFileName,
                 Volume = SoundAltarWindSFXVolume,
-                VLCControllers = MakeList(vlc02_02)
+                VLCControllers = MakeList(vlc02)
             };
 
             SPSoundControl sp_soundAltarWhispers = new SPSoundControl()
@@ -356,7 +356,7 @@ namespace Abyss
             // TODO: enable secret room ambience
             sp_gameController.GameStarted += sp_soundDressingRoomBGM.Play;
             sp_gameController.GameStarted += sp_soundSecretRoom01.Stop;
-            sp_gameController.GameStarted += sp_soundSecretRoom02.Stop;
+            // sp_gameController.GameStarted += sp_soundSecretRoom02.Stop;
             sp_gameController.GameStarted += sp_countdownScreen.Start;
             sp_gameController.GameStarted += sp_timerControllerMotorola.StartTimer;
             sp_gameController.GameStarted += sp_timerControllerAlcatel.StartTimer;
@@ -420,7 +420,7 @@ namespace Abyss
             // whiten all lights
             sp_gameController.GameStopped += sp_soundDressingRoom01.Stop;
             sp_gameController.GameStopped += sp_soundSecretRoom01.Stop;
-            sp_gameController.GameStopped += sp_soundSecretRoom02.Stop;
+            //sp_gameController.GameStopped += sp_soundSecretRoom02.Stop;
             sp_gameController.GameStopped += sp_countdownScreen.Stop;
             sp_gameController.GameStopped += sp_lightAllWhite.Run;
             sp_gameController.GameStopped += sp_lightAllFullBrightness.Run;
@@ -432,7 +432,7 @@ namespace Abyss
             // pause all music and sounds, pause game timer
             sp_gameController.GamePaused += sp_soundDressingRoom01.Pause;
             sp_gameController.GamePaused += sp_soundSecretRoom01.Pause;
-            sp_gameController.GamePaused += sp_soundSecretRoom02.Pause;
+            // sp_gameController.GamePaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GamePaused += sp_countdownScreen.Stop;
             sp_gameController.GamePaused += sp_timerControllerMotorola.SuspendTimer;
             sp_gameController.GamePaused += sp_timerControllerAlcatel.SuspendTimer;
@@ -442,7 +442,7 @@ namespace Abyss
             // TODO: 'pause' message is sent to music devices. this is both for pause and unpause. can be dangerous if spamming.
             sp_gameController.GameUnPaused += sp_soundDressingRoom01.Pause;
             sp_gameController.GameUnPaused += sp_soundSecretRoom01.Pause;
-            sp_gameController.GameUnPaused += sp_soundSecretRoom02.Pause;
+            // sp_gameController.GameUnPaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GameUnPaused += sp_countdownScreen.Start;
             sp_gameController.GameUnPaused += sp_timerControllerMotorola.StartTimer;
             sp_gameController.GameUnPaused += sp_timerControllerAlcatel.StartTimer;

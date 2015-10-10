@@ -10,7 +10,7 @@ namespace AbyssLibrary
 {
     internal class XBeeExplorer
     {
-        const string ComPort = "COM4";
+        const string ComPort = "COM3";
         const string Delimiter = "::";
         private SerialPort port;
 
