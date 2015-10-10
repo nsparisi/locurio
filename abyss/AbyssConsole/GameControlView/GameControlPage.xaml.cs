@@ -361,7 +361,7 @@ namespace AbyssConsole
             if(this.gameController != null && DressingRoomCheckbox.IsChecked.HasValue)
             {
                 Debug.Log("Preventing game from losing [{0}]", DressingRoomCheckbox.IsChecked.Value);
-                this.gameController.PreventFromLosing = DressingRoomCheckbox.IsChecked.Value;
+                this.gameController.StillInDressingRoom = DressingRoomCheckbox.IsChecked.Value;
             }
         }
     }

@@ -13,7 +13,8 @@ namespace Abyss
         public const string SoundAltarWindSFXFileName = "Altar.mp3";
         public const string SoundAltarWhispersFileName = "";
         public const string SoundNoxSuccessNarrationFileName = "endgame_win.mp3";
-        public const string SoundNoxFailureNarrationFileName = "EndgameLoseNew.mp3";
+        public const string SoundNoxFailureNarrationSecretFileName = "EndgameLoseNew.mp3";
+        public const string SoundNoxFailureNarrationDressFileName = "LoseEarly.mp3";
 
         public const float SoundDressingRoomBGMVolume = 450f;
         public const float SoundSecretRoomBGMVolume = 0f;
@@ -21,7 +22,8 @@ namespace Abyss
         public const float SoundAltarWindSFXVolume = 200f;
         public const float SoundAltarWhispersVolume = 0f;
         public const float SoundNoxSuccessNarrationVolume = 280f;
-        public const float SoundNoxFailureNarrationVolume = 280f;
+        public const float SoundNoxFailureNarrationSecretVolume = 280f;
+        public const float SoundNoxFailureNarrationDressVolume = 280f;
 
         public void Start()
         {
@@ -147,12 +149,20 @@ namespace Abyss
                 VLCControllers = MakeList(vlc02)
             };
 
-            SPSoundControl sp_soundNoxFailureNarration = new SPSoundControl()
+            SPSoundControl sp_soundNoxFailureNarrationSecret = new SPSoundControl()
             {
-                Name = "Nox Fail Narration",
-                SongFileName = SoundNoxFailureNarrationFileName,
-                Volume = SoundNoxFailureNarrationVolume,
+                Name = "Nox Fail Narration Secret Room",
+                SongFileName = SoundNoxFailureNarrationSecretFileName,
+                Volume = SoundNoxFailureNarrationSecretVolume,
                 VLCControllers = MakeList(vlc02)
+            };
+            
+            SPSoundControl sp_soundNoxFailureNarrationDress = new SPSoundControl()
+            {
+                Name = "Nox Fail Narration Dressing Room",
+                SongFileName = SoundNoxFailureNarrationDressFileName,
+                Volume = SoundNoxFailureNarrationDressVolume,
+                VLCControllers = MakeList(vlc01)
             };
 
             AbyssSystem.Instance.RegisterPhysicalObject(vlc01);
@@ -167,7 +177,8 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundAltarWhispers);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundAltarWindEffect);
             AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxSuccessNarration);
-            AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxFailureNarration);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxFailureNarrationSecret);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_soundNoxFailureNarrationDress);
             sp_soundDressingRoom01.Initialize();
             sp_soundSecretRoom01.Initialize();
             sp_soundSecretRoom02.Initialize();
@@ -176,7 +187,8 @@ namespace Abyss
             sp_soundAltarWhispers.Initialize();
             sp_soundAltarWindEffect.Initialize();
             sp_soundNoxSuccessNarration.Initialize();
-            sp_soundNoxFailureNarration.Initialize();
+            sp_soundNoxFailureNarrationSecret.Initialize();
+            sp_soundNoxFailureNarrationDress.Initialize();
             sp_soundAltarTouch.Initialize();
 
             // ***********************
@@ -384,14 +396,23 @@ namespace Abyss
             // LOSE CONDITION
             sp_countdownScreen.CountdownExpired += sp_gameController.Lose;
 
+
             // if the game is lost, prevent anything from coming outta the altar
-            sp_gameController.GameLost += sp_altarPowerOn.Disable;
-            sp_gameController.GameLost += sp_altarTopStart.Disable;
-            sp_gameController.GameLost += sp_altarTopSolved.Disable;
-            sp_gameController.GameLost += sp_altarWordBegin.Disable;
-            sp_gameController.GameLost += sp_altarTagPresent.Disable;
-            sp_gameController.GameLost += sp_altarWordSolved.Disable;
-            sp_gameController.GameLost += sp_altarWordFailed.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarPowerOn.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarTopStart.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarTopSolved.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarWordBegin.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarTagPresent.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarWordSolved.Disable;
+            sp_gameController.GameLostInSecretRoom += sp_altarWordFailed.Disable;
+
+            sp_gameController.GameLostInDressingRoom += sp_altarPowerOn.Disable;
+            sp_gameController.GameLostInDressingRoom += sp_altarTopStart.Disable;
+            sp_gameController.GameLostInDressingRoom += sp_altarTopSolved.Disable;
+            sp_gameController.GameLostInDressingRoom += sp_altarWordBegin.Disable;
+            sp_gameController.GameLostInDressingRoom += sp_altarTagPresent.Disable;
+            sp_gameController.GameLostInDressingRoom += sp_altarWordSolved.Disable;
+            sp_gameController.GameLostInDressingRoom += sp_altarWordFailed.Disable;
 
             //--------------------
             // FULL STOP and RESET
@@ -798,14 +819,14 @@ namespace Abyss
 
             // When the game is lost, turn off all sounds, 
             // TODO: currently leaving wind effects playing, maybe should change
-            sp_gameController.GameLost += sp_soundDressingRoom01.Stop;
+            sp_gameController.GameLostInSecretRoom += sp_soundDressingRoom01.Stop;
 
             // Wait for just a moment to sounds to stop
-            sp_gameController.GameLost += sp_delayLoseWaitForSoundStop.Start;
+            sp_gameController.GameLostInSecretRoom += sp_delayLoseWaitForSoundStop.Start;
 
             // Then, play the Nox soundtrack
             // turn all lights to red and dim all lights a bit
-            sp_delayLoseWaitForSoundStop.Finished += sp_soundNoxFailureNarration.Play;
+            sp_delayLoseWaitForSoundStop.Finished += sp_soundNoxFailureNarrationSecret.Play;
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseRedAll.Run;
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseRedAll.Run;
             sp_delayLoseWaitForSoundStop.Finished += sp_lightLoseRedAll.Run;
@@ -815,7 +836,7 @@ namespace Abyss
             // RequestFinishedSending will ensure the raspberry pi had acknowleged the request
             // first, before starting this timer. This will hopefully keep this sequence in sync, 
             // if there is a delay in starting the narration.
-            sp_soundNoxFailureNarration.RequestFinishedSending += sp_delayLoseWaitForNox.Start;
+            sp_soundNoxFailureNarrationSecret.RequestFinishedSending += sp_delayLoseWaitForNox.Start;
 
             // dim the lights to as low as possible
             // then turn off the lights (hacky transition)
@@ -830,6 +851,39 @@ namespace Abyss
             sp_delayLoseWaitForOff.Finished += sp_lightLoseWhiteAll.Run;
             sp_delayLoseWaitForOff.Finished += sp_delayLoseWaitForWhite.Start;
             sp_delayLoseWaitForWhite.Finished += sp_lightLoseLightenAll.Run;
+
+            // *****************************************
+            // Lose Game Sequence for DRESSING ROOM
+            // *****************************************
+
+            // 43s is just before Nox laughing
+            SPDelay sp_delayLoseDressWaitForNox = new SPDelay()
+            {
+                DurationMs = 32 * 1000
+            };
+            sp_delayLoseDressWaitForNox.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseDressWaitForNox);
+
+            // play the Nox soundtrack
+            // turn all lights to red and dim all lights a bit
+            sp_gameController.GameLostInDressingRoom += sp_soundNoxFailureNarrationDress.Play;
+            sp_gameController.GameLostInDressingRoom += sp_lightLoseRedAll.Run;
+            sp_gameController.GameLostInDressingRoom += sp_lightLoseRedAll.Run;
+            sp_gameController.GameLostInDressingRoom += sp_lightLoseRedAll.Run;
+            sp_gameController.GameLostInDressingRoom += sp_lightLoseHalfDimAll.Run;
+            sp_gameController.GameLostInDressingRoom += sp_lightLoseHalfDimAll.Run;
+            sp_gameController.GameLostInDressingRoom += sp_lightLoseHalfDimAll.Run;
+
+            // Wait for the Nox narration to reach an appropriate timing
+            // RequestFinishedSending will ensure the raspberry pi had acknowleged the request
+            // first, before starting this timer. This will hopefully keep this sequence in sync, 
+            // if there is a delay in starting the narration.
+            sp_soundNoxFailureNarrationDress.RequestFinishedSending += sp_delayLoseDressWaitForNox.Start;
+
+            // dim the lights to as low as possible
+            // then turn off the lights (defined above, reuse of scripting here)
+            sp_delayLoseDressWaitForNox.Finished += sp_lightLoseDimAll.Run;
+            sp_delayLoseDressWaitForNox.Finished += sp_delayLoseWaitForDim.Start;
         }
 
         private List<T> MakeList<T>(params T[] listItems)

@@ -15,7 +15,8 @@ namespace AbyssLibrary
 
         public event AbyssEvent GameStarted;
         public event AbyssEvent GameWon;
-        public event AbyssEvent GameLost;
+        public event AbyssEvent GameLostInDressingRoom;
+        public event AbyssEvent GameLostInSecretRoom;
         public event AbyssEvent GamePaused;
         public event AbyssEvent GameUnPaused;
         public event AbyssEvent GameStopped;
@@ -29,7 +30,7 @@ namespace AbyssLibrary
         public bool CanStop { get { return true; } }
         public bool CanEnterTestMode { get { return GameState == SPGameStateType.NotRunning; } }
 
-        public bool PreventFromLosing {get; set;}
+        public bool StillInDressingRoom {get; set;}
         
         public AbyssGameController(string name)
             : base(name)
@@ -57,11 +58,15 @@ namespace AbyssLibrary
 
         public void Lose()
         {
-            // lose if game is running or even if paused
-            if (CanLose && !PreventFromLosing)
+            if (CanLose && !StillInDressingRoom)
             {
                 GameState = SPGameStateType.NotRunning;
-                OnGameLost(this, EventArgs.Empty);
+                OnGameLostInSecretRoom(this, EventArgs.Empty);
+            }
+            else if (CanLose && StillInDressingRoom)
+            {
+                GameState = SPGameStateType.NotRunning;
+                OnGameLostInDressingRoom(this, EventArgs.Empty);
             }
         }
 
@@ -118,11 +123,19 @@ namespace AbyssLibrary
             }
         }
 
-        private void OnGameLost(object sender, EventArgs e)
+        private void OnGameLostInDressingRoom(object sender, EventArgs e)
         {
-            if (GameLost != null)
+            if (GameLostInDressingRoom != null)
             {
-                GameLost(sender, e);
+                GameLostInDressingRoom(sender, e);
+            }
+        }
+
+        private void OnGameLostInSecretRoom(object sender, EventArgs e)
+        {
+            if (GameLostInSecretRoom != null)
+            {
+                GameLostInSecretRoom(sender, e);
             }
         }
 

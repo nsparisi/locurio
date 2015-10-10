@@ -73,7 +73,9 @@ namespace AbyssLibrary
         [AbyssOutput]
         public event AbyssEvent GameWon;
         [AbyssOutput]
-        public event AbyssEvent GameLost;
+        public event AbyssEvent GameLostInSecretRoom;
+        [AbyssOutput]
+        public event AbyssEvent GameLostInDressingRoom;
         [AbyssOutput]
         public event AbyssEvent GamePaused;
         [AbyssOutput]
@@ -96,7 +98,8 @@ namespace AbyssLibrary
             {
                 game.GameStarted += OnGameStarted;
                 game.GameWon += OnGameWon;
-                game.GameLost += OnGameLost;
+                game.GameLostInDressingRoom += OnGameLostInDressingRoom;
+                game.GameLostInSecretRoom += OnGameLostInSecretRoom;
                 game.GamePaused += OnGamePaused;
                 game.GameStopped += OnGameStopped;
                 game.GameUnPaused += OnGameUnPaused;
@@ -165,11 +168,19 @@ namespace AbyssLibrary
             }
         }
 
-        private void OnGameLost(object sender, EventArgs e)
+        private void OnGameLostInDressingRoom(object sender, EventArgs e)
         {
-            if (GameLost != null)
+            if (GameLostInDressingRoom != null)
             {
-                GameLost(sender, e);
+                GameLostInDressingRoom(sender, e);
+            }
+        }
+
+        private void OnGameLostInSecretRoom(object sender, EventArgs e)
+        {
+            if (GameLostInSecretRoom != null)
+            {
+                GameLostInSecretRoom(sender, e);
             }
         }
 
