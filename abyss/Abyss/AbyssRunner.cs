@@ -476,7 +476,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zones = secretRoomZones,
-                Color = LimitlessLEDBridge.ColorType.Green,
+                Color = LimitlessLEDBridge.ColorType.Lime_Green,
                 Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightGameStartSecret);
@@ -791,7 +791,7 @@ namespace Abyss
             // 43s is just before Nox laughing
             SPDelay sp_delayLoseWaitForNox = new SPDelay()
             {
-                DurationMs = 43 * 1000
+                DurationMs = 37 * 1000
             };
             sp_delayLoseWaitForNox.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForNox);
@@ -805,7 +805,7 @@ namespace Abyss
 
             SPDelay sp_delayLoseWaitForOff = new SPDelay()
             {
-                DurationMs = 11 * 1000
+                DurationMs = 10 * 1000
             };
             sp_delayLoseWaitForOff.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_delayLoseWaitForOff);

@@ -48,13 +48,14 @@
                     </TreeViewItem>
                     <TreeViewItem Header="RINGS:">
                         <TreeViewItem Header="I've seen Nox use many different rings in his linking ring act, even very small ones." />
-                        <TreeViewItem Header="I found a handcuff key backstage - I'm going to slide it under the door in case it's helpful!" />
+                        <TreeViewItem Header="I found a handcuff key backstage - I'm going to bring it to you in case it's helpful!" />
                     </TreeViewItem>
                     <TreeViewItem Header="PLAYING CARDS:">
                         <TreeViewItem Header="Nox says that when he designs a playing card trick, it's important to view it through the eyes of others." />
                         <TreeViewItem Header="Nox often performs his playing card act while wearing a disguise." />
                         <TreeViewItem Header="Nox only uses a mask while performing his playing card trick, and no others." />
                         <TreeViewItem Header="Nox's playing card act uses 12 cards with special backs." />
+                        <TreeViewItem Header="Nox's playing card act uses 12 cards arranged in a 4x3 grid." />
                         <TreeViewItem Header="Nox doesn't believe in waste - when it comes to his playing card act, he even uses the box!" />
                         <TreeViewItem Header="When it comes to Nox's playing card act, he says I'll know what to do if I think outside of the box and follow his lines." />
                         <TreeViewItem Header="I believe that if you play your cards right, life imitates art." />
@@ -67,7 +68,7 @@
                     </TreeViewItem>
                     <TreeViewItem Header="HANDKERCHIEFS:">
                         <TreeViewItem Header="Nox uses a LOT of handkerchiefs in his act." />
-                        <TreeViewItem Header="Sometimes in his handkerchief act, they can get stuck in Nox's jacket - it's embarrassing, but he just gives them a good tug and they pop right out." />
+                        <TreeViewItem Header="Sometimes the handkerchiefs in Nox's act get stuck in his jacket - it's embarrassing, but he just gives them a good tug and they pop right out." />
                         <TreeViewItem Header="Nox likes to color-coordinate his handkerchief collection." />
                         <TreeViewItem Header="In Nox's handkerchief act, he always uses every color." />
                         <TreeViewItem Header="In regards to his handkerchief act, Nox says the first handkerchief is always the start to every other part of the trick." />
@@ -86,7 +87,7 @@
                         <TreeViewItem Header="Nox is so vain - I can't believe how many old show posters he keeps around." />
                         <TreeViewItem Header="It's well-known that Nox often likes to add and subtract numbers from his show." />
                         <TreeViewItem Header="Nox thinks it's important that each and every show be unique. He never carries over numbers from one to the next." />
-                        <TreeViewItem Header="Nox likes to include a catchy tagline in each of his show advertisements." />
+                        <TreeViewItem Header="Nox likes to include a catchy tagline at the bottom of each of his show advertisements." />
                     </TreeViewItem>
                     <TreeViewItem Header="CABINET:">
                         <TreeViewItem Header="Some people don't like enclosed spaces, but Nox says he finds it comforting to be in small, dark places." />
@@ -102,28 +103,32 @@
                         <TreeViewItem Header="The audience has demanded an encore! You should have 5 extra minutes to investigate." />
                     </TreeViewItem>
                     <TreeViewItem Header="BONES:">
-                        <TreeViewItem Header="Nox is very strict about dating. He says I'm a seven and should stick with other sevens - leave the sixes with the other sixes and so on. What a jerk!" />
+                        <TreeViewItem Header="Nox is very strict about dating. He says I'm a seven and should stick with other sevens - leave the sixes with the other sixes and so on. I have a bone to pick with that guy!" />
                         <TreeViewItem Header="In his promotional materials, Nox often crafts letters out of arcane symbols." />
                     </TreeViewItem>
                     <TreeViewItem Header="MIRROR:">
+                        <TreeViewItem Header="Nox said that if I tried to quit, it would be curtains for me! Threats like that really reflect his character." />
                         <TreeViewItem Header="Nox likes to say that when things line up in life, everything starts to make sense." />
                         <TreeViewItem Header="The key to seeing a magic trick is all about where you stand." />
                     </TreeViewItem>
                     <TreeViewItem Header="BLOOD:">
                         <TreeViewItem Header="Nox is so old-fashioned, he calls films 'moving pictures.'" />
+                        <TreeViewItem Header="The police haven't been able to prove anything, but I know Nox has blood on his hands." />
                         <TreeViewItem Header="When cleaning up after a show, Nox likes to tell me that everything has a proper place and should be put there." />
                         <TreeViewItem Header="Some people like to read between the lines, but Nox prefers to read above them." />
                     </TreeViewItem>
                     <TreeViewItem Header="DEMONS:">
                         <TreeViewItem Header="The first thing Nox ever told me is that you have to listen closely or else you might miss a few things." />
                         <TreeViewItem Header="When it comes to illusions, Nox says if you just equate what you hear to what you see, everything becomes clear." />
-                        <TreeViewItem Header="Eight is Nox's lucky number. That's how many columns he's been featured in." />
+                        <TreeViewItem Header="Eight is Nox's lucky number. That's how many columns he's been featured in exactly once." />
                         <TreeViewItem Header="In rehearsals, Nox usually makes me double-check my work, since I always seem to have trouble in the - and - acts." />
                         <TreeViewItem Header="Nox is fluent in many languages, but he says he prefers the ones that read from left to right." />
                     </TreeViewItem>
                     <TreeViewItem Header="ALTAR:">
                         <TreeViewItem Header="Manipulating emotions in his act is one of Nox's specialties. He says you just need to find what's most dear to someone and use it in the right spot." />
                         <TreeViewItem Header="Nox is always complaining about his old assistant Bradley, because he claims he was homesick all the time." />
+                        <TreeViewItem Header="Nox keeps a lot of knick-knacks in his dressing  room. I always wondered who gave him that unusual snow globe!" />
+                        <TreeViewItem Header="One of Nox's former assistants used to be a ballerina. I hear you have to be really centered and always hit your mark to perform well in ballet!" />
                         <TreeViewItem Header="Nox refuses to perform magic without his wand." />
                         <TreeViewItem Header="Nox always says that timing is everything!" />
                         <TreeViewItem Header="Whenever a trick goes wrong, Nox insists on starting over from the very beginning." />
