@@ -23,6 +23,7 @@ public class MessageService extends Service
     public static MessageService instance;
 
     public static final int SERVER_PORT = 6000;
+    private static final String HEARTBEAT = "HEARTBEAT";
     private static final String CLEAR_MESSAGE_HISTORY = "CLEAR_MESSAGE_HISTORY";
     private static final String TIMER_START = "TIMER_START";
     private static final String TIMER_SUSPEND = "TIMER_SUSPEND";
@@ -180,6 +181,10 @@ public class MessageService extends Service
                 if(line == null)
                 {
                     Debug.log("********received null message. Exiting");
+                }
+                else if(line.equals(HEARTBEAT))
+                {
+                    Debug.log("********received heartbeat request. Exiting");
                 }
                 else if(line.equals(CLEAR_MESSAGE_HISTORY))
                 {

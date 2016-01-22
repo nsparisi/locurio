@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -15,10 +16,21 @@ namespace AbyssLibrary
         // port the android texting app is listening on
         private const int ServerPort = 6000;
         private const string Clear_Message_History = "CLEAR_MESSAGE_HISTORY";
-        
+        private const string Heartbeat = "HEARTBEAT";
+
+        public bool IsHeartbeatHealthy { get; private set; }
+        Timer heartbeatTimer;
+
         public TextingController(string name, string deviceMacAddress)
             : base(name, deviceMacAddress)
         {
+            IsHeartbeatHealthy = true;
+            heartbeatTimer = new Timer(PollHeartbeat, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+        }
+
+        private void PollHeartbeat(object obj)
+        {
+            SendTextMessage(Heartbeat);
         }
 
         public void ClearHistory()
@@ -48,6 +60,7 @@ namespace AbyssLibrary
 
             try
             {
+                Debug.Log("Trying to send packet: {0}", toSend);
                 IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse(IpAddress), ServerPort);
                 byte[] toSendBytes = System.Text.Encoding.ASCII.GetBytes(toSend);
 
@@ -55,10 +68,12 @@ namespace AbyssLibrary
                 clientSocket.Connect(serverAddress);
                 clientSocket.Send(toSendBytes);
                 clientSocket.Close();
+                IsHeartbeatHealthy = true;
             }
             catch(Exception e)
             {
                 Debug.Log("Problem sending text message:", e);
+                IsHeartbeatHealthy = false;
             }
         }
     }
