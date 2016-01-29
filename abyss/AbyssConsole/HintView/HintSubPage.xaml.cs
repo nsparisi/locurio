@@ -134,6 +134,28 @@ namespace AbyssConsole
                 }
             }
         }
+        
+        private void PingMessage_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult =
+                System.Windows.MessageBox.Show(
+                "Are you sure you want to ping the phone? This will make the phone light up and play the hint notification sound.",
+                "Confirm Ping Phone",
+                System.Windows.MessageBoxButton.OKCancel);
+
+            if (!(messageBoxResult == MessageBoxResult.OK || messageBoxResult == MessageBoxResult.Yes))
+            {
+                return;
+            }
+
+            if (controllerSubProcessors != null)
+            {
+                foreach (SPTextingController controller in controllerSubProcessors)
+                {
+                    controller.PingMessage(this, EventArgs.Empty);
+                }
+            }
+        }
 
         private void ClearMessageHistory_Click(object sender, RoutedEventArgs e)
         {

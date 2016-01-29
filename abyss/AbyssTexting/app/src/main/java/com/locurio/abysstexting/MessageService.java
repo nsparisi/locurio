@@ -25,14 +25,15 @@ public class MessageService extends Service
     public static final int SERVER_PORT = 6000;
     private static final String HEARTBEAT = "HEARTBEAT";
     private static final String CLEAR_MESSAGE_HISTORY = "CLEAR_MESSAGE_HISTORY";
+    private static final String PING_MESSAGE = "PING_MESSAGE";
     private static final String TIMER_START = "TIMER_START";
     private static final String TIMER_SUSPEND = "TIMER_SUSPEND";
     private static final String TIMER_RESET = "TIMER_RESET";
     private static final String TIMER_SET_TIME = "TIMER_SET_TIME";
 
     MainActivity.MessageListener messageListener;
-    MainActivity.TimerListener timerListener;
     ArrayList<MessageData> allMessages;
+    MessageTimer messageTimer;
 
     ServerSocket serverSocket;
     Thread serverThread;
@@ -64,6 +65,10 @@ public class MessageService extends Service
         serverThread = new Thread(new ServerThread());
         serverThread.start();
 
+        Debug.log("********MessageService creating MessageTimer");
+        messageTimer = new MessageTimer();
+        messageTimer.setTime(70 * 1000 * 60);
+
         super.onCreate();
     }
 
@@ -72,7 +77,7 @@ public class MessageService extends Service
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void registerMessageListener(MainActivity.MessageListener listener)
+    public void registerMessageListener(MainActivity.MessageListener listener, MainActivity activity)
     {
         Debug.log("********MessageService registerMessageListener");
         if(messageListener != null)
@@ -87,29 +92,16 @@ public class MessageService extends Service
         {
             messageListener.onIncomingMessage(allMessages.get(i));
         }
+
+        // set the main activity, which can render the timer text field.
+        Debug.log("********MessageService setting activity on timer");
+        messageTimer.setActivity(activity);
     }
 
     public void unregisterMessageListener(MainActivity.MessageListener listener)
     {
         Debug.log("********MessageService unregisterMessageListener");
         messageListener = null;
-    }
-
-    public void registerTimerListener(MainActivity.TimerListener listener)
-    {
-        Debug.log("********MessageService registerTimerListener");
-        if(timerListener != null)
-        {
-            Debug.log("********MessageService WARNING timerListener already exists");
-        }
-
-        timerListener = listener;
-    }
-
-    public void unregisterTimerListener(MainActivity.TimerListener listener)
-    {
-        Debug.log("********MessageService unregisterTimerListener");
-        timerListener = null;
     }
 
     private void clearMessageHistory()
@@ -120,7 +112,6 @@ public class MessageService extends Service
             messageListener.clearMessageHistory();
         }
     }
-
 
     public class ServerThread implements Runnable
     {
@@ -178,9 +169,9 @@ public class MessageService extends Service
 
                 String line = input.readLine();
 
-                if(line == null)
+                if(line == null || line.isEmpty())
                 {
-                    Debug.log("********received null message. Exiting");
+                    Debug.log("********received empty or null message. Exiting");
                 }
                 else if(line.equals(HEARTBEAT))
                 {
@@ -188,37 +179,50 @@ public class MessageService extends Service
                 }
                 else if(line.equals(CLEAR_MESSAGE_HISTORY))
                 {
+                    Debug.log("********received CLEAR_MESSAGE_HISTORY");
                     clearMessageHistory();
+                }
+                else if(line.equals(PING_MESSAGE))
+                {
+                    Debug.log("********received PING_MESSAGE");
+                    WakeUpAndPlaySound();
                 }
                 else if(line.equals(TIMER_START))
                 {
                     Debug.log("********TIMER_START");
-                    timerListener.onTimerStart();
+                    if(messageTimer != null) {
+                        messageTimer.start();
+                    }
                 }
                 else if(line.equals(TIMER_SUSPEND))
                 {
                     Debug.log("********TIMER_SUSPEND");
-                    timerListener.onTimerSuspend();
+                    if(messageTimer != null) {
+                        messageTimer.suspend();
+                    }
                 }
                 else if(line.equals(TIMER_RESET))
                 {
                     Debug.log("********TIMER_RESET");
-                    timerListener.onTimerReset();
+                    if(messageTimer != null) {
+                        messageTimer.reset();
+                    }
                 }
                 else if(line.startsWith(TIMER_SET_TIME))
                 {
-                    // todo
                     Debug.log("********TIMER_SET_TIME");
                     String time = line.substring(TIMER_SET_TIME.length());
                     Debug.log("********time " + time);
                     long milliseconds = Long.parseLong(time);
                     Debug.log("********milliseconds " + milliseconds);
 
-                    timerListener.onTimerSetTime(milliseconds);
+                    if(messageTimer != null) {
+                        messageTimer.setTime(milliseconds);
+                    }
                 }
                 else
                 {
-                    // todo, split message into parts
+                    // Print message and play a sound
                     MessageData data = new MessageData();
                     data.message = line;
                     data.time = "";
@@ -229,24 +233,7 @@ public class MessageService extends Service
                         messageListener.onIncomingMessage(data);
                     }
 
-                    // wake up screen
-                    Debug.log("********Waking up screen");
-                    PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
-                    PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WakeUpScreenTag");
-                    wakeLock.acquire();
-                    wakeLock.release();
-
-                    // play a sound
-                    try
-                    {
-                        Thread.sleep(1000);
-                        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        RingtoneManager.getRingtone(getApplicationContext(), notificationUri).play();
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                    WakeUpAndPlaySound();
                 }
 
                 Debug.log("********CommunicationThread closing");
@@ -254,6 +241,30 @@ public class MessageService extends Service
                 socket.close();
             }
             catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        private void WakeUpAndPlaySound()
+        {
+            // wake up screen
+            Debug.log("********Waking up screen");
+            PowerManager powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "WakeUpScreenTag");
+            wakeLock.acquire();
+            wakeLock.release();
+
+            // play a sound
+            try
+            {
+                // waiting a second is necessary so the sound doesn't cut off.
+                // this is a timing issue when waking up.
+                Thread.sleep(1000);
+                Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                RingtoneManager.getRingtone(getApplicationContext(), notificationUri).play();
+            }
+            catch (Exception e)
             {
                 e.printStackTrace();
             }

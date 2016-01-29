@@ -21,15 +21,19 @@ public class MessageTimer {
 
     Date startDate = null;
 
-    public MessageTimer(MainActivity mainActivity)
+    public MessageTimer()
     {
         this.timer = new Timer();
         this.schedule = new TimerSchedule(this);
-        this.mainActivity = mainActivity;
         this.stopWatch = new StopWatch();
         this.calendar = Calendar.getInstance();
 
         timer.scheduleAtFixedRate(schedule, 0, 200);
+    }
+
+    public void setActivity(MainActivity mainActivity)
+    {
+        this.mainActivity = mainActivity;
     }
 
     public void setTime(long milliseconds)
@@ -59,19 +63,21 @@ public class MessageTimer {
 
     void updateTimerText()
     {
-        long milliseconds = getTimeRemaining();
+        if(mainActivity != null) {
+            long milliseconds = getTimeRemaining();
 
-        Date date = new Date(milliseconds);
-        calendar.setTime(date);
-        int hours = calendar.get(Calendar.HOUR);
-        int minutes = calendar.get(Calendar.MINUTE);
-        int seconds = calendar.get(Calendar.SECOND);
+            Date date = new Date(milliseconds);
+            calendar.setTime(date);
+            int hours = calendar.get(Calendar.HOUR);
+            int minutes = calendar.get(Calendar.MINUTE);
+            int seconds = calendar.get(Calendar.SECOND);
 
-        long m = milliseconds / (60 * 1000);
-        long s = (milliseconds / 1000) % 60;
+            long m = milliseconds / (60 * 1000);
+            long s = (milliseconds / 1000) % 60;
 
-        String prettyTime = String.format("%02d:%02d", m, s);
-        mainActivity.updateTimer(prettyTime);
+            String prettyTime = String.format("%02d:%02d", m, s);
+            mainActivity.updateTimer(prettyTime);
+        }
     }
 
     private long ceiling(long dividend, long divisor)

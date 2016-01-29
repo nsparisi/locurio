@@ -178,6 +178,7 @@ namespace AbyssConsole
                     Thread.Sleep(200);
                     SetClockUsingMinutesBox();
                     gameController.Start();
+                    ClearDressingRoomCheckbox();
                 }
             }
         }
@@ -362,6 +363,15 @@ namespace AbyssConsole
             {
                 Debug.Log("Still in dressing room. [{0}]", DressingRoomCheckbox.IsChecked.Value);
                 this.gameController.StillInDressingRoom = DressingRoomCheckbox.IsChecked.Value;
+            }
+        }
+
+        private void ClearDressingRoomCheckbox()
+        {
+            DressingRoomCheckbox.IsChecked = false;
+            if (this.gameController != null)
+            {
+                this.gameController.StillInDressingRoom = false;
             }
         }
     }

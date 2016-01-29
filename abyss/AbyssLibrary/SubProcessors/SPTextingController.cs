@@ -28,10 +28,20 @@ namespace AbyssLibrary
         public void ClearHistory(object sender, EventArgs e)
         {
             clearHistory = true;
+            pingMessage = false;
+            StartProcess();
+        }
+
+        [AbyssInput]
+        public void PingMessage(object sender, EventArgs e)
+        {
+            clearHistory = false;
+            pingMessage = true;
             StartProcess();
         }
 
         private bool clearHistory;
+        private bool pingMessage;
 
         public SPTextingController()
             : base()
@@ -48,7 +58,19 @@ namespace AbyssLibrary
         protected override void Process()
         {
             string debugText = string.IsNullOrEmpty(TextMessage) ? string.Empty : TextMessage;
-            Debug.Log("SPTextingController Start [{0}] [text: {1}...]", Name, debugText.TruncateLongString(30));
+
+            if(clearHistory)
+            {
+                Debug.Log("SPTextingController Start [{0}] [clearHistory: true]", Name);
+            }
+            else if(pingMessage)
+            {
+                Debug.Log("SPTextingController Start [{0}] [pingMessage: true]", Name);
+            }
+            else
+            {
+                Debug.Log("SPTextingController Start [{0}] [text: {1}...]", Name, debugText.TruncateLongString(30));
+            }
 
             foreach (TextingController controller in TextingControllers)
             {
@@ -60,6 +82,10 @@ namespace AbyssLibrary
                 if (clearHistory)
                 {
                     controller.ClearHistory();
+                }
+                else if (pingMessage)
+                {
+                    controller.PingMessage();
                 }
                 else
                 {
@@ -74,6 +100,7 @@ namespace AbyssLibrary
         {
             Debug.Log("SPTextingController Ended [{0}]", Name);
             clearHistory = false;
+            pingMessage = false;
         }
     }
 }

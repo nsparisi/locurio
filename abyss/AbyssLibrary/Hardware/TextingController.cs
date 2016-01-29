@@ -16,6 +16,7 @@ namespace AbyssLibrary
         // port the android texting app is listening on
         private const int ServerPort = 6000;
         private const string Clear_Message_History = "CLEAR_MESSAGE_HISTORY";
+        private const string Ping_Message = "PING_MESSAGE";
         private const string Heartbeat = "HEARTBEAT";
 
         public bool IsHeartbeatHealthy { get; private set; }
@@ -25,7 +26,9 @@ namespace AbyssLibrary
             : base(name, deviceMacAddress)
         {
             IsHeartbeatHealthy = true;
-            heartbeatTimer = new Timer(PollHeartbeat, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+
+            // untested code. may be an OK idea, but not taking any risks for now.
+            //heartbeatTimer = new Timer(PollHeartbeat, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         }
 
         private void PollHeartbeat(object obj)
@@ -36,6 +39,11 @@ namespace AbyssLibrary
         public void ClearHistory()
         {
             SendTextMessage(Clear_Message_History);
+        }
+
+        public void PingMessage()
+        {
+            SendTextMessage(Ping_Message);
         }
 
         public void SendTextMessage(string toSend)
