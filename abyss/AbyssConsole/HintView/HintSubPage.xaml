@@ -72,26 +72,28 @@
                         <TreeViewItem Header="Nox always tries to give me directions in six simple steps." />
                         <TreeViewItem Header="One of the first things Nox taught me was the four suits of tarot." />
                         <TreeViewItem Header="Any good magician knows the four suits of tarot, but a great magician can figure them out just by looking at the cards." />
+                        <TreeViewItem Header="I'm not sure why Nox keeps that walking staff in his room; it must mean something special to him." />
                         <TreeViewItem Header="I've noticed that Nox has several objects in his dressing room that symbolize his fascination with the four suits of tarot." />
                     </TreeViewItem>
                     <TreeViewItem Header="HANDKERCHIEFS:">
+                        <TreeViewItem Header="You really have to inspect Nox's handkerchiefs closely to learn the secret to the trick." />
                         <TreeViewItem Header="Nox uses a LOT of handkerchiefs in his act." />
                         <TreeViewItem Header="Sometimes the handkerchiefs in Nox's act get stuck in his jacket - it's embarrassing, but he just gives them a good tug and they pop right out." />
                         <TreeViewItem Header="Nox likes to color-coordinate his handkerchief collection." />
                         <TreeViewItem Header="Nox is fluent in many languages, but he says he prefers the ones that read from left to right." />
                         <TreeViewItem Header="In Nox's handkerchief act, he always uses every color." />
                         <TreeViewItem Header="Nox uses many different colors in his handkerchief act, but he says they all relate to what is on the white one." />
-                        <TreeViewItem Header="In regards to his handkerchief act, Nox says the white handkerchief is always the start to all other words in his act." />
-                        <TreeViewItem Header="When Nox has trouble with the magic words in his handkerchief act, he says that putting another word in front of them is often the answer." />
+                        <TreeViewItem Header="In regards to his handkerchief act, Nox says the white handkerchief always precedes all of the other words in the act." />
+                        <TreeViewItem Header="When teaching me his handkerchief act, Nox told me that the word on the white handkerchief always precedes the other words in the act." />
+                        <TreeViewItem Header="When Nox has trouble with the words in his handkerchief act, he says that putting another word in front of them is often the answer." />
                     </TreeViewItem>
                     <TreeViewItem Header="BOOKS:">
                         <TreeViewItem Header="Nox should really keep his library in order!" />
                         <TreeViewItem Header="That print hanging in Nox's bookshelf may seem silly, but it helps him remember how to organize his books." />
                         <TreeViewItem Header="I like the old saying, 'sometimes all you have to do is turn around, and the answer is right in front of you!'" />
-                        <TreeViewItem Header="Nox is a big fan of Eastern phrases. He says he appreciates that they're always very literal." />
+                        <TreeViewItem Header="Nox is a big fan of phrases that appear to be mysterious, but are actually quite literal." />
                         <TreeViewItem Header="Nox loves that Chinese mirror of his." />
                         <TreeViewItem Header="Why Nox loves that Chinese mirror so much, I haven't the foggiest." />
-                        <TreeViewItem Header="Sometimes I catch Nox standing in front of his Chinese mirror and sighing." />
                     </TreeViewItem>
                     <TreeViewItem Header="POSTERS:">
                         <TreeViewItem Header="Nox is so vain - I can't believe how many old show posters he keeps around." />
@@ -102,7 +104,7 @@
                     </TreeViewItem>
                     <TreeViewItem Header="CABINET:">
                         <TreeViewItem Header="Some people don't like enclosed spaces, but Nox says he finds it comforting to be in small, dark places." />
-                        <TreeViewItem Header="Nox refuses to perform magic without his wand. Even his back-up wand will do!" />
+                        <TreeViewItem Header="Nox never performs magic without his wand." />
                         <TreeViewItem Header="Magic tricks may seem mysterious, but what the audience doesn't know is that most magic tricks come with instructions!" />
                         <TreeViewItem Header="Some magicians like to wave their wand, Nox prefers to tap his." />
                         <TreeViewItem Header="Sometimes magic is as easy as 1-2-3." />
@@ -123,7 +125,6 @@
                         <TreeViewItem Header="The key to seeing a magic trick is all about where you stand." />
                     </TreeViewItem>
                     <TreeViewItem Header="BLOOD:">
-                        <TreeViewItem Header="Nox is so old-fashioned, he calls films 'moving pictures.'" />
                         <TreeViewItem Header="The police haven't been able to prove anything, but I know Nox has blood on his hands." />
                         <TreeViewItem Header="When cleaning up after a show, Nox likes to tell me that everything has a proper place and should be put there." />
                         <TreeViewItem Header="Some people like to read between the lines, but Nox prefers to read above them." />
