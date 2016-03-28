@@ -265,9 +265,15 @@ public class MessageService extends Service
 
                 // set the volume to max
                 AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
                 manager.setStreamVolume(
                         AudioManager.STREAM_NOTIFICATION,
                         manager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION),
+                        0);
+
+                manager.setStreamVolume(
+                        AudioManager.STREAM_SYSTEM,
+                        manager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM),
                         0);
 
                 Thread.sleep(500);
