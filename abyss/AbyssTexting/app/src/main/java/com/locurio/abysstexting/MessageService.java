@@ -3,6 +3,7 @@ package com.locurio.abysstexting;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
@@ -261,6 +262,17 @@ public class MessageService extends Service
                 // waiting a second is necessary so the sound doesn't cut off.
                 // this is a timing issue when waking up.
                 Thread.sleep(1000);
+
+                // set the volume to max
+                AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                manager.setStreamVolume(
+                        AudioManager.STREAM_NOTIFICATION,
+                        manager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION),
+                        0);
+
+                Thread.sleep(500);
+
+                // play the notification
                 Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 RingtoneManager.getRingtone(getApplicationContext(), notificationUri).play();
             }
