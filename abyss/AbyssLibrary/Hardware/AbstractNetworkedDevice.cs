@@ -49,6 +49,8 @@ namespace AbyssLibrary
             }
         }
 
+        public string BestGuessIpAddress { get; set; }
+
         public void RefreshIpAddress(bool scanNetworkIfNotPresent = false)
         {
             if (!isRefreshing)
@@ -74,7 +76,7 @@ namespace AbyssLibrary
             lock (lockObj)
             {
                 isRefreshing = true;
-                ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, false);
+                ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, false, BestGuessIpAddress);
                 isRefreshing = false;
 
                 LogConnectionStatus();
@@ -88,7 +90,7 @@ namespace AbyssLibrary
                 for (int i = 0; i < 5; i++)
                 {
                     isRefreshing = true;
-                    ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, true);
+                    ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, true, BestGuessIpAddress);
                     isRefreshing = false;
 
                     LogConnectionStatus();

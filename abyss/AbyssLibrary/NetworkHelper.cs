@@ -86,7 +86,7 @@ namespace AbyssLibrary
             }
         }
 
-        public string GetIpAddress(string macAddress, bool scanNetworkIfNotPresent = false)
+        public string GetIpAddress(string macAddress, bool scanNetworkIfNotPresent = false, string bestGuessIpAddress = null)
         {
             //Debug.Log("Getting IP address for MAC: {0}", macAddress);
             if(string.IsNullOrEmpty(macAddress))
@@ -120,6 +120,21 @@ namespace AbyssLibrary
                     return string.Empty;
                 }
 
+                // instead of scanning entire network
+                // try to query for just this IP address first
+                if(!string.IsNullOrEmpty(bestGuessIpAddress))
+                {
+                    Debug.Log("Trying best guess IP {0}.", bestGuessIpAddress);
+                    this.SendArp(bestGuessIpAddress);
+                    if (macToIpTable.ContainsKey(macAddress))
+                    {
+                        return macToIpTable[macAddress];
+                    }
+                    Debug.Log("Best guess IP {0} failed.", bestGuessIpAddress);
+                }
+                
+                // still no matching MAC address.
+                // need to scan entire network
                 ClearAndRefreshCache();
 
                 if (macToIpTable.ContainsKey(macAddress))

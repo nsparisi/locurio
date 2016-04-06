@@ -69,19 +69,28 @@ namespace Abyss
                 "RPi Dress:50000",
                 "7C-DD-90-8F-C2-3A",
                 VLCServerControl.OSType.Linux,
-                "50000");
+                "50000")
+            {
+                BestGuessIpAddress = ""
+            };
 
             VLCServerControl vlc02 = new VLCServerControl(
                 "RPi Secret:50000",
                 "7C-DD-90-91-07-74",
                 VLCServerControl.OSType.Linux,
-                "50000");
+                "50000")
+            {
+                BestGuessIpAddress = ""
+            };
 
             VLCServerControl vlc02_02 = new VLCServerControl(
                 "RPi Secret:50001",
                 "7C-DD-90-91-07-74",
                 VLCServerControl.OSType.Linux,
-                "50001");
+                "50001")
+            {
+                BestGuessIpAddress = ""
+            };
 
             SPSoundControl sp_soundDressingRoom01 = new SPSoundControl()
             {
@@ -195,12 +204,18 @@ namespace Abyss
             // Hint Text Messages
             // ***********************
             TextingController textingMotorola =
-                new TextingController("Motorola Droid 2", "F8-7B-7A-88-04-D9");
+                new TextingController("Motorola Droid 2", "F8-7B-7A-88-04-D9")
+                {
+                    BestGuessIpAddress = ""
+                };
 
             AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
 
             TextingController textingAlcatel =
-                new TextingController("Alcatel One Touch", "60-51-2C-B3-F1-46");
+                new TextingController("Alcatel One Touch", "60-51-2C-B3-F1-46")
+                {
+                    BestGuessIpAddress = ""
+                };
 
             AbyssSystem.Instance.RegisterPhysicalObject(textingAlcatel);
 
@@ -208,7 +223,10 @@ namespace Abyss
             // Timer Devices (integrated with text message app)
             // ***********************
             TimerController timerMotorola =
-                new TimerController("Motorola Droid 2", "F8-7B-7A-88-04-D9");
+                new TimerController("Motorola Droid 2", "F8-7B-7A-88-04-D9")
+                {
+                    BestGuessIpAddress = ""
+                };
 
             AbyssSystem.Instance.RegisterPhysicalObject(timerMotorola);
 
@@ -219,7 +237,10 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerMotorola);
 
             TimerController timerAlcatel =
-                new TimerController("Alcatel One Touch", "60-51-2C-B3-F1-46");
+                new TimerController("Alcatel One Touch", "60-51-2C-B3-F1-46")
+                {
+                    BestGuessIpAddress = ""
+                };
 
             AbyssSystem.Instance.RegisterPhysicalObject(timerAlcatel);
 
@@ -297,12 +318,18 @@ namespace Abyss
             // ***********************
             LimitlessLEDBridge bridgeSecretRoom = new LimitlessLEDBridge(
                     "MiLight Bridge Secret Room",
-                    "AC-CF-23-46-86-46");
+                    "AC-CF-23-46-86-46")
+            {
+                BestGuessIpAddress = ""
+            };
             AbyssSystem.Instance.RegisterPhysicalObject(bridgeSecretRoom);
 
             LimitlessLEDBridge bridgeDressingRoom = new LimitlessLEDBridge(
                     "MiLight Bridge Dressing Room",
-                    "AC-CF-23-28-9A-68");
+                    "AC-CF-23-28-9A-68")
+            {
+                BestGuessIpAddress = ""
+            };
             AbyssSystem.Instance.RegisterPhysicalObject(bridgeDressingRoom);
 
             SPLimitlessLEDBridge sp_lightAllWhite = new SPLimitlessLEDBridge()
