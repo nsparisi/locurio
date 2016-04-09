@@ -18,10 +18,11 @@ namespace AbyssLibrary
         private bool isRefreshing = false;
         private object lockObj = new object();
 
-        public AbstractNetworkedDevice(string name, string macAddress)
+        public AbstractNetworkedDevice(string name, string macAddress, string bestGuessIpAddress)
             : base(name)
         {
             this.macAddress = macAddress;
+            this.BestGuessIpAddress = bestGuessIpAddress;
             RefreshIpAddress(true);
         }
 

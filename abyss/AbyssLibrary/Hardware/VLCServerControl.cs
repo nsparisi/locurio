@@ -51,8 +51,8 @@ namespace AbyssLibrary
             }
         }
 
-        public VLCServerControl(string name, string deviceMacAddress, OSType deviceOS, string devicePort)
-            : base(name, deviceMacAddress)
+        public VLCServerControl(string name, string deviceMacAddress, OSType deviceOS, string devicePort, string bestGuessIpAddress)
+            : base(name, deviceMacAddress, bestGuessIpAddress)
         {
             this.DeviceOS = deviceOS;
             this.DevicePort = devicePort;

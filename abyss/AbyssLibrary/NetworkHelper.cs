@@ -68,14 +68,16 @@ namespace AbyssLibrary
                 string baseip = gateway.Substring(0, gateway.LastIndexOf('.') + 1);
 
                 List<Thread> threads = new List<Thread>();
+
                 for (int i = 1; i <= 254; i++)
                 {
                     Thread t = new Thread(SendArp);
                     t.Start(baseip + i.ToString());
                     threads.Add(t);
+                    Thread.Sleep(50);
                 }
 
-                foreach(Thread t in threads)
+                foreach (Thread t in threads)
                 {
                     t.Join();
                 }
@@ -125,10 +127,13 @@ namespace AbyssLibrary
                 if(!string.IsNullOrEmpty(bestGuessIpAddress))
                 {
                     Debug.Log("Trying best guess IP {0}.", bestGuessIpAddress);
-                    this.SendArp(bestGuessIpAddress);
-                    if (macToIpTable.ContainsKey(macAddress))
+                    for (int i = 0; i < 2; i++)
                     {
-                        return macToIpTable[macAddress];
+                        this.SendArp(bestGuessIpAddress);
+                        if (macToIpTable.ContainsKey(macAddress))
+                        {
+                            return macToIpTable[macAddress];
+                        }
                     }
                     Debug.Log("Best guess IP {0} failed.", bestGuessIpAddress);
                 }

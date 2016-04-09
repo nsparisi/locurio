@@ -22,8 +22,8 @@ namespace AbyssLibrary
         public bool IsHeartbeatHealthy { get; private set; }
         Timer heartbeatTimer;
 
-        public TextingController(string name, string deviceMacAddress)
-            : base(name, deviceMacAddress)
+        public TextingController(string name, string deviceMacAddress, string bestGuessIpAddress)
+            : base(name, deviceMacAddress, bestGuessIpAddress)
         {
             IsHeartbeatHealthy = true;
 

@@ -22,8 +22,8 @@ namespace AbyssLibrary
 
         private object lockObj = new object();
 
-        public TimerController(string name, string deviceMacAddress)
-            : base(name, deviceMacAddress)
+        public TimerController(string name, string deviceMacAddress, string bestGuessIpAddress)
+            : base(name, deviceMacAddress, bestGuessIpAddress)
         {
         }
 

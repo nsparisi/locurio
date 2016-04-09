@@ -77,8 +77,8 @@ namespace AbyssLibrary
 
         private int port;
 
-        public LimitlessLEDBridge(string name, string deviceMacAddress, int port = 8899)
-            : base(name, deviceMacAddress)
+        public LimitlessLEDBridge(string name, string deviceMacAddress, string bestGuessIpAddress, int port = 8899)
+            : base(name, deviceMacAddress, bestGuessIpAddress)
         {
             this.port = port;
         }
