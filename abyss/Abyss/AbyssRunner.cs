@@ -304,17 +304,11 @@ namespace Abyss
                     "192.168.0.104");
             AbyssSystem.Instance.RegisterPhysicalObject(bridgeSecretRoom);
 
-            LimitlessLEDBridge bridgeDressingRoom = new LimitlessLEDBridge(
-                    "MiLight Bridge Dressing Room",
-                    "AC-CF-23-28-9A-68",
-                    "192.168.0.103");
-            AbyssSystem.Instance.RegisterPhysicalObject(bridgeDressingRoom);
-
             SPLimitlessLEDBridge sp_lightAllWhite = new SPLimitlessLEDBridge()
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
                 Zone = LimitlessLEDBridge.ZoneType.All,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllWhite);
             sp_lightAllWhite.Initialize();
@@ -324,7 +318,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 1,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightAllFullBrightness);
             sp_lightAllFullBrightness.Initialize();
@@ -334,7 +328,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Royal_Blue,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightTestSetAllColor);
             sp_lightTestSetAllColor.Initialize();
@@ -344,7 +338,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 1,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightTestSetAllBrightness);
             sp_lightTestSetAllBrightness.Initialize();
@@ -492,7 +486,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 1,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightGameStartBrighness);
             sp_lightGameStartBrighness.Initialize();
@@ -501,7 +495,7 @@ namespace Abyss
             {
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
                 Zones = dressingRoomZones,
-                Bridges = MakeList(bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightGameStartDress);
             sp_lightGameStartDress.Initialize();
@@ -515,6 +509,16 @@ namespace Abyss
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightSolveAltarTop);
             sp_lightSolveAltarTop.Initialize();
+
+            SPLimitlessLEDBridge sp_lightBrightnessSolveAltarTop = new SPLimitlessLEDBridge()
+            {
+                Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
+                Zones = secretRoomZones,
+                Brightness = 1,
+                Bridges = MakeList(bridgeSecretRoom)
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_lightBrightnessSolveAltarTop);
+            sp_lightBrightnessSolveAltarTop.Initialize();
 
             SPLimitlessLEDBridge sp_lightTouchAltarWordBefore = new SPLimitlessLEDBridge()
             {
@@ -557,6 +561,8 @@ namespace Abyss
 
             // turn on light when top is solved
             sp_altarTopSolved.ExpectedMessageReceived += sp_lightSolveAltarTop.Run;
+            sp_altarTopSolved.ExpectedMessageReceived += sp_lightBrightnessSolveAltarTop.Run;
+            
 
             // flicker light sequence when side is touched
             sp_altarTagPresent.ExpectedMessageReceived += sp_lightTouchAltarWordBefore.Run;
@@ -730,7 +736,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.5,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             sp_lightLoseHalfDimAll.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseHalfDimAll);
@@ -740,7 +746,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetColor,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Color = LimitlessLEDBridge.ColorType.Red,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             sp_lightLoseRedAll.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseRedAll);
@@ -750,7 +756,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.01,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             sp_lightLoseDimAll.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseDimAll);
@@ -760,7 +766,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.TurnOff,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.01,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             sp_lightLoseOffAll.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseOffAll);
@@ -770,7 +776,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetToWhite,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.01,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             sp_lightLoseWhiteAll.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseWhiteAll);
@@ -781,7 +787,7 @@ namespace Abyss
                 Command = SPLimitlessLEDBridge.LEDBridgeCommand.SetBrightness,
                 Zone = LimitlessLEDBridge.ZoneType.All,
                 Brightness = 0.6,
-                Bridges = MakeList(bridgeSecretRoom, bridgeDressingRoom)
+                Bridges = MakeList(bridgeSecretRoom)
             };
             sp_lightLoseLightenAll.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_lightLoseLightenAll);
