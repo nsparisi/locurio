@@ -86,9 +86,9 @@ namespace AbyssLibrary
 
         private void ThreadCheckAndRefreshIpAddress()
         {
-            lock (lockObj)
+            for (int i = 0; i < 4; i++)
             {
-                for (int i = 0; i < 5; i++)
+                lock (lockObj)
                 {
                     isRefreshing = true;
                     ipAddress = NetworkHelper.Instance.GetIpAddress(macAddress, true, BestGuessIpAddress);

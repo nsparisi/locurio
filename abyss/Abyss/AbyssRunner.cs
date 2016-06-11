@@ -202,10 +202,10 @@ namespace Abyss
 
             AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
 
-            TextingController textingAlcatel =
-                new TextingController("Alcatel One Touch", "60-51-2C-B3-F1-46", "192.168.0.107");
+            TextingController textingNexus =
+                new TextingController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.107");
 
-            AbyssSystem.Instance.RegisterPhysicalObject(textingAlcatel);
+            AbyssSystem.Instance.RegisterPhysicalObject(textingNexus);
 
             // ***********************
             // Timer Devices (integrated with text message app)
@@ -221,16 +221,16 @@ namespace Abyss
             };
             AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerMotorola);
 
-            TimerController timerAlcatel =
-                new TimerController("Alcatel One Touch", "60-51-2C-B3-F1-46", "192.168.0.107");
+            TimerController timerNexus =
+                new TimerController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.107");
 
-            AbyssSystem.Instance.RegisterPhysicalObject(timerAlcatel);
+            AbyssSystem.Instance.RegisterPhysicalObject(timerNexus);
 
-            SPTimerController sp_timerControllerAlcatel = new SPTimerController()
+            SPTimerController sp_timerControllerNexus = new SPTimerController()
                 {
-                    TimerControllers = MakeList(timerAlcatel)
+                    TimerControllers = MakeList(timerNexus)
                 };
-            AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerAlcatel);
+            AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerNexus);
 
             // ***********************
             // ALTAR
@@ -358,7 +358,7 @@ namespace Abyss
             // sp_gameController.GameStarted += sp_soundSecretRoom02.Stop;
             sp_gameController.GameStarted += sp_countdownScreen.Start;
             sp_gameController.GameStarted += sp_timerControllerMotorola.StartTimer;
-            sp_gameController.GameStarted += sp_timerControllerAlcatel.StartTimer;
+            sp_gameController.GameStarted += sp_timerControllerNexus.StartTimer;
 
             // when the top of the altar is solved
             // play some spooky MYST wind effects
@@ -389,7 +389,7 @@ namespace Abyss
             sp_gameController.GameWon += sp_soundDressingRoom01.Stop;
             sp_gameController.GameWon += sp_soundNoxSuccessNarration.Play;
             sp_gameController.GameWon += sp_timerControllerMotorola.SuspendTimer;
-            sp_gameController.GameWon += sp_timerControllerAlcatel.SuspendTimer;
+            sp_gameController.GameWon += sp_timerControllerNexus.SuspendTimer;
 
             //--------------------
             // LOSE CONDITION
@@ -424,7 +424,7 @@ namespace Abyss
             sp_gameController.GameStopped += sp_lightAllWhite.Run;
             sp_gameController.GameStopped += sp_lightAllFullBrightness.Run;
             sp_gameController.GameStopped += sp_timerControllerMotorola.ResetTimer;
-            sp_gameController.GameStopped += sp_timerControllerAlcatel.ResetTimer;
+            sp_gameController.GameStopped += sp_timerControllerNexus.ResetTimer;
 
             //--------------------
             // SOFT PAUSE
@@ -434,7 +434,7 @@ namespace Abyss
             // sp_gameController.GamePaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GamePaused += sp_countdownScreen.Stop;
             sp_gameController.GamePaused += sp_timerControllerMotorola.SuspendTimer;
-            sp_gameController.GamePaused += sp_timerControllerAlcatel.SuspendTimer;
+            sp_gameController.GamePaused += sp_timerControllerNexus.SuspendTimer;
 
             //--------------------
             // RESUME FROM PAUSE
@@ -444,7 +444,7 @@ namespace Abyss
             // sp_gameController.GameUnPaused += sp_soundSecretRoom02.Pause;
             sp_gameController.GameUnPaused += sp_countdownScreen.Start;
             sp_gameController.GameUnPaused += sp_timerControllerMotorola.StartTimer;
-            sp_gameController.GameUnPaused += sp_timerControllerAlcatel.StartTimer;
+            sp_gameController.GameUnPaused += sp_timerControllerNexus.StartTimer;
 
             //--------------------
             // TEST MODE
