@@ -61,6 +61,7 @@
                         <TreeViewItem Header="The only time Nox uses a mask on stage is during his playing card trick." />
                         <TreeViewItem Header="Nox's playing card act uses 12 cards with special backs." />
                         <TreeViewItem Header="Nox's playing card act uses 12 cards arranged in a 4x3 grid." />
+                        <TreeViewItem Header="Nox likes to perform his playing card act under bright lights - he says it often helps the audience to see the trick more clearly." />
                         <TreeViewItem Header="Nox doesn't believe in waste - when it comes to his playing card act, he even uses the box!" />
                         <TreeViewItem Header="When it comes to Nox's playing card act, he says I'll know what to do if I think outside of the box and follow his lines." />
                         <TreeViewItem Header="I believe that if you play your cards right, life imitates art." />
@@ -117,6 +118,7 @@
                     </TreeViewItem>
                     <TreeViewItem Header="BONES:">
                         <TreeViewItem Header="Nox is very strict about dating. He says I'm a seven and should stick with other sevens - leave the sixes with the other sixes and so on. I have a bone to pick with that guy!" />
+                        <TreeViewItem Header="Nox often reminds me to keep each number in the show separate - don't mix them up, he always tells me - I'm such a bonehead!" />
                         <TreeViewItem Header="In his promotional materials, Nox often crafts letters out of arcane symbols." />
                     </TreeViewItem>
                     <TreeViewItem Header="MIRROR:">
@@ -140,7 +142,9 @@
                         <TreeViewItem Header="Manipulating emotions in his act is one of Nox's specialties. He says you just need to find what's most dear to someone and use it in the right spot." />
                         <TreeViewItem Header="Nox is always complaining about his old assistant Bradley, because he claims he was homesick all the time." />
                         <TreeViewItem Header="Nox keeps a lot of knick-knacks in his dressing  room. I always wondered who gave him that unusual snow globe!" />
+                        <TreeViewItem Header="Nox is always complaining about his old assistant Chris. He says his costume pieces were a bit tacky." />
                         <TreeViewItem Header="One of Nox's former assistants used to be a ballerina. I hear you have to be really centered and always hit your mark to perform well in ballet!" />
+                        <TreeViewItem Header="Nox always makes sure his assistants know their place." />
                         <TreeViewItem Header="Nox refuses to perform magic without his wand." />
                         <TreeViewItem Header="Nox always says that timing is everything!" />
                         <TreeViewItem Header="Whenever a trick goes wrong, Nox insists on starting over from the very beginning." />
