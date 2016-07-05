@@ -222,7 +222,7 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerMotorola);
 
             TimerController timerNexus =
-                new TimerController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.107");
+                new TimerController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.151");
 
             AbyssSystem.Instance.RegisterPhysicalObject(timerNexus);
 
