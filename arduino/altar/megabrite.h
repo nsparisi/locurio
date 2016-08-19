@@ -23,6 +23,8 @@
 #include <inttypes.h>
 #include <Arduino.h>
 
+#include <Adafruit_NeoPixel.h>  // Adafruit Neopixel Library 1.0.6
+
 /* Ports and Pins
 
  Direct port access is much faster than digitalWrite.
@@ -54,50 +56,32 @@
 
 */
 // Defines for use with Arduino functions
-#define clockpin   7 // CI
-#define enablepin  6 // EI
-#define latchpin   5 // LI
 #define datapin    4 // DI
 
-// Defines for direct port access
-#define CLKPORT PORTH
-#define ENAPORT PORTH
-#define LATPORT PORTE
-#define DATPORT PORTG
-#define CLKPIN  4
-#define ENAPIN  3
-#define LATPIN  3
-#define DATPIN  5
+#define MAX_BRIGHTNESS 160
+#define DIM_BRIGHTNESS 96
 
-#define MAX_BRIGHTNESS 1023
-#define DIM_BRIGHTNESS 512
-
-#define NumLEDs 4
+#define NumLEDs 64
 
 class MegaBrite
 {
   private:
-    // Variables for communication
-    unsigned long SB_CommandPacket;
-    int SB_CommandMode;
-    int SB_BlueCommand;
-    int SB_RedCommand;
-    int SB_GreenCommand;
-
     // Create LED value storage array
     int LEDChannels[NumLEDs][5];
 
-    void SendPacket();
-    void Latch();
-
+    Adafruit_NeoPixel* strip;
+    void SetLight(int channel, int red, int green, int blue);
+    
+    void SetAllLights(int red, int green, int blue);
+    void WriteLEDArray();
+    
   public:
 
     MegaBrite();
     void Setup();
 
-    void WriteLEDArray();
     void AllOff();
-    void SetLight(int channel, int red, int green, int blue);
+    
 
     void AllLightsOff();
     void AllLightsOn();

@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include <LedControl.h>
+#include <LedControl.h> // LEDControl 1.0.6 by Eberhard Fahle
 #include <SoftwareSerial.h>
 
 #include "megabrite.h"
@@ -98,6 +98,7 @@ void setup(void)
   Serial.begin(115200);
   
   printFreeMem();
+  MegaBriteInstance.Setup();
   
   wordPuzzle[0] = &reader6;	// reader: Back 0
   wordPuzzle[1] = &reader2;	// reader: Front 2
@@ -159,11 +160,18 @@ void setup(void)
   topLightSegments[4] = &led14;
   
   Serial.print(F("Light check"));
-  
-  MegaBriteInstance.AllLightsBlue();
-  delay(1000);
+
+
+  MegaBriteInstance.AllLightsRed();
+      delay(700);
+      
   MegaBriteInstance.AllLightsGreen();
-  delay(1000);
+  delay(700);
+  MegaBriteInstance.AllLightsBlue();
+  delay(700);
+  
+  MegaBriteInstance.AllLightsOn();
+  delay(700);
   MegaBriteInstance.AllLightsOff();
   
   if (PuzzleDebug)
