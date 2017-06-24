@@ -15,33 +15,19 @@ namespace Abyss
 
         public void Run()
         {
-            MqttSubscriber mqttSubscriber_abyss = new MqttSubscriber("/locurio/librariansguild", "abyss", "94-DE-80-07-BD-AF", "192.168.1.7");
-            AbyssSystem.Instance.RegisterPhysicalObject(mqttSubscriber_abyss);
+            //MqttSubscriber mqttSubscriber_abyss = new MqttSubscriber("/locurio/librariansguild", "abyss", "94-DE-80-07-BD-AF", "192.168.50.50");
+            MqttBroker mqttBroker = new MqttBroker("Abyss-TheCoordinator", "B8:27:EB:46:1A:AA", "192.168.50.50");
+            AbyssSystem.Instance.RegisterPhysicalObject(mqttBroker);
 
-            SPMqttReceivedMessage sp_mqttSubscriber1 = new SPMqttReceivedMessage()
+            SPMqttSubscriber sp_mqttSubscriber1 = new SPMqttSubscriber()
             {
-                ExpectedMessage = "puzzle_1_solved",
-                Subscribers = MakeList(mqttSubscriber_abyss)
-            };
-
-            SPMqttReceivedMessage sp_mqttSubscriber2 = new SPMqttReceivedMessage()
-            {
-                ExpectedMessage = "puzzle_2_solved",
-                Subscribers = MakeList(mqttSubscriber_abyss)
-            };
-
-            SPMqttReceivedMessage sp_mqttSubscriber3 = new SPMqttReceivedMessage()
-            {
-                ExpectedMessage = "puzzle_3_solved",
-                Subscribers = MakeList(mqttSubscriber_abyss)
+                Brokers = MakeList(mqttBroker),
+                Topic = "/puzzle/one/two/three",
+                ExpectedMessage = "puzzle_1_solved"
             };
 
             sp_mqttSubscriber1.Initialize();
-            sp_mqttSubscriber2.Initialize();
-            sp_mqttSubscriber3.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_mqttSubscriber1);
-            AbyssSystem.Instance.RegisterSubProcessor(sp_mqttSubscriber2);
-            AbyssSystem.Instance.RegisterSubProcessor(sp_mqttSubscriber3);
 
             SPDebug sp_debug = new SPDebug()
             {
@@ -52,8 +38,6 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_debug);
 
             sp_mqttSubscriber1.ExpectedMessageReceived += sp_debug.Start;
-            sp_mqttSubscriber2.ExpectedMessageReceived += sp_debug.Start;
-            sp_mqttSubscriber3.ExpectedMessageReceived += sp_debug.Start;
 
         }
 
