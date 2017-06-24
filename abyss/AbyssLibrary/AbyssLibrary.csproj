@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -59,6 +63,7 @@
     <Compile Include="Hardware\TextingController.cs" />
     <Compile Include="Hardware\AbstractNetworkedDevice.cs" />
     <Compile Include="Hardware\VLCServerControl.cs" />
+    <Compile Include="Hardware\MqttSubscriber.cs" />
     <Compile Include="Hardware\XBeeEndpoint.cs" />
     <Compile Include="Hardware\XBeeReceivedEvent.cs" />
     <Compile Include="Hardware\XBeeExplorer.cs" />
@@ -67,12 +72,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubProcessors\AbstractSubProcessor.cs" />
     <Compile Include="SubProcessors\ISubProcessor.cs" />
+    <Compile Include="SubProcessors\SPDebug.cs" />
     <Compile Include="SubProcessors\SPGame.cs" />
     <Compile Include="SubProcessors\SPDelay.cs" />
     <Compile Include="SubProcessors\SPLimitlessLEDBridge.cs" />
     <Compile Include="SubProcessors\SPTimerController.cs" />
     <Compile Include="SubProcessors\SPTextingController.cs" />
     <Compile Include="SubProcessors\SPSoundControl.cs" />
+    <Compile Include="SubProcessors\SPMqttSubscriber.cs" />
     <Compile Include="SubProcessors\SPXBeeEndpoint.cs" />
     <Compile Include="SubProcessors\SPScreen.cs" />
     <Compile Include="SubProcessors\SPLightBulb.cs" />
@@ -82,6 +89,9 @@
       <Project>{477fe764-2428-4634-849e-58c42f3ca0c3}</Project>
       <Name>AbyssScreen</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

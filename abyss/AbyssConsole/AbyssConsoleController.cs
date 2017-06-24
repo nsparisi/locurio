@@ -20,7 +20,7 @@ namespace AbyssConsole
             this.abyssConsoleApp = abyssConsoleApp;
 
             // for v1.0, AbyssConsole will create AbyssSystem.
-            AbyssSystem.Instance.RunConfiguration(new AbyssRunner());
+            AbyssSystem.Instance.RunConfiguration(new TestRunner());
             AbyssSystem.Instance.RegisterClientConsole(this);
 
             // handle physical objects

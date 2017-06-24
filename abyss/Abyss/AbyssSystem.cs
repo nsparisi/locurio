@@ -76,7 +76,7 @@ namespace Abyss
             this.SubProcessors.Clear();
         }
 
-        public void RunConfiguration(AbyssRunner runner)
+        public void RunConfiguration(IAbyssRunner runner)
         {
             CleanSystem();
             runner.Run();

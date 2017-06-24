@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAbyssRunner.cs" />
+    <Compile Include="TestRunner.cs" />
     <Compile Include="AbyssRunner.cs" />
     <Compile Include="AbyssSystem.cs" />
     <Compile Include="IClientConsole.cs" />

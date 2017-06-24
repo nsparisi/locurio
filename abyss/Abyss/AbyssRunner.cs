@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Abyss
 {
-    public class AbyssRunner
+    public class AbyssRunner : IAbyssRunner
     {
         public const string SoundDressingRoomBGMFileName = "dressing_room_bgm_7-3.mp3";
         public const string SoundSecretRoomBGMFileName = "";
