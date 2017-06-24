@@ -79,7 +79,7 @@
     <Compile Include="SubProcessors\SPTimerController.cs" />
     <Compile Include="SubProcessors\SPTextingController.cs" />
     <Compile Include="SubProcessors\SPSoundControl.cs" />
-    <Compile Include="SubProcessors\SPMqttSubscriber.cs" />
+    <Compile Include="SubProcessors\SPMqttReceivedMessage.cs" />
     <Compile Include="SubProcessors\SPXBeeEndpoint.cs" />
     <Compile Include="SubProcessors\SPScreen.cs" />
     <Compile Include="SubProcessors\SPLightBulb.cs" />
