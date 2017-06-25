@@ -20,7 +20,7 @@ namespace AbyssLibrary
 
         protected override void Process()
         {
-            Debug.Log(this.Message);
+            Debug.Log("SPDebug is logging '{0}'", this.Message);
             ProcessEnded();
         }
     }

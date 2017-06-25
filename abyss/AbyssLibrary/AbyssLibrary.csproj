@@ -76,6 +76,7 @@
     <Compile Include="SubProcessors\SPGame.cs" />
     <Compile Include="SubProcessors\SPDelay.cs" />
     <Compile Include="SubProcessors\SPLimitlessLEDBridge.cs" />
+    <Compile Include="SubProcessors\SPMqttPublisher.cs" />
     <Compile Include="SubProcessors\SPMqttSubscriber.cs" />
     <Compile Include="SubProcessors\SPTimerController.cs" />
     <Compile Include="SubProcessors\SPTextingController.cs" />

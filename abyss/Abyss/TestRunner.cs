@@ -25,7 +25,6 @@ namespace Abyss
                 Topic = "/puzzle/one/two/three",
                 ExpectedMessage = "puzzle_1_solved"
             };
-
             sp_mqttSubscriber1.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_mqttSubscriber1);
 
@@ -33,12 +32,20 @@ namespace Abyss
             {
                 Message = "test_debug"
             };
-
             sp_debug.Initialize();
             AbyssSystem.Instance.RegisterSubProcessor(sp_debug);
 
-            sp_mqttSubscriber1.ExpectedMessageReceived += sp_debug.Start;
+            SPMqttPublisher sp_mqttPublisher1 = new SPMqttPublisher()
+            {
+                Brokers = MakeList(mqttBroker),
+                Topic = "/debug/verbose",
+                Message = "abyss here, hello!"
+            };
+            sp_mqttPublisher1.Initialize();
+            AbyssSystem.Instance.RegisterSubProcessor(sp_mqttPublisher1);
 
+            sp_mqttSubscriber1.ExpectedMessageReceived += sp_debug.Start;
+            sp_mqttSubscriber1.ExpectedMessageReceived += sp_mqttPublisher1.Start;
         }
 
         private List<T> MakeList<T>(params T[] listItems)

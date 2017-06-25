@@ -29,13 +29,12 @@ namespace AbyssLibrary
 
         private void ThreadWaitAndConnectToClient()
         {
-            Debug.Log("ThreadWaitAndConnectToClient start ");
             while (!this.IsConnected)
             {
                 Thread.Sleep(1000);
             }
 
-            Debug.Log("ThreadWaitAndConnectToClient connecting to Mqttclient");
+            Debug.Log("MqttBroker '{0}' is connecting ", this.Name);
             this.Client = new MqttClient(this.IpAddress);
             this.Client.MqttMsgSubscribed += MqttMsgSubscribedEvent;
             this.Client.MqttMsgUnsubscribed += MqttMsgUnSubscribedEvent;

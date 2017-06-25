@@ -45,15 +45,15 @@ namespace AbyssLibrary
 
         private void ThreadWaitAndConnectToClient()
         {
+            Debug.Log("SPMqttSubscriber waiting to initialize");
             foreach (MqttBroker endpoint in this.Brokers)
             {
-                Debug.Log("MqttSubscriber waiting ");
                 while (endpoint.Client == null)
                 {
                     Thread.Sleep(1000);
                 }
 
-                Debug.Log("MqttSubscriber connecting to Mqttclient topic " + this.Topic);
+                Debug.Log("SPMqttSubscriber subscribing to topic {0}", this.Topic);
                 endpoint.Client.MqttMsgPublishReceived += MqttMsgPublishReceivedEvent;
                 endpoint.Client.Subscribe(new string[] { this.Topic }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             }
@@ -69,7 +69,7 @@ namespace AbyssLibrary
             if (string.Equals(this.Topic, e.Topic))
             {
                 string message = Encoding.Default.GetString(e.Message);
-                Debug.Log(string.Format("Received T:{0} M:{1}", this.Topic, message));
+                Debug.Log(string.Format("MqttSubscriber Received T:{0} M:{1}", this.Topic, message));
 
                 if (DataReceived != null)
                 {

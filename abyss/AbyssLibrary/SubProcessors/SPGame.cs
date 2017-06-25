@@ -151,7 +151,6 @@ namespace AbyssLibrary
             Debug.Log("SPGame Ended [{0}]", Name);
         }
 
-
         private void OnGameStarted(object sender, EventArgs e)
         {
             if (GameStarted != null)
