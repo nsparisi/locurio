@@ -156,7 +156,7 @@ namespace AbyssConsole
 
         private void Fuchsia_Click(object sender, RoutedEventArgs e)
         {
-            ChangeColor(LimitlessLEDBridge.ColorType.Fusia);
+            ChangeColor(LimitlessLEDBridge.ColorType.Fuchsia);
         }
 
         private void Aqua_Click(object sender, RoutedEventArgs e)

@@ -203,9 +203,15 @@ namespace Abyss
             AbyssSystem.Instance.RegisterPhysicalObject(textingMotorola);
 
             TextingController textingNexus =
-                new TextingController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.107");
+                new TextingController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.152");
 
             AbyssSystem.Instance.RegisterPhysicalObject(textingNexus);
+
+
+            TextingController textingGplay =
+                new TextingController("Moto G Play", "80-58-F8-91-8A-86", "192.168.0.151");
+
+            AbyssSystem.Instance.RegisterPhysicalObject(textingGplay);
 
             // ***********************
             // Timer Devices (integrated with text message app)
@@ -222,7 +228,7 @@ namespace Abyss
             AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerMotorola);
 
             TimerController timerNexus =
-                new TimerController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.151");
+                new TimerController("Nexus 4", "10-68-3F-70-7D-D1", "192.168.0.152");
 
             AbyssSystem.Instance.RegisterPhysicalObject(timerNexus);
 
@@ -231,6 +237,18 @@ namespace Abyss
                     TimerControllers = MakeList(timerNexus)
                 };
             AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerNexus);
+
+
+            TimerController timerGplay =
+                new TimerController("Moto G Play", "80-58-F8-91-8A-86", "192.168.0.151");
+
+            AbyssSystem.Instance.RegisterPhysicalObject(timerGplay);
+
+            SPTimerController sp_timerControllerGplay = new SPTimerController()
+            {
+                TimerControllers = MakeList(timerGplay)
+            };
+            AbyssSystem.Instance.RegisterSubProcessor(sp_timerControllerGplay);
 
             // ***********************
             // ALTAR
@@ -299,9 +317,9 @@ namespace Abyss
             // LED RGB+W Lightbulbs
             // ***********************
             LimitlessLEDBridge bridgeSecretRoom = new LimitlessLEDBridge(
-                    "MiLight Bridge Secret Room",
-                    "AC-CF-23-46-86-46",
-                    "192.168.0.104");
+                    "MiLight Bridge V2",
+                    "F0-FE-6B-C5-BE-D2",
+                    "192.168.0.150");
             AbyssSystem.Instance.RegisterPhysicalObject(bridgeSecretRoom);
 
             SPLimitlessLEDBridge sp_lightAllWhite = new SPLimitlessLEDBridge()
@@ -359,6 +377,7 @@ namespace Abyss
             sp_gameController.GameStarted += sp_countdownScreen.Start;
             sp_gameController.GameStarted += sp_timerControllerMotorola.StartTimer;
             sp_gameController.GameStarted += sp_timerControllerNexus.StartTimer;
+            sp_gameController.GameStarted += sp_timerControllerGplay.StartTimer;
 
             // when the top of the altar is solved
             // play some spooky MYST wind effects
@@ -390,6 +409,7 @@ namespace Abyss
             sp_gameController.GameWon += sp_soundNoxSuccessNarration.Play;
             sp_gameController.GameWon += sp_timerControllerMotorola.SuspendTimer;
             sp_gameController.GameWon += sp_timerControllerNexus.SuspendTimer;
+            sp_gameController.GameWon += sp_timerControllerGplay.SuspendTimer;
 
             //--------------------
             // LOSE CONDITION
@@ -425,6 +445,7 @@ namespace Abyss
             sp_gameController.GameStopped += sp_lightAllFullBrightness.Run;
             sp_gameController.GameStopped += sp_timerControllerMotorola.ResetTimer;
             sp_gameController.GameStopped += sp_timerControllerNexus.ResetTimer;
+            sp_gameController.GameStopped += sp_timerControllerGplay.ResetTimer;
 
             //--------------------
             // SOFT PAUSE
@@ -435,6 +456,7 @@ namespace Abyss
             sp_gameController.GamePaused += sp_countdownScreen.Stop;
             sp_gameController.GamePaused += sp_timerControllerMotorola.SuspendTimer;
             sp_gameController.GamePaused += sp_timerControllerNexus.SuspendTimer;
+            sp_gameController.GamePaused += sp_timerControllerGplay.SuspendTimer;
 
             //--------------------
             // RESUME FROM PAUSE
@@ -445,6 +467,7 @@ namespace Abyss
             sp_gameController.GameUnPaused += sp_countdownScreen.Start;
             sp_gameController.GameUnPaused += sp_timerControllerMotorola.StartTimer;
             sp_gameController.GameUnPaused += sp_timerControllerNexus.StartTimer;
+            sp_gameController.GameUnPaused += sp_timerControllerGplay.StartTimer;
 
             //--------------------
             // TEST MODE

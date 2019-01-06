@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using EdgeJs;
 
 namespace AbyssLibrary
 {
@@ -47,6 +48,13 @@ namespace AbyssLibrary
 
         private object lockObj = new object();
 
+        public class MilightCommand
+        {
+            public int Zone = 1;
+            public string Command = "";
+            public int Value = 0;
+        }
+
         public enum ColorType
         {
             Violet = 0x00,
@@ -62,17 +70,17 @@ namespace AbyssLibrary
             Orange = 0xA0,
             Red = 0xB0,
             Pink = 0xC0,
-            Fusia = 0xD0,
+            Fuchsia = 0xD0,
             Lilac = 0xE0,
-            Lavendar = 0xF0
+            Lavender = 0xF0
         }
 
         public enum ZoneType { 
-            All, 
-            Zone1, 
-            Zone2, 
-            Zone3, 
-            Zone4 
+            All = 0, 
+            Zone1 = 1, 
+            Zone2 = 2, 
+            Zone3 = 3, 
+            Zone4 = 4 
         }
 
         private int port;
@@ -81,120 +89,90 @@ namespace AbyssLibrary
             : base(name, deviceMacAddress, bestGuessIpAddress)
         {
             this.port = port;
+            Setup(bestGuessIpAddress);
         }
 
-        private void SendCommand(byte[] message)
+        Func<object, Task<object>> sendFunc = null;
+
+        private void Setup(string ip)
         {
-            if (!this.IsConnected)
-            {
-                Debug.Log("Cannot send LED LightBulb message. LimitlessLEDBridge controller '{0}' is not connected to device '{1}'.", this.Name, this.MacAddress);
-                return;
-            }
-
-            try
-            {
-                lock (lockObj)
+            var jsProg = @"
+                var Milight = require('node-milight-promise').MilightController;
+                var commands = require('node-milight-promise').commandsV6;
+                 
+                if ('undefined' === typeof GLOBAL.light)
                 {
-                    // TCP doesnt work :(
-                    /*
-                    TcpClient tcpClient = new TcpClient(this.IpAddress, this.port);
-                    NetworkStream networkStream = tcpClient.GetStream();
-                    networkStream.Write(message, 0, message.Length);
-                    tcpClient.Close();
-                    */
-
-                    UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
-                    udpClient.Send(message, message.Length);
-
-                    // TODO: this is a test, double/triple up on the message sent
-                    Thread.Sleep(10);
-                    udpClient.Send(message, message.Length);
-                    Thread.Sleep(10);
-                    udpClient.Send(message, message.Length);
-
-                    Thread.Sleep(20);
-                    udpClient.Close();
+                    console.log('making light');
+                    GLOBAL.light = new Milight({
+                        ip: '$$$IP$$$',
+                            delayBetweenCommands: 50,
+                            commandRepeat: 2,
+                            type: 'v6'
+                        });
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.Log("There was an error sending LED LightBulb message {0}", message);
-                Debug.Log("Error:", e);
-            }
+
+                return function (data, callback) {                 
+                          var todo = [];
+
+                         for (var command of data) {
+                            zone = command.Zone;
+                            switch (command.Command) {
+                                case 'on':
+                                    todo.push(commands.rgbw.on(zone));
+                                    break;
+                                case 'off':
+                                    todo.push(commands.rgbw.off(zone));
+                                    break;
+                                case 'color':
+                                    todo.push(commands.rgbw.on(zone));
+                                    todo.push(commands.rgbw.brightness(zone, 100));
+                                    todo.push(commands.rgbw.hue(zone, command.Value, true));
+                                    break;
+                                case 'brightness':
+                                    todo.push(commands.rgbw.on(zone));
+                                    todo.push(commands.rgbw.brightness(zone, command.Value));
+                                    break;
+                                case 'white':
+                                    todo.push(commands.rgbw.on(zone));
+                                    todo.push(commands.rgbw.whiteMode(zone));
+                                }
+
+                         }
+
+                        light.sendCommands(...todo);
+                }
+            ";
+
+            jsProg = jsProg.Replace("$$$IP$$$", ip);
+            sendFunc = Edge.Func(jsProg);
         }
 
-        private void SendTwoCommandsWithDelay(
-            byte[] messageBeforeDelay,
-            byte[] messageAfterDelay)
+        private void SendCommand(MilightCommand c)
         {
-            if (!this.IsConnected)
+            if (sendFunc == null)
             {
-                Debug.Log("Cannot send LED LightBulb message. LimitlessLEDBridge controller '{0}' is not connected to device '{1}'.", this.Name, this.MacAddress);
-                return;
+                Debug.Log("Can't send command because light isn't connected yet.");
             }
 
-            try
-            {
-                lock (lockObj)
-                {
-                    // TCP doesn't work :(
-                    /*
-                    TcpClient tcpClient = new TcpClient(this.IpAddress, this.port);
-                    NetworkStream networkStream = tcpClient.GetStream();
-                    networkStream.Write(messageBeforeDelay, 0, messageBeforeDelay.Length);
-                    Thread.Sleep(100);
-                    networkStream.Write(messageAfterDelay, 0, messageAfterDelay.Length);
-                    tcpClient.Close();
-                     */
+            SendCommands(new[] {c});
+        }
 
-                    // for some commands, the bridge expects two messages
-                    // that have a 100ms delay in between.
-                    UdpClient udpClient = new UdpClient(this.IpAddress, this.port);
+        private void SendCommands(MilightCommand[] c)
+        {
+            sendFunc(c);
+        }
 
-                    udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
-
-                    // TODO: this is a test, double/triple up on the message sent
-                    Thread.Sleep(10);
-                    udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
-                    Thread.Sleep(10);
-                    udpClient.Send(messageBeforeDelay, messageBeforeDelay.Length);
-
-                    Thread.Sleep(100);
-
-                    udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
-
-                    // TODO: this is a test, double/triple up on the message sent
-                    Thread.Sleep(10);
-                    udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
-                    Thread.Sleep(10);
-                    udpClient.Send(messageAfterDelay, messageAfterDelay.Length);
-
-                    Thread.Sleep(20);
-                    udpClient.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log("There was an error sending LED LightBulb messages '{0}' + '{1}'", messageBeforeDelay, messageAfterDelay);
-                Debug.Log("Error:", e);
-            }
+        private int ZoneTypeToInt(ZoneType zone)
+        {
+            return (int) zone;
         }
 
         public void TurnOn(ZoneType zone)
         {
+
             Debug.Log("Turning On {0}", zone);
 
-            byte zoneOn = Command_AllOn;
-            if (zone == ZoneType.All) zoneOn = Command_AllOn;
-            else if (zone == ZoneType.Zone1) zoneOn = Command_Zone1On;
-            else if (zone == ZoneType.Zone2) zoneOn = Command_Zone2On;
-            else if (zone == ZoneType.Zone3) zoneOn = Command_Zone3On;
-            else if (zone == ZoneType.Zone4) zoneOn = Command_Zone4On;
-
-            SendCommand(new byte[]
-                {
-                    zoneOn, Empty_Middle_Byte, Final_Byte
-                });
+            SendCommand(new MilightCommand() { Command = "on", Zone = (int)zone});
 
             OnTurnedOn(this, EventArgs.Empty);
             OnChanged(this, EventArgs.Empty);
@@ -204,17 +182,7 @@ namespace AbyssLibrary
         {
             Debug.Log("Turning Off {0}", zone);
 
-            byte zoneOff = Command_AllOff;
-            if (zone == ZoneType.All) zoneOff = Command_AllOff;
-            else if (zone == ZoneType.Zone1) zoneOff = Command_Zone1Off;
-            else if (zone == ZoneType.Zone2) zoneOff = Command_Zone2Off;
-            else if (zone == ZoneType.Zone3) zoneOff = Command_Zone3Off;
-            else if (zone == ZoneType.Zone4) zoneOff = Command_Zone4Off;
-
-            SendCommand(new byte[]
-                {
-                    zoneOff, Empty_Middle_Byte, Final_Byte
-                });
+            SendCommand(new MilightCommand() { Command = "off", Zone = (int)zone });
 
             OnTurnedOff(this, EventArgs.Empty);
             OnChanged(this, EventArgs.Empty);
@@ -222,18 +190,11 @@ namespace AbyssLibrary
 
         public void ChangeColor(ColorType color, ZoneType zone)
         {
+            
             Debug.Log("Changing to color: {0}, {1}", color.ToString(), zone);
 
-            byte beforeDelayZone = Command_BeforeDelay_All;
-            if (zone == ZoneType.All) beforeDelayZone = Command_BeforeDelay_All;
-            else if (zone == ZoneType.Zone1) beforeDelayZone = Command_BeforeDelay_Zone1;
-            else if (zone == ZoneType.Zone2) beforeDelayZone = Command_BeforeDelay_Zone2;
-            else if (zone == ZoneType.Zone3) beforeDelayZone = Command_BeforeDelay_Zone3;
-            else if (zone == ZoneType.Zone4) beforeDelayZone = Command_BeforeDelay_Zone4;
 
-            SendTwoCommandsWithDelay(
-                new byte[] { beforeDelayZone, Empty_Middle_Byte, Final_Byte },
-                new byte[] { Command_AfterDelay_SetColor, (byte)color, Final_Byte });
+            SendCommand(new MilightCommand() { Command = "color", Zone = (int)zone, Value = (int)color});
 
             OnChanged(this, EventArgs.Empty);
         }
@@ -242,23 +203,7 @@ namespace AbyssLibrary
         {
             Debug.Log("Changing to white light {0}", zone);
 
-            byte beforeDelayZone = Command_BeforeDelay_All;
-            if (zone == ZoneType.All) beforeDelayZone = Command_BeforeDelay_All;
-            else if (zone == ZoneType.Zone1) beforeDelayZone = Command_BeforeDelay_Zone1;
-            else if (zone == ZoneType.Zone2) beforeDelayZone = Command_BeforeDelay_Zone2;
-            else if (zone == ZoneType.Zone3) beforeDelayZone = Command_BeforeDelay_Zone3;
-            else if (zone == ZoneType.Zone4) beforeDelayZone = Command_BeforeDelay_Zone4;
-
-            byte afterDelayZone = Command_AfterDelay_AllWhite;
-            if (zone == ZoneType.All) afterDelayZone = Command_AfterDelay_AllWhite;
-            else if (zone == ZoneType.Zone1) afterDelayZone = Command_AfterDelay_Zone1White;
-            else if (zone == ZoneType.Zone2) afterDelayZone = Command_AfterDelay_Zone2White;
-            else if (zone == ZoneType.Zone3) afterDelayZone = Command_AfterDelay_Zone3White;
-            else if (zone == ZoneType.Zone4) afterDelayZone = Command_AfterDelay_Zone4White;
-
-            SendTwoCommandsWithDelay(
-                new byte[] { beforeDelayZone, Empty_Middle_Byte, Final_Byte },
-                new byte[] { afterDelayZone, Empty_Middle_Byte, Final_Byte });
+            SendCommand(new MilightCommand() { Command = "white", Zone = (int)zone});
 
             OnChanged(this, EventArgs.Empty);
         }
@@ -266,19 +211,7 @@ namespace AbyssLibrary
         public void ChangeBrightness(double percentage, ZoneType zone)
         {
             Debug.Log("Changing to brightness: {0}, {1}", percentage.ToString(), zone);
-            byte brightness = ConvertPercentToBrightnessByte(percentage);
-
-            byte beforeDelayZone = Command_BeforeDelay_All;
-            if (zone == ZoneType.All) beforeDelayZone = Command_BeforeDelay_All;
-            else if (zone == ZoneType.Zone1) beforeDelayZone = Command_BeforeDelay_Zone1;
-            else if (zone == ZoneType.Zone2) beforeDelayZone = Command_BeforeDelay_Zone2;
-            else if (zone == ZoneType.Zone3) beforeDelayZone = Command_BeforeDelay_Zone3;
-            else if (zone == ZoneType.Zone4) beforeDelayZone = Command_BeforeDelay_Zone4;
-
-            SendTwoCommandsWithDelay(
-                new byte[] { beforeDelayZone, Empty_Middle_Byte, Final_Byte },
-                new byte[] { Command_AfterDelay_SetBrightness, (byte)brightness, Final_Byte });
-
+            SendCommand(new MilightCommand() { Command = "brightness", Zone = (int)zone, Value = (int)(percentage * 100.0) });
             OnChanged(this, EventArgs.Empty);
         }
 
@@ -305,14 +238,6 @@ namespace AbyssLibrary
                 Changed(sender, e);
             }
         }
-
-        private byte ConvertPercentToBrightnessByte(double brightness)
-        {
-            // range is 0x02 - 0x1B 
-            // this is 26 possible steps
-            int decimalValue = (int)Math.Floor(brightness * 25);
-            byte byteValue = (byte)(0x02 + decimalValue);
-            return byteValue;
-        }
+        
     }
 }

@@ -106,7 +106,7 @@ namespace AbyssLibrary
             }
 
             // check the cache for this entry
-            lock (scanLock)
+           lock (scanLock)
             {
                 macAddress = macAddress.ToUpper();
                 if (macToIpTable.ContainsKey(macAddress))
