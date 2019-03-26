@@ -5,6 +5,7 @@
 *.pydevproject
 .project
 .metadata
+.vs/
 bin/
 tmp/
 *.tmp
