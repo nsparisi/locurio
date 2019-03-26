@@ -6,11 +6,17 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.app.ActionBar;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.view.View;
+import android.app.admin.DevicePolicyManager;
+import android.app.admin.DeviceAdminReceiver;
+import android.content.ComponentName;
 
 public class MainActivity extends Activity {
+    public static class DevAdminReceiver extends DeviceAdminReceiver {
+    }
 
     private ListView messagesList;
     private MessageAdapter messageAdapter;
@@ -49,6 +55,27 @@ public class MainActivity extends Activity {
 
         // setup a timer which will be used to update the app's clock
         timerText = (TextView) findViewById(R.id.TimerText);
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+        DevicePolicyManager myDevicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName mDeviceAdminSample = new ComponentName(this, DevAdminReceiver.class);
+
+        if (myDevicePolicyManager.isDeviceOwnerApp(this.getPackageName())) {
+            // Device owner
+            String[] packages = {this.getPackageName()};
+            myDevicePolicyManager.setLockTaskPackages(mDeviceAdminSample, packages);
+        } else {
+            // Not a device owner - prompt user or show error
+        }
+
+        if (myDevicePolicyManager.isLockTaskPermitted(this.getPackageName())) {
+            // Lock allowed
+            startLockTask();
+        } else {
+            // Lock not allowed - show error or something useful here
+        }
     }
 
     // Updates the timer text field.

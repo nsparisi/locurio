@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import android.media.Ringtone;
 
 /**
  * Created by Penny on 5/18/2015.
@@ -265,6 +266,8 @@ public class MessageService extends Service
 
                 // set the volume to max
                 AudioManager manager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                manager.setMode(AudioManager.STREAM_RING);
+                manager.setSpeakerphoneOn(true);
 
                 manager.setStreamVolume(
                         AudioManager.STREAM_NOTIFICATION,
@@ -276,11 +279,27 @@ public class MessageService extends Service
                         manager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM),
                         0);
 
+                manager.setStreamVolume(
+                        AudioManager.STREAM_RING,
+                        manager.getStreamMaxVolume(AudioManager.STREAM_RING),
+                        0);
+
+
+                manager.setStreamVolume(
+                        AudioManager.STREAM_MUSIC,
+                        manager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                        0);
+
+                manager.setMode(AudioManager.MODE_RINGTONE);
+
                 Thread.sleep(500);
 
                 // play the notification
                 Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                RingtoneManager.getRingtone(getApplicationContext(), notificationUri).play();
+                Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notificationUri);
+                ringtone.setStreamType(AudioManager.STREAM_MUSIC);
+                //ringtone.setVolume(1.0f);
+                ringtone.play();
             }
             catch (Exception e)
             {

@@ -9,7 +9,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="140dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -25,19 +25,19 @@
             android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="-10px"/>
+            android:layout_marginTop="-20px"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="minutes left in show"
-            android:textSize="25dp"
+            android:textSize="30dp"
             android:gravity="center_horizontal"
             android:id="@+id/TimerCaption"
             android:textColor="@android:color/white"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="-40px"/>
+            android:layout_marginTop="-50px"/>
 
     </LinearLayout>
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:transcriptMode="alwaysScroll"
         android:padding="0dip"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="140dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:stackFromBottom="true"
